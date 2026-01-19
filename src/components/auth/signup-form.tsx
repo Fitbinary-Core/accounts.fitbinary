@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import {
-  User,
   Mail,
   Phone,
   Calendar,
@@ -13,13 +12,11 @@ import {
   ChevronRight,
   ChevronLeft,
   ChevronDown,
-  Globe,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
+import { signUpUser } from "@/services/auth/auth.service";
 
 const signupSchema = z
   .object({
@@ -69,8 +66,9 @@ export default function SignupForm() {
 
   const prevStep = () => setStep((s) => Math.max(s - 1, 1));
 
-  const onSubmit = (data: SignupValues) => {
-    console.log("Form Data Ready for Backend:", data);
+  const onSubmit = async (data: SignupValues) => {
+    const response = await signUpUser(data);
+    console.log("Body: ", response);
   };
 
   return (

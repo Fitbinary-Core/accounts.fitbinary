@@ -16,13 +16,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { loginUser } from "@/services/auth/auth.service";
 
 const signinSchema = z.object({
   email: z.string().email("Invalid email address"),
   password: z.string().min(1, "Password is required"),
 });
 
-type SigninValues = z.infer<typeof signinSchema>;
+export type SigninValues = z.infer<typeof signinSchema>;
 
 export default function SigninForm() {
   const {
@@ -33,8 +34,12 @@ export default function SigninForm() {
     resolver: zodResolver(signinSchema),
   });
 
-  const onSubmit = (data: SigninValues) => {
-    console.log("Signin Data Ready:", data);
+  const onSubmit = async (data: SigninValues) => {
+    try {
+      const response = await loginUser(data);
+    } catch (error) {
+      console.log("Error: ", error);
+    }
   };
 
   return (
