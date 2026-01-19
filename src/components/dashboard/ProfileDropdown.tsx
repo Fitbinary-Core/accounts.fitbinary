@@ -1,8 +1,10 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { User, LogOut, Settings } from "lucide-react";
-import { Tenant } from "@/services/auth/auth.service";
+import { User, LogOut, Settings, X, AlertCircle } from "lucide-react";
+import { Tenant, logoutUser } from "@/services/auth/auth.service";
+import { useRouter } from "next/navigation";
+import { createPortal } from "react-dom";
 
 export interface TenantProps {
   tenant?: Tenant;
@@ -10,7 +12,10 @@ export interface TenantProps {
 
 export function ProfileDropdown({ tenant }: TenantProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   const getInitials = () => {
     if (!tenant?.first_name) return "U";
@@ -33,6 +38,19 @@ export function ProfileDropdown({ tenant }: TenantProps) {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  const handleLogout = async () => {
+    try {
+      setIsLoggingOut(true);
+      await logoutUser();
+      router.push("/signin");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    } finally {
+      setIsLoggingOut(false);
+      setShowLogoutModal(false);
+    }
+  };
 
   return (
     <div className="relative" ref={dropdownRef}>
@@ -85,7 +103,13 @@ export function ProfileDropdown({ tenant }: TenantProps) {
               <Settings className="w-5 h-5 text-gray-500" />
               Settings
             </button>
-            <button className="w-full flex items-center gap-3 px-6 py-3 text-sm text-gray-700 hover:bg-gray-100 transition-colors border-t border-gray-100">
+            <button
+              onClick={() => {
+                setIsOpen(false);
+                setShowLogoutModal(true);
+              }}
+              className="w-full flex items-center gap-3 px-6 py-3 text-sm text-gray-700 hover:bg-gray-100 transition-colors border-t border-gray-100"
+            >
               <LogOut className="w-5 h-5 text-gray-500" />
               Sign out
             </button>
@@ -102,6 +126,66 @@ export function ProfileDropdown({ tenant }: TenantProps) {
           </div>
         </div>
       )}
+
+      {/* Logout Confirmation Modal */}
+      {showLogoutModal &&
+        createPortal(
+          <div className="fixed inset-0 z-100 flex items-center justify-center p-4">
+            <div
+              className="absolute inset-0 bg-black/40 backdrop-blur-sm animate-in fade-in duration-300"
+              onClick={() => !isLoggingOut && setShowLogoutModal(false)}
+            />
+            <div className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 fade-in duration-300">
+              <div className="p-8">
+                <div className="flex justify-between items-start mb-6">
+                  <div className="w-12 h-12 bg-red-50 rounded-2xl flex items-center justify-center text-brand-red">
+                    <AlertCircle className="w-6 h-6" />
+                  </div>
+                  <button
+                    onClick={() => setShowLogoutModal(false)}
+                    disabled={isLoggingOut}
+                    className="p-2 hover:bg-gray-100 rounded-full transition-colors disabled:opacity-50"
+                  >
+                    <X className="w-5 h-5 text-gray-400" />
+                  </button>
+                </div>
+
+                <h3 className="text-2xl font-semibold text-gray-900 mb-2">
+                  Sign out?
+                </h3>
+                <p className="text-gray-600 mb-8 leading-relaxed">
+                  Are you sure you want to sign out? You'll need to sign back in
+                  to access your account and manage your data.
+                </p>
+
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <button
+                    onClick={() => setShowLogoutModal(false)}
+                    disabled={isLoggingOut}
+                    className="flex-1 px-6 py-3 text-sm font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-2xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleLogout}
+                    disabled={isLoggingOut}
+                    className="flex-1 px-6 py-3 text-sm font-semibold text-white bg-brand-red hover:bg-red-700 rounded-2xl transition-all shadow-lg shadow-red-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  >
+                    {isLoggingOut ? (
+                      <>
+                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        Signing out...
+                      </>
+                    ) : (
+                      "Sign out"
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>,
+          document.body,
+        )}
     </div>
   );
 }
