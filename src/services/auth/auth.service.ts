@@ -1,6 +1,27 @@
 import { SigninValues } from "@/components/auth/signin-form";
 import { apiClient } from "@/lib/apiClient";
-import { AUTH_URLS } from "@/lib/urls";
+import { TENANT_AUTH_URLS } from "@/lib/urls";
+
+export interface Tenant {
+  _id: string;
+  first_name: string;
+  middle_name?: string;
+  last_name: string;
+  email: string;
+  phone: string;
+  dob: string;
+  avatar: string | null;
+  role: "Owner" | string;
+  onboarding_completed: boolean;
+  organization: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface UserProfileResponse {
+  message: string;
+  tenant: Tenant;
+}
 
 export interface SignUpUserProps {
   first_name: string;
@@ -14,10 +35,25 @@ export interface SignUpUserProps {
   avatar?: string;
 }
 
-export const loginUser = async (data: SigninValues) => {
-  console.log("Data: ", data);
+export const userProfile = async (): Promise<UserProfileResponse> => {
   try {
-    const url = AUTH_URLS.login;
+    const url = TENANT_AUTH_URLS.profile;
+    const response = await apiClient(url);
+    const body = await response.json();
+    if (!response.json) {
+      throw new Error(body.message);
+    }
+
+    return body;
+  } catch (error) {
+    console.log("Error: ", error);
+    throw error;
+  }
+};
+
+export const loginUser = async (data: SigninValues) => {
+  try {
+    const url = TENANT_AUTH_URLS.login;
     const response = await apiClient(url, {
       method: "POST",
       headers: {
@@ -26,12 +62,10 @@ export const loginUser = async (data: SigninValues) => {
       body: JSON.stringify(data),
     });
 
-    console.log("Response in service: ", response);
-
     const body: any = await response.json();
 
     if (!response.json) {
-      throw new Error(body);
+      throw new Error(body.message);
     }
 
     return body;
@@ -45,7 +79,7 @@ export const signUpUser = async (
   data: SignUpUserProps,
 ): Promise<{ message: string }> => {
   try {
-    const url = AUTH_URLS.tenant_signup;
+    const url = TENANT_AUTH_URLS.tenant_signup;
     const { confirm_password, ...payload } = data;
 
     const response = await apiClient(url, {
@@ -69,7 +103,23 @@ export const signUpUser = async (
   }
 };
 
-export const logOutUser = async () => {
+export async function logoutUser() {
   try {
-  } catch (error) {}
-};
+    const url = TENANT_AUTH_URLS.logout;
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to logout!");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.log("Error: ", error);
+    throw error;
+  }
+}

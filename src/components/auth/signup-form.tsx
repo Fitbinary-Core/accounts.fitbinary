@@ -13,6 +13,8 @@ import {
   ChevronRight,
   ChevronLeft,
   ChevronDown,
+  Eye,
+  EyeOff,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -46,6 +48,8 @@ type SignupValues = z.infer<typeof signupSchema>;
 export default function SignupForm() {
   const router = useRouter();
   const [step, setStep] = useState(1);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const totalSteps = 3;
 
   const {
@@ -220,11 +224,18 @@ export default function SignupForm() {
                       <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-brand-red" />
                       <Input
                         id="password"
-                        type="password"
+                        type={showPassword ? "text" : "password"}
                         placeholder="Password"
-                        className="py-6 pl-10 border border-brand-red/80 text-brand-red focus-visible:ring-brand-red"
+                        className="py-6 pl-10 pr-10 border border-brand-red/80 text-brand-red focus-visible:ring-brand-red"
                         {...register("password")}
                       />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-brand-red hover:text-red-700 cursor-pointer"
+                      >
+                        {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                      </button>
                     </div>
                     {errors.password && (
                       <p className="text-xs text-brand-red font-medium px-1">
@@ -238,11 +249,18 @@ export default function SignupForm() {
                       <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-brand-red" />
                       <Input
                         id="confirm_password"
-                        type="password"
+                        type={showConfirmPassword ? "text" : "password"}
                         placeholder="Confirm Password"
-                        className="py-6 pl-10 border border-brand-red/80 text-brand-red focus-visible:ring-brand-red"
+                        className="py-6 pl-10 pr-10 border border-brand-red/80 text-brand-red focus-visible:ring-brand-red"
                         {...register("confirm_password")}
                       />
+                      <button
+                        type="button"
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-brand-red hover:text-red-700 cursor-pointer"
+                      >
+                        {showConfirmPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                      </button>
                     </div>
                     {errors.confirm_password && (
                       <p className="text-xs text-brand-red font-medium px-1">

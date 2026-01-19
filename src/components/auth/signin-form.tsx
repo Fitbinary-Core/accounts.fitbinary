@@ -1,22 +1,23 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import {
   Mail,
   Lock,
-  LogIn,
   ChevronDown,
-  Globe,
   ChevronRight,
+  Eye,
+  EyeOff,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
 import { loginUser } from "@/services/auth/auth.service";
+import { useState } from "react";
 
 const signinSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -26,6 +27,8 @@ const signinSchema = z.object({
 export type SigninValues = z.infer<typeof signinSchema>;
 
 export default function SigninForm() {
+  const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
   const {
     register,
     handleSubmit,
@@ -37,8 +40,10 @@ export default function SigninForm() {
   const onSubmit = async (data: SigninValues) => {
     try {
       const response = await loginUser(data);
-    } catch (error) {
-      console.log("Error: ", error);
+      toast.success(response.message);
+      router.push("/");
+    } catch (error: any) {
+      toast.error(error.message);
     }
   };
 
@@ -105,11 +110,22 @@ export default function SigninForm() {
                   <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-brand-red" />
                   <Input
                     id="password"
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     placeholder="Enter your password"
-                    className="py-6 pl-10 border border-brand-red/80 text-brand-red focus-visible:ring-brand-red"
+                    className="py-6 pl-10 pr-10 border border-brand-red/80 text-brand-red focus-visible:ring-brand-red"
                     {...register("password")}
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-brand-red hover:text-red-700 cursor-pointer"
+                  >
+                    {showPassword ? (
+                      <EyeOff className="size-4" />
+                    ) : (
+                      <Eye className="size-4" />
+                    )}
+                  </button>
                 </div>
                 {errors.password && (
                   <p className="text-xs text-brand-red font-medium pl-1">
