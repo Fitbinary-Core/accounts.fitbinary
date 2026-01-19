@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { signUpUser } from "@/services/auth/auth.service";
+import toast from "react-hot-toast";
 
 const signupSchema = z
   .object({
@@ -42,6 +44,7 @@ const signupSchema = z
 type SignupValues = z.infer<typeof signupSchema>;
 
 export default function SignupForm() {
+  const router = useRouter();
   const [step, setStep] = useState(1);
   const totalSteps = 3;
 
@@ -67,8 +70,13 @@ export default function SignupForm() {
   const prevStep = () => setStep((s) => Math.max(s - 1, 1));
 
   const onSubmit = async (data: SignupValues) => {
-    const response = await signUpUser(data);
-    console.log("Body: ", response);
+    try {
+      const response = await signUpUser(data);
+      toast.success(response.message);
+      router.push("/signin");
+    } catch (error: any) {
+      toast.error(error.message);
+    }
   };
 
   return (
