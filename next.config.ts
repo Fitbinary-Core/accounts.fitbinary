@@ -5,14 +5,13 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/api/:path*",
-        destination:
-          process.env.NODE_ENV === "development"
-            ? "http://localhost:4200/api/:path*"
-            : "https://admin.fitbinary.com/api/:path*",
+        destination: `${process.env.NEXT_PUBLIC_BASE_URL}/:path*`,
       },
     ];
   },
+
   reactCompiler: true,
+
   transpilePackages: ["@radix-ui/react-slot", "@radix-ui/react-label"],
 };
 
