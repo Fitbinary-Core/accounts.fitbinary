@@ -1,26 +1,26 @@
+// proxy.ts
 import { NextRequest, NextResponse } from "next/server";
-import { cookies } from "next/headers";
 
-export const proxy = async (request: NextRequest) => {
-    // const cookieStore = await cookies();
-    // const refresh_token = cookieStore.get("refresh_token")?.value;
-    // const { pathname } = request.nextUrl;
+export function proxy(request: NextRequest) {
+  const refreshToken = request.cookies.get("refresh_token")?.value;
+  const { pathname } = request.nextUrl;
 
-    // if (!refresh_token) {
-    //     if (pathname === "/login") {
-    //         return NextResponse.next();
-    //     }
+  const publicPaths = ["/signin", "/signup"];
 
-    //     return NextResponse.redirect(new URL("/login", request.url));
-    // }
+  if (!refreshToken) {
+    if (publicPaths.includes(pathname)) {
+      return NextResponse.next();
+    }
+    return NextResponse.redirect(new URL("/signin", request.url));
+  }
 
-    // if (pathname === "/login") {
-    //     return NextResponse.redirect(new URL("/admin", request.url));
-    // }
+  if (refreshToken && publicPaths.includes(pathname)) {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
 
-    // return NextResponse.next();
-};
+  return NextResponse.next();
+}
 
 export const config = {
-    matcher: ["/login", "/admin/:path*"],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
 };

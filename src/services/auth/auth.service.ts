@@ -90,7 +90,10 @@ export const signUpUser = async (
       body: JSON.stringify(payload),
     });
 
+    console.log("Response: ", response);
+
     const body = await response.json();
+    console.log("BODY: ", body);
 
     if (!response.ok) {
       throw new Error(body.message || "Signup failed");
