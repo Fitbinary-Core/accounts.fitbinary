@@ -7,5 +7,9 @@ export default function SignupPageClient() {
   const searchParams = useSearchParams();
   const redirectUri = searchParams.get("redirect_uri");
 
-  return <SignupForm redirectUri={redirectUri} />;
+  return (
+    <main className="w-full flex items-center justify-center bg-gray-100 min-h-screen">
+      <SignupForm redirectUri={redirectUri} />;
+    </main>
+  );
 }
