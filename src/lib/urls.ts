@@ -1,8 +1,8 @@
 const BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://admin.fitbinary.com/api/v1";
+  process.env.NEXT_PUBLIC_BASE_URL || "https://admin.fitbinary.com/api/v1";
 
 // const BASE_URL =
-//   process.env.NEXT_PUBLIC_API_URL || "http://localhost:4200/api/v1";
+//   process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:4200/api/v1";
 
 export const AUTH_URLS = {
   login: `${BASE_URL}/auth/login`,

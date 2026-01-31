@@ -45,7 +45,11 @@ const signupSchema = z
 
 type SignupValues = z.infer<typeof signupSchema>;
 
-export default function SignupForm() {
+export default function SignupForm({
+  redirectUri,
+}: {
+  redirectUri: string | null;
+}) {
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [showPassword, setShowPassword] = useState(false);
@@ -77,7 +81,18 @@ export default function SignupForm() {
     try {
       const response = await signUpUser(data);
       toast.success(response.message);
-      router.push("/signin");
+
+      if (redirectUri) {
+        toast.loading("Redirecting to your app...", { duration: 2000 });
+      }
+
+      setTimeout(() => {
+        if (redirectUri) {
+          window.location.href = redirectUri;
+        } else {
+          router.push("/signin");
+        }
+      }, 2000);
     } catch (error: any) {
       toast.error(error.message);
     }
@@ -234,7 +249,11 @@ export default function SignupForm() {
                         onClick={() => setShowPassword(!showPassword)}
                         className="absolute right-3 top-1/2 -translate-y-1/2 text-brand-red hover:text-red-700 cursor-pointer"
                       >
-                        {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                        {showPassword ? (
+                          <EyeOff className="size-4" />
+                        ) : (
+                          <Eye className="size-4" />
+                        )}
                       </button>
                     </div>
                     {errors.password && (
@@ -256,10 +275,16 @@ export default function SignupForm() {
                       />
                       <button
                         type="button"
-                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        onClick={() =>
+                          setShowConfirmPassword(!showConfirmPassword)
+                        }
                         className="absolute right-3 top-1/2 -translate-y-1/2 text-brand-red hover:text-red-700 cursor-pointer"
                       >
-                        {showConfirmPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                        {showConfirmPassword ? (
+                          <EyeOff className="size-4" />
+                        ) : (
+                          <Eye className="size-4" />
+                        )}
                       </button>
                     </div>
                     {errors.confirm_password && (
