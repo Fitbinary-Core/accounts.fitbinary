@@ -1,17 +1,10 @@
-"use client";
+import { Suspense } from "react";
+import SignupPageClient from "@/components/auth/signup-page";
 
-import SignupForm from "@/components/auth/signup-form";
-import { useSearchParams } from "next/navigation";
-
-const SignUpPage = () => {
-  const searchParams = useSearchParams();
-  const redirectUri = searchParams.get("redirect_uri");
-
+export default function SignUpPage() {
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-gray-100 p-4 md:p-6 lg:p-8">
-      <SignupForm redirectUri={redirectUri} />
-    </div>
+    <Suspense fallback={<div>Loading...</div>}>
+      <SignupPageClient />
+    </Suspense>
   );
-};
-
-export default SignUpPage;
+}
