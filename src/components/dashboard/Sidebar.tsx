@@ -17,6 +17,10 @@ import {
   ChevronUp,
   Shield,
   Key,
+  Building2,
+  GitBranch,
+  List,
+  PlusCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
@@ -38,6 +42,32 @@ const navItems = [
   { name: "Payments & subscriptions", icon: CreditCard, href: "/payments" },
   { name: "App management", icon: LayoutDashboard, href: "/apps" },
   { name: "Onboarding", icon: Rocket, href: "/onboarding" },
+  {
+    name: "Organization",
+    icon: Building2,
+    href: "/organization",
+    subItems: [
+      { name: "List", icon: List, href: "/organization/list" },
+      {
+        name: "Create",
+        icon: PlusCircle,
+        href: "/organization/create",
+      },
+    ],
+  },
+  {
+    name: "Branches",
+    icon: GitBranch,
+    href: "/branches",
+    subItems: [
+      { name: "List", icon: List, href: "/branches/list" },
+      {
+        name: "Create",
+        icon: PlusCircle,
+        href: "/branches/create",
+      },
+    ],
+  },
   {
     name: "User management",
     icon: Users,
