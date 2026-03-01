@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ClientRootLayout from "@/components/common/client-layout";
+import JsonLd from "@/components/common/json-ld";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,12 +16,22 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Fitbinary Accounts",
+    default: "Fitbinary Accounts | Access Control Panel",
     template: "%s | Fitbinary Accounts",
   },
   description:
-    "Fitbinary Accounts is the centralized authentication and organization management portal for all Fitbinary applications.",
+    "Manage your Fitbinary account, subscriptions, users, and organizations. The centralized auth and control panel for the Fitbinary ecosystem.",
   applicationName: "Fitbinary Accounts",
+  authors: [{ name: "Fitbinary Team", url: "https://fitbinary.com" }],
+  keywords: [
+    "Fitbinary",
+    "Fitbinary Accounts",
+    "Access Control Panel",
+    "Subscription Management",
+    "Account Management",
+    "Fitbinary SSO",
+    "Onboarding",
+  ],
 
   metadataBase: new URL("https://accounts.fitbinary.com"),
   alternates: {
@@ -30,22 +41,38 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: "https://accounts.fitbinary.com",
-    title: "Fitbinary Accounts",
+    title: "Fitbinary Accounts | Access Control Panel",
     description:
-      "Secure sign-in and organization management for Fitbinary applications.",
+      "Centralized account and organization management for all Fitbinary applications. Manage users, subscriptions, and onboarding.",
     siteName: "Fitbinary",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Fitbinary Accounts",
+      },
+    ],
   },
 
   twitter: {
     card: "summary_large_image",
-    title: "Fitbinary Accounts",
+    title: "Fitbinary Accounts | Access Control Panel",
     description:
-      "Centralized authentication and organization management for Fitbinary.",
+      "Centralized account and organization management for Fitbinary.",
+    images: ["/og-image.png"],
   },
 
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 
   category: "technology",
@@ -61,6 +88,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <JsonLd />
         <ClientRootLayout>{children}</ClientRootLayout>
       </body>
     </html>

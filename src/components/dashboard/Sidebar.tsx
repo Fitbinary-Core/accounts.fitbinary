@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -78,7 +77,7 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
                 )}
               >
                 {isActive && (
-                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-brand-red rounded-r-full shadow-[0_0_10px_rgba(239,68,68,0.5)]" />
+                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-brand-red rounded-r-full" />
                 )}
                 <item.icon
                   className={cn(
