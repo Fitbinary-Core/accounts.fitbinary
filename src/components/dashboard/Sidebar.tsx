@@ -11,6 +11,12 @@ import {
   X,
   LogOut,
   ExternalLink,
+  Rocket,
+  Users,
+  ChevronDown,
+  ChevronUp,
+  Shield,
+  Key,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
@@ -18,6 +24,7 @@ import { logoutUser, userProfile } from "@/services/auth/auth.service";
 import { get_all_apps } from "@/services/apps/apps.service";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -30,6 +37,25 @@ const navItems = [
   { name: "Security", icon: ShieldCheck, href: "/security" },
   { name: "Payments & subscriptions", icon: CreditCard, href: "/payments" },
   { name: "App management", icon: LayoutDashboard, href: "/apps" },
+  { name: "Onboarding", icon: Rocket, href: "/onboarding" },
+  {
+    name: "User management",
+    icon: Users,
+    href: "/user-management",
+    subItems: [
+      { name: "Users list", icon: User, href: "/user-management/users" },
+      {
+        name: "Roles and permissions",
+        icon: Shield,
+        href: "/user-management/roles",
+      },
+      {
+        name: "Roles mapping",
+        icon: Key,
+        href: "/user-management/mapping",
+      },
+    ],
+  },
 ];
 
 const getBrandStyle = (name: string) => {
@@ -46,6 +72,15 @@ const getBrandStyle = (name: string) => {
 export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
+  const [expandedMenus, setExpandedMenus] = useState<string[]>([
+    "User management",
+  ]);
+
+  const toggleMenu = (name: string) => {
+    setExpandedMenus((prev) =>
+      prev.includes(name) ? prev.filter((i) => i !== name) : [...prev, name],
+    );
+  };
 
   const { data: profileData } = useQuery({
     queryKey: ["user-profile"],
@@ -115,7 +150,75 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
               Overview
             </h4>
             {navItems.map((item) => {
-              const isActive = pathname === item.href;
+              const hasSubItems = item.subItems && item.subItems.length > 0;
+              const isExpanded = expandedMenus.includes(item.name);
+              const isActive =
+                pathname === item.href ||
+                (hasSubItems &&
+                  item.subItems?.some((sub) => pathname === sub.href));
+
+              if (hasSubItems) {
+                return (
+                  <div key={item.name} className="space-y-1">
+                    <button
+                      onClick={() => toggleMenu(item.name)}
+                      className={cn(
+                        "w-full flex items-center justify-between px-3 py-2.5 text-[13px] font-medium rounded-xl transition-all group relative",
+                        isActive
+                          ? "bg-zinc-900 text-white shadow-sm ring-1 ring-zinc-800"
+                          : "hover:bg-zinc-900/50 hover:text-zinc-200",
+                      )}
+                    >
+                      <div className="flex items-center gap-3">
+                        <item.icon
+                          className={cn(
+                            "w-4 h-4 transition-colors",
+                            isActive
+                              ? "text-brand-red"
+                              : "text-zinc-500 group-hover:text-zinc-400",
+                          )}
+                        />
+                        {item.name}
+                      </div>
+                      {isExpanded ? (
+                        <ChevronUp className="w-3.5 h-3.5 text-zinc-600" />
+                      ) : (
+                        <ChevronDown className="w-3.5 h-3.5 text-zinc-600" />
+                      )}
+                    </button>
+                    {isExpanded && (
+                      <div className="ml-4 pl-3 border-l border-zinc-800 space-y-1 mt-1">
+                        {item.subItems.map((subItem) => {
+                          const isSubActive = pathname === subItem.href;
+                          return (
+                            <Link
+                              key={subItem.name}
+                              href={subItem.href}
+                              className={cn(
+                                "flex items-center gap-3 px-3 py-2 text-[12px] font-medium rounded-lg transition-all group",
+                                isSubActive
+                                  ? "text-white bg-zinc-900/50"
+                                  : "text-zinc-500 hover:text-zinc-200 hover:bg-zinc-900/30",
+                              )}
+                            >
+                              <subItem.icon
+                                className={cn(
+                                  "w-3.5 h-3.5 transition-colors",
+                                  isSubActive
+                                    ? "text-brand-red"
+                                    : "text-zinc-600 group-hover:text-zinc-400",
+                                )}
+                              />
+                              {subItem.name}
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+
               return (
                 <Link
                   key={item.name}
