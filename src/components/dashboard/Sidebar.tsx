@@ -28,7 +28,7 @@ import { logoutUser, userProfile } from "@/services/auth/auth.service";
 import { get_all_apps } from "@/services/apps/apps.service";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -102,9 +102,18 @@ const getBrandStyle = (name: string) => {
 export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const [expandedMenus, setExpandedMenus] = useState<string[]>([
-    "User management",
-  ]);
+  const [expandedMenus, setExpandedMenus] = useState<string[]>([]);
+
+  useEffect(() => {
+    const currentMenu = navItems.find(
+      (item) =>
+        item.subItems &&
+        item.subItems.some((sub) => pathname.startsWith(sub.href)),
+    );
+    if (currentMenu && !expandedMenus.includes(currentMenu.name)) {
+      setExpandedMenus((prev) => [...prev, currentMenu.name]);
+    }
+  }, [pathname]);
 
   const toggleMenu = (name: string) => {
     setExpandedMenus((prev) =>
@@ -153,7 +162,7 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
           isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0",
         )}
       >
-        <div className="flex items-center justify-between h-16 px-6 mb-4">
+        <div className="flex items-center justify-between h-16 px-4 mb-4">
           <div className="flex items-center gap-2">
             <div className="size-8 bg-black rounded-full flex items-center justify-center overflow-hidden shadow-sm">
               <img
@@ -162,8 +171,8 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
                 className="size-full object-cover"
               />
             </div>
-            <span className="text-lg font-bold text-white tracking-tight">
-              Fitbinary
+            <span className="text-md font-bold text-white tracking-tight">
+              Fitbinary Accounts
             </span>
           </div>
           <button

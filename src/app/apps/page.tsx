@@ -41,8 +41,8 @@ export default function AppsPage() {
 
   return (
     <DashboardLayout>
-      <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-zinc-100 pb-8">
+      <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-zinc-100 pb-4">
           <div>
             <h1 className="text-4xl font-black text-zinc-900 tracking-tighter mb-3">
               App Management
@@ -53,7 +53,7 @@ export default function AppsPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {isLoading ? (
             <div className="col-span-full flex flex-col items-center justify-center py-32 space-y-4">
               <div className="size-12 border-4 border-zinc-100 border-t-brand-red rounded-full animate-spin"></div>
@@ -67,7 +67,7 @@ export default function AppsPage() {
               return (
                 <div
                   key={app._id}
-                  className="group relative bg-white border border-zinc-100 rounded-[2.5rem] p-8 transition-all duration-300 hover:shadow-xl hover:border-zinc-200 flex flex-col overflow-hidden"
+                  className="group relative bg-white border border-zinc-100 rounded-md p-8 transition-all duration-300 hover:shadow-xl hover:border-zinc-200 flex flex-col overflow-hidden"
                 >
                   <div className="flex justify-between items-start mb-8 relative z-10">
                     <div
@@ -147,7 +147,7 @@ export default function AppsPage() {
           )}
 
           <div
-            className="group relative bg-zinc-50/50 border-2 border-dashed border-zinc-200 rounded-[2.5rem] p-8 flex flex-col items-center justify-center text-center transition-all duration-500 hover:bg-zinc-50 hover:border-zinc-300 hover:shadow-xl hover:shadow-zinc-200/20 cursor-pointer min-h-95"
+            className="group relative bg-zinc-50/50 border-2 border-dashed border-zinc-200 rounded-md p-8 flex flex-col items-center justify-center text-center transition-all duration-500 hover:bg-zinc-50 hover:border-zinc-300 hover:shadow-xl hover:shadow-zinc-200/20 cursor-pointer min-h-95"
             onClick={() => window.open("https://fitbinary.com", "_blank")}
           >
             <div className="size-20 bg-white rounded-3xl flex items-center justify-center mb-8 shadow-xl shadow-zinc-200/50 text-zinc-300 group-hover:text-brand-red group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 border border-zinc-100">
