@@ -1,9 +1,6 @@
 const BASE_URL =
   process.env.NEXT_PUBLIC_BASE_URL || "https://admin.fitbinary.com/api/v1";
 
-// const BASE_URL =
-//   process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:4200/api/v1";
-
 export const AUTH_URLS = {
   login: `${BASE_URL}/auth/login`,
   logout: `${BASE_URL}/auth/logout`,
@@ -17,4 +14,9 @@ export const TENANT_AUTH_URLS = {
   logout: `${BASE_URL}/tenants/logout`,
   refresh: `${BASE_URL}/tenants/refresh`,
   profile: `${BASE_URL}/tenants/profile`,
+};
+
+export const ACCOUNTS_APPS_URLS = {
+  all_apps: `${BASE_URL}/applications/all/list`,
+  all_users_apps: `${BASE_URL}/apps/users/all`,
 };
