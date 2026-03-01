@@ -3,13 +3,7 @@
 import { DashboardLayout } from "@/components/dashboard/Layout";
 import { get_all_apps } from "@/services/apps/apps.service";
 import { useQuery } from "@tanstack/react-query";
-import {
-  LayoutDashboard,
-  ExternalLink,
-  Settings2,
-  Plus,
-  Puzzle,
-} from "lucide-react";
+import { LayoutDashboard, ExternalLink, Settings2, Puzzle } from "lucide-react";
 
 export default function AppsPage() {
   const { data, isLoading } = useQuery({
@@ -32,9 +26,6 @@ export default function AppsPage() {
               ecosystem.
             </p>
           </div>
-          <button className="h-11 px-6 bg-brand-red text-white text-xs font-bold uppercase tracking-widest rounded-xl hover:bg-red-700 transition-all shadow-lg shadow-brand-red/20 flex items-center gap-2">
-            <Plus className="size-4" /> Register New App
-          </button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

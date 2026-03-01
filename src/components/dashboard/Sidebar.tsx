@@ -9,8 +9,15 @@ import {
   CreditCard,
   LayoutDashboard,
   X,
+  LogOut,
+  ExternalLink,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useQuery } from "@tanstack/react-query";
+import { logoutUser, userProfile } from "@/services/auth/auth.service";
+import { get_all_apps } from "@/services/apps/apps.service";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -27,6 +34,31 @@ const navItems = [
 
 export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
   const pathname = usePathname();
+  const router = useRouter();
+
+  const { data: profileData } = useQuery({
+    queryKey: ["user-profile"],
+    queryFn: () => userProfile(),
+  });
+
+  const { data: appsData } = useQuery({
+    queryKey: ["apps-list"],
+    queryFn: () => get_all_apps(),
+  });
+
+  const applications = appsData?.applications || [];
+
+  const handleLogout = async () => {
+    try {
+      await logoutUser();
+      toast.success("Logged out successfully");
+      router.push("/signin");
+    } catch (error) {
+      toast.error("Failed to logout");
+    }
+  };
+
+  const tenant = profileData?.tenant;
 
   return (
     <>
@@ -93,19 +125,84 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
           })}
         </nav>
 
-        <div className="p-4 mt-auto border-t border-zinc-800/50">
-          <div className="bg-zinc-900/50 rounded-xl p-4 border border-zinc-800/50 group cursor-pointer hover:border-brand-red/20 transition-all">
-            <p className="text-xs text-zinc-500 mb-1 group-hover:text-zinc-400 transition-colors">
-              Credits Available
-            </p>
-            <div className="flex items-end gap-2">
-              <span className="text-xl font-bold text-white tabular-nums">
-                $1,240.00
-              </span>
-              <span className="text-[10px] text-zinc-600 mb-1 font-semibold uppercase tracking-wider">
-                USD
-              </span>
+        {applications.length > 0 && (
+          <div className="px-4 py-6 space-y-4">
+            <h4 className="px-3 text-[10px] font-bold text-zinc-500 uppercase tracking-widest">
+              My Apps
+            </h4>
+            <div className="space-y-1">
+              {applications.map((app) => (
+                <button
+                  key={app._id}
+                  onClick={() => {
+                    if (app.baseRoute) {
+                      window.open(
+                        app.baseRoute,
+                        "_blank",
+                        "noopener,noreferrer",
+                      );
+                    }
+                  }}
+                  className="w-full flex items-center gap-3 px-3 py-2 text-[13px] font-medium text-zinc-400 hover:bg-zinc-900/50 hover:text-zinc-200 rounded-md transition-all group"
+                >
+                  <div className="size-5 rounded bg-zinc-800 flex items-center justify-center overflow-hidden border border-zinc-700/50 group-hover:border-zinc-600 transition-colors">
+                    {app.icon && app.icon.startsWith("http") ? (
+                      <img
+                        src={app.icon}
+                        alt={app.name}
+                        className="size-full object-cover"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src =
+                            "https://ui-avatars.com/api/?name=" +
+                            encodeURIComponent(app.name) +
+                            "&background=random";
+                        }}
+                      />
+                    ) : (
+                      <LayoutDashboard className="size-3 text-zinc-500" />
+                    )}
+                  </div>
+                  <span className="truncate flex-1 text-left capitalize">
+                    {app.name}
+                  </span>
+                  <ExternalLink className="size-3 text-zinc-600 group-hover:text-zinc-400 opacity-0 group-hover:opacity-100 transition-all" />
+                </button>
+              ))}
             </div>
+          </div>
+        )}
+
+        <div className="p-4 mt-auto border-t border-zinc-800/50">
+          <div className="flex items-center gap-3 p-2 rounded-xl bg-zinc-900/40 border border-zinc-800/50">
+            <div className="size-10 rounded-lg bg-zinc-800 flex items-center justify-center overflow-hidden border border-zinc-700/50">
+              {tenant?.avatar ? (
+                <img
+                  src={tenant.avatar}
+                  alt={tenant.first_name}
+                  className="size-full object-cover"
+                />
+              ) : (
+                <div className="text-zinc-400 font-bold uppercase">
+                  {tenant?.first_name?.charAt(0)}
+                  {tenant?.last_name?.charAt(0)}
+                </div>
+              )}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-[13px] font-bold text-zinc-100 truncate">
+                {tenant?.first_name} {tenant?.last_name}
+              </p>
+              <p className="text-[11px] text-zinc-500 truncate lowercase">
+                {tenant?.email}
+              </p>
+            </div>
+            <button
+              onClick={handleLogout}
+              className="p-2 hover:bg-zinc-800 rounded-lg text-zinc-500 hover:text-brand-red transition-all"
+              title="Sign out"
+            >
+              <LogOut className="size-4" />
+            </button>
           </div>
         </div>
       </aside>

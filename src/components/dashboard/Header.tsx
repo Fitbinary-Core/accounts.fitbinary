@@ -2,8 +2,9 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { userProfile } from "@/services/auth/auth.service";
-import { Search, HelpCircle, Grid, Bell, Menu } from "lucide-react";
+import { Search, HelpCircle, Bell, Menu } from "lucide-react";
 import { ProfileDropdown } from "./ProfileDropdown";
+import { AppLauncher } from "./AppLauncher";
 
 interface HeaderProps {
   toggleSidebar: () => void;
@@ -48,9 +49,7 @@ export function Header({ toggleSidebar }: HeaderProps) {
           <button className="p-2 hover:bg-zinc-100 rounded-lg text-zinc-600 transition-colors">
             <HelpCircle className="w-5 h-5" />
           </button>
-          <button className="p-2 hover:bg-zinc-100 rounded-lg text-zinc-600 transition-colors">
-            <Grid className="w-5 h-5" />
-          </button>
+          <AppLauncher />
         </div>
         <ProfileDropdown tenant={data?.tenant} />
       </div>
