@@ -39,22 +39,34 @@ export default function Home() {
                 </div>
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-zinc-900 tracking-tight leading-[1.1] mb-4">
-                Welcome back,<br />
-                <span className="text-zinc-400">{tenant?.first_name || "User"}</span>
+                Welcome back,
+                <br />
+                <span className="text-zinc-400">
+                  {tenant?.first_name || "User"}
+                </span>
               </h1>
               <p className="text-lg text-zinc-500 max-w-xl leading-relaxed">
-                Centralized management for your organization, users, and security settings across the entire Fitbinary ecosystem.
+                Centralized management for your organization, users, and
+                security settings across the entire Fitbinary ecosystem.
               </p>
             </div>
 
-            <div className="flex flex-col items-end hidden md:flex">
+            <div className="flex-col items-end hidden md:flex">
               <div className="text-right mb-2">
-                <p className="text-xs font-bold text-zinc-400 uppercase tracking-widest mb-1">Authenticated as</p>
-                <p className="text-sm font-semibold text-zinc-900">{tenant?.email}</p>
+                <p className="text-xs font-bold text-zinc-400 uppercase tracking-widest mb-1">
+                  Authenticated as
+                </p>
+                <p className="text-sm font-semibold text-zinc-900">
+                  {tenant?.email}
+                </p>
               </div>
               <div className="size-12 rounded-2xl bg-white border border-zinc-200 shadow-sm flex items-center justify-center overflow-hidden">
                 {tenant?.avatar ? (
-                  <img src={tenant.avatar} alt="" className="size-full object-cover" />
+                  <img
+                    src={tenant.avatar}
+                    alt=""
+                    className="size-full object-cover"
+                  />
                 ) : (
                   <User className="size-6 text-zinc-400" />
                 )}
@@ -70,7 +82,9 @@ export default function Home() {
               <Zap className="size-5" />
             </div>
             <h3 className="font-bold mb-1">Quick Setup</h3>
-            <p className="text-zinc-500 text-xs mb-4">Configure your workspace defaults in seconds.</p>
+            <p className="text-zinc-500 text-xs mb-4">
+              Configure your workspace defaults in seconds.
+            </p>
             <div className="flex items-center gap-1 text-xs font-bold text-brand-red uppercase tracking-wider">
               Start Guide <ArrowRight className="size-3" />
             </div>
@@ -80,7 +94,9 @@ export default function Home() {
               <ShieldCheck className="size-5 text-zinc-600" />
             </div>
             <h3 className="font-bold mb-1">Security Score</h3>
-            <p className="text-zinc-500 text-xs mb-4">Your account is 85% secure. Complete 2 steps.</p>
+            <p className="text-zinc-500 text-xs mb-4">
+              Your account is 85% secure. Complete 2 steps.
+            </p>
             <div className="flex items-center gap-1 text-xs font-bold text-zinc-900 uppercase tracking-wider group-hover:text-brand-red transition-colors">
               View Actions <ArrowRight className="size-3" />
             </div>
@@ -90,7 +106,9 @@ export default function Home() {
               <Settings className="size-5 text-zinc-600" />
             </div>
             <h3 className="font-bold mb-1">System Status</h3>
-            <p className="text-zinc-500 text-xs mb-4">All Fitbinary services are operational.</p>
+            <p className="text-zinc-500 text-xs mb-4">
+              All Fitbinary services are operational.
+            </p>
             <div className="flex items-center gap-1 text-xs font-bold text-zinc-900 uppercase tracking-wider group-hover:text-brand-red transition-colors">
               Network Map <ArrowRight className="size-3" />
             </div>
@@ -130,9 +148,13 @@ export default function Home() {
           <div className="absolute top-0 right-0 w-64 h-full bg-zinc-50 -skew-x-12 translate-x-32 group-hover:bg-brand-red/5 transition-colors duration-500" />
           <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
             <div className="max-w-xl">
-              <h3 className="text-xl font-bold text-zinc-900 mb-2">Need a custom enterprise solution?</h3>
+              <h3 className="text-xl font-bold text-zinc-900 mb-2">
+                Need a custom enterprise solution?
+              </h3>
               <p className="text-zinc-500 text-sm">
-                Fitbinary offers tailored infrastructure and support for large-scale organizations. Contact our solutions team for a dedicated rollout.
+                Fitbinary offers tailored infrastructure and support for
+                large-scale organizations. Contact our solutions team for a
+                dedicated rollout.
               </p>
             </div>
             <button className="h-12 px-8 bg-zinc-900 text-white text-xs font-bold uppercase tracking-widest rounded-xl hover:bg-zinc-800 transition-all shadow-lg shadow-zinc-200">

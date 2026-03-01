@@ -9,11 +9,11 @@ export const AUTH_URLS = {
 };
 
 export const TENANT_AUTH_URLS = {
-  tenant_signup: `${BASE_URL}/tenants/signup`,
-  login: `${BASE_URL}/tenants/login`,
-  logout: `${BASE_URL}/tenants/logout`,
-  refresh: `${BASE_URL}/tenants/refresh`,
-  profile: `${BASE_URL}/tenants/profile`,
+  tenant_signup: `${BASE_URL}/auth/tenants/signup`,
+  login: `${BASE_URL}/auth/tenants/login`,
+  logout: `${BASE_URL}/auth/tenants/logout`,
+  refresh: `${BASE_URL}/auth/tenants/refresh`,
+  profile: `${BASE_URL}/auth/tenants/profile`,
 };
 
 export const ACCOUNTS_APPS_URLS = {
