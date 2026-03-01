@@ -32,7 +32,6 @@ const navItems = [
   { name: "App management", icon: LayoutDashboard, href: "/apps" },
 ];
 
-// Specific brand colors based on app name
 const getBrandStyle = (name: string) => {
   const lowerName = name.toLowerCase();
   if (lowerName.includes("fitstock")) {
@@ -91,8 +90,12 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
       >
         <div className="flex items-center justify-between h-16 px-6 mb-4">
           <div className="flex items-center gap-2">
-            <div className="size-8 bg-brand-red rounded-lg flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-brand-red/40">
-              F
+            <div className="size-8 bg-black rounded-full flex items-center justify-center overflow-hidden shadow-sm">
+              <img
+                src="/Icon.png"
+                alt="Fitbinary"
+                className="size-full object-cover"
+              />
             </div>
             <span className="text-lg font-bold text-white tracking-tight">
               Fitbinary
@@ -165,25 +168,15 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
                     >
                       <div
                         className={cn(
-                          "size-6 rounded-lg flex items-center justify-center overflow-hidden bg-liner-to-br transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg",
+                          "size-6 rounded-full flex items-center justify-center overflow-hidden transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg",
                           brandStyle,
                         )}
                       >
-                        {app.icon && app.icon.startsWith("http") ? (
-                          <img
-                            src={app.icon}
-                            alt={app.name}
-                            className="size-full object-cover"
-                            onError={(e) => {
-                              (e.target as HTMLImageElement).style.display =
-                                "none";
-                            }}
-                          />
-                        ) : (
-                          <span className="text-white text-[10px] font-bold uppercase">
-                            {app.name.charAt(0)}
-                          </span>
-                        )}
+                        <img
+                          src="/Icon.png"
+                          alt={app.name}
+                          className="size-full object-cover"
+                        />
                       </div>
                       <span className="truncate flex-1 text-left capitalize">
                         {app.name}

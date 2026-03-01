@@ -46,7 +46,7 @@ export function AppLauncher() {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          "p-2 rounded-xl transition-all duration-300",
+          "p-2 rounded-xl cursor-pointer transition-all duration-300",
           isOpen
             ? "bg-zinc-100 text-brand-red scale-95"
             : "hover:bg-zinc-100 text-zinc-600 hover:scale-105",
@@ -57,7 +57,7 @@ export function AppLauncher() {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-4 w-96 bg-white border border-zinc-100 rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] z-50 animate-in fade-in zoom-in-95 slide-in-from-top-2 duration-300 overflow-hidden">
+        <div className="absolute right-0 mt-3 w-96 bg-white border border-zinc-100 rounded-sm shadow-[0_20px_50px_rgba(0,0,0,0.1)] z-50 animate-in fade-in zoom-in-95 slide-in-from-top-2 duration-300 overflow-hidden">
           <div className="p-8 pb-4">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-2">
@@ -91,25 +91,15 @@ export function AppLauncher() {
                     >
                       <div
                         className={cn(
-                          "size-16 rounded-2xl flex items-center justify-center overflow-hidden transition-all duration-300 group-hover:scale-110 group-active:scale-95 border-2 shadow-sm",
+                          "size-12 rounded-full flex items-center justify-center overflow-hidden transition-all duration-300 group-hover:scale-110 group-active:scale-95 border-2 shadow-sm",
                           brandStyle,
                         )}
                       >
-                        {app.icon && app.icon.startsWith("http") ? (
-                          <img
-                            src={app.icon}
-                            alt={app.name}
-                            className="size-full object-cover transition-transform duration-500 group-hover:scale-110"
-                            onError={(e) => {
-                              (e.target as HTMLImageElement).style.display =
-                                "none";
-                            }}
-                          />
-                        ) : (
-                          <div className="font-black text-2xl uppercase">
-                            {app.name.charAt(0)}
-                          </div>
-                        )}
+                        <img
+                          src="/Icon.png"
+                          alt={app.name}
+                          className="size-full object-cover"
+                        />
                       </div>
                       <span className="text-[11px] font-bold text-zinc-800 tracking-tight group-hover:text-brand-red transition-colors capitalize px-1 truncate w-full">
                         {app.name}

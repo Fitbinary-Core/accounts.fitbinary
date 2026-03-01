@@ -71,11 +71,11 @@ export default function AppsPage() {
                 >
                   <div className="flex justify-between items-start mb-8 relative z-10">
                     <div
-                      className={`size-16 rounded-2xl flex items-center justify-center text-white shadow-sm ${brand.bg} border-2 border-white/10 overflow-hidden transition-all duration-300 group-hover:scale-110`}
+                      className={`size-12 rounded-full flex items-center justify-center text-white shadow-sm ${brand.bg} border-2 border-white/10 overflow-hidden transition-all duration-300 group-hover:scale-110`}
                     >
                       {app.icon && app.icon.startsWith("http") ? (
                         <img
-                          src={app.icon}
+                          src="/Icon.png"
                           alt={app.name}
                           className="size-full object-cover transition-transform duration-700 group-hover:scale-110"
                         />
@@ -115,7 +115,7 @@ export default function AppsPage() {
                           className="size-8 rounded-2xl border-2 border-white bg-zinc-100 overflow-hidden shadow-sm"
                         >
                           <img
-                            src={`https://i.pravatar.cc/150?u=${app._id}${u}`}
+                            src="/Icon.png"
                             className="size-full object-cover grayscale opacity-50 text-[10px] flex items-center justify-center"
                             alt="User"
                           />
