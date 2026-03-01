@@ -5,43 +5,55 @@ import { LucideIcon, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface AccountCardProps {
-    title: string;
-    description: string;
-    icon: LucideIcon;
-    image?: string;
-    linkText: string;
-    className?: string;
+  title: string;
+  description: string;
+  icon: LucideIcon;
+  image?: string;
+  linkText: string;
+  className?: string;
 }
 
 export function AccountCard({
-    title,
-    description,
-    icon: Icon,
-    image,
-    linkText,
-    className
+  title,
+  description,
+  icon: Icon,
+  linkText,
+  className,
 }: AccountCardProps) {
-    return (
-        <div className={cn(
-            "bg-white border border-gray-200 rounded-3xl p-6 md:p-8 flex flex-col h-full hover:shadow-md transition-shadow cursor-pointer group",
-            className
-        )}>
-            <div className="flex justify-between items-start mb-6">
-                <div className="flex-1">
-                    <h2 className="text-xl md:text-2xl font-semibold text-gray-900 mb-2">{title}</h2>
-                    <p className="text-gray-600 text-sm md:text-base pr-4 leading-relaxed">
-                        {description}
-                    </p>
-                </div>
-                <div className="w-12 h-12 flex items-center justify-center rounded-full bg-red-50 text-brand-red">
-                    <Icon className="w-6 h-6" />
-                </div>
-            </div>
+  return (
+    <div
+      className={cn(
+        "group bg-white border border-zinc-200 rounded-2xl p-8 flex flex-col h-full hover:shadow-xl hover:shadow-zinc-200/50 hover:border-zinc-300 transition-all cursor-pointer relative overflow-hidden",
+        className,
+      )}
+    >
+      <div className="absolute top-0 right-0 w-32 h-32 bg-zinc-50 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-brand-red/5 transition-colors duration-500" />
 
-            <div className="mt-auto pt-6 border-t border-gray-100 flex items-center justify-between group-hover:bg-gray-50 -mx-6 -mb-8 px-8 py-4 rounded-b-3xl transition-colors">
-                <span className="text-sm font-medium text-brand-red">{linkText}</span>
-                <ChevronRight className="w-4 h-4 text-brand-red" />
-            </div>
+      <div className="relative z-10 flex flex-col h-full">
+        <div className="flex justify-between items-start mb-8">
+          <div className="size-12 flex items-center justify-center rounded-xl bg-zinc-50 border border-zinc-100 text-zinc-600 group-hover:bg-brand-red group-hover:text-white group-hover:border-brand-red transition-all duration-300 shadow-sm">
+            <Icon className="w-6 h-6" />
+          </div>
+          <div className="size-8 rounded-full bg-zinc-50 flex items-center justify-center opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all duration-300">
+            <ChevronRight className="w-4 h-4 text-zinc-400" />
+          </div>
         </div>
-    );
+
+        <div className="mb-8">
+          <h2 className="text-xl font-bold text-zinc-900 mb-3 tracking-tight group-hover:text-brand-red transition-colors">
+            {title}
+          </h2>
+          <p className="text-zinc-500 text-sm leading-relaxed pr-2">
+            {description}
+          </p>
+        </div>
+
+        <div className="mt-auto flex items-center gap-2">
+          <span className="text-xs font-bold text-zinc-400 group-hover:text-brand-red uppercase tracking-wider transition-colors">
+            {linkText}
+          </span>
+        </div>
+      </div>
+    </div>
+  );
 }

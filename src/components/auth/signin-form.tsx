@@ -8,14 +8,13 @@ import * as z from "zod";
 import {
   Mail,
   Lock,
-  ChevronDown,
   ChevronRight,
   Eye,
   EyeOff,
+  CheckCircle2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
 import { loginUser } from "@/services/auth/auth.service";
 import { useState } from "react";
 
@@ -48,77 +47,118 @@ export default function SigninForm() {
   };
 
   return (
-    <div className="w-full max-w-4xl flex flex-col items-center">
-      <Card className="w-full border-0 sm:border shadow-none sm:shadow-lg bg-white overflow-hidden p-6 sm:p-10">
-        <div className="flex flex-col md:grid md:grid-cols-2 gap-10">
-          {/* Left Column: Branding Content */}
-          <div className="flex flex-col items-center md:items-start text-center md:text-left space-y-6">
-            <div className="size-12 bg-brand-red rounded-full flex items-center justify-center text-white font-bold text-xl mb-4">
-              F
-            </div>
-            <h1 className="text-4xl font-semibold text-brand-black tracking-tight">
-              Sign in
-            </h1>
-            <p className="text-xl text-brand-black">
-              Use your Fitbinary Account
-            </p>
+    <div className="flex min-h-screen w-full bg-white">
+      {/* Left Panel: Branding & Value Proposition (Hidden on small screens) */}
+      <div className="hidden lg:flex lg:w-1/2 bg-zinc-950 flex-col justify-between p-12 text-white relative overflow-hidden">
+        {/* Abstract Background Accent */}
+        <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
+          <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-brand-red blur-[120px]" />
+          <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-brand-red blur-[120px]" />
+        </div>
 
-            <div className="hidden md:flex flex-col space-y-4 mt-8">
-              <p className="text-sm text-gray-600 leading-relaxed">
-                Not your computer? Use Guest mode to sign in privately.{" "}
-                <a
-                  href="#"
-                  className="text-brand-red font-semibold hover:underline"
-                >
-                  Learn more about using Guest mode
-                </a>
-              </p>
+        <div className="relative z-10">
+          <div className="size-12 bg-brand-red rounded-xl flex items-center justify-center text-white font-bold text-2xl mb-12 shadow-lg shadow-brand-red/20">
+            F
+          </div>
+          <h1 className="text-4xl lg:text-5xl font-bold tracking-tight mb-6 leading-tight">
+            The control plane for your digital ecosystem.
+          </h1>
+          <p className="text-lg text-zinc-400 max-w-lg">
+            Sign in to your Fitbinary account to access your personalized workspace, manage organization settings, and monitor your infrastructure.
+          </p>
+        </div>
+
+        <div className="relative z-10 space-y-6">
+          <div className="flex items-start gap-4">
+            <CheckCircle2 className="size-6 text-brand-red shrink-0" />
+            <div>
+              <h3 className="font-semibold text-zinc-200">Secure Access</h3>
+              <p className="text-sm text-zinc-500">Industry-standard encryption and multi-factor authentication.</p>
             </div>
           </div>
+          <div className="flex items-start gap-4">
+            <CheckCircle2 className="size-6 text-brand-red shrink-0" />
+            <div>
+              <h3 className="font-semibold text-zinc-200">Role-Based Controls</h3>
+              <p className="text-sm text-zinc-500">Access exactly what you need based on your organizational role.</p>
+            </div>
+          </div>
+          <div className="flex items-start gap-4">
+            <CheckCircle2 className="size-6 text-brand-red shrink-0" />
+            <div>
+              <h3 className="font-semibold text-zinc-200">Real-time Insights</h3>
+              <p className="text-sm text-zinc-500">Monitor your account activity and credit usage in real-time.</p>
+            </div>
+          </div>
+        </div>
 
-          {/* Right Column: Form */}
+        <div className="relative z-10 flex items-center justify-between text-sm text-zinc-500 mt-12 border-t border-zinc-800 pt-8">
+          <p>© {new Date().getFullYear()} Fitbinary Inc.</p>
+          <div className="flex gap-4">
+            <a href="#" className="hover:text-zinc-300 transition-colors">Privacy</a>
+            <a href="#" className="hover:text-zinc-300 transition-colors">Terms</a>
+          </div>
+        </div>
+      </div>
+
+      {/* Right Panel: Form */}
+      <div className="w-full lg:w-1/2 flex flex-col p-6 sm:p-12 xl:p-24 overflow-y-auto">
+        <div className="w-full max-w-md mx-auto flex flex-col my-auto">
+          {/* Mobile Logo */}
+          <div className="lg:hidden size-10 bg-brand-red rounded-xl flex items-center justify-center text-white font-bold text-xl mb-8">
+            F
+          </div>
+
+          <div className="mb-10">
+            <h2 className="text-3xl font-bold text-zinc-900 tracking-tight mb-2">
+              Welcome back
+            </h2>
+            <p className="text-zinc-500">
+              Please enter your credentials to access your account.
+            </p>
+          </div>
+
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            <CardContent className="space-y-6 p-0">
+            <div className="space-y-5">
               <div className="space-y-2">
+                <label htmlFor="email" className="text-sm font-medium text-zinc-700">Work Email</label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-brand-red" />
+                  <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-zinc-400" />
                   <Input
                     id="email"
                     type="email"
-                    placeholder="Email or phone"
-                    className="py-6 pl-10 border border-brand-red/80 text-brand-red focus-visible:ring-brand-red"
+                    placeholder="name@company.com"
+                    className="h-12 pl-10 bg-zinc-50/50 text-gray-800 border-zinc-200 focus-visible:ring-brand-red/20 focus-visible:border-brand-red transition-all"
                     {...register("email")}
                   />
                 </div>
                 {errors.email && (
-                  <p className="text-xs text-brand-red font-medium pl-1">
+                  <p className="text-xs text-red-500 font-medium">
                     {errors.email.message}
                   </p>
                 )}
-                <div className="pl-1">
-                  <a
-                    href="#"
-                    className="text-sm text-brand-red font-semibold hover:underline"
-                  >
-                    Forgot email?
-                  </a>
-                </div>
               </div>
 
               <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <label htmlFor="password" className="text-sm font-medium text-zinc-700">Password</label>
+                  <a href="#" className="text-xs font-semibold text-brand-red hover:underline">
+                    Forgot password?
+                  </a>
+                </div>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-brand-red" />
+                  <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-zinc-400" />
                   <Input
                     id="password"
                     type={showPassword ? "text" : "password"}
-                    placeholder="Enter your password"
-                    className="py-6 pl-10 pr-10 border border-brand-red/80 text-brand-red focus-visible:ring-brand-red"
+                    placeholder="••••••••"
+                    className="h-12 pl-10 pr-10 text-gray-800 bg-zinc-50/50 border-zinc-200 focus-visible:ring-brand-red/20 focus-visible:border-brand-red transition-all"
                     {...register("password")}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-brand-red hover:text-red-700 cursor-pointer"
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-700 transition-colors"
                   >
                     {showPassword ? (
                       <EyeOff className="size-4" />
@@ -128,60 +168,39 @@ export default function SigninForm() {
                   </button>
                 </div>
                 {errors.password && (
-                  <p className="text-xs text-brand-red font-medium pl-1">
+                  <p className="text-xs text-red-500 font-medium">
                     {errors.password.message}
                   </p>
                 )}
               </div>
+            </div>
 
-              <div className="md:hidden">
-                <p className="text-sm text-muted-foreground">
-                  Not your computer? Use Guest mode to sign in privately.{" "}
-                  <a
-                    href="#"
-                    className="text-brand-red font-semibold hover:underline"
-                  >
-                    Learn more
-                  </a>
-                </p>
-              </div>
+            <div className="space-y-4 pt-4">
+              <Button
+                type="submit"
+                className="w-full bg-zinc-900 hover:bg-zinc-800 text-white font-semibold h-12 shadow-sm transition-all"
+              >
+                Sign in
+                <ChevronRight className="ml-1 size-4" />
+              </Button>
 
-              <div className="flex items-center justify-between pt-6">
-                <a
-                  href="/signup"
-                  className="text-sm text-brand-red font-semibold hover:underline"
-                >
-                  Create account
+              <div className="text-center text-sm text-zinc-500">
+                Don't have an account?{" "}
+                <a href="/signup" className="font-semibold text-brand-red hover:underline">
+                  Create an account
                 </a>
-                <Button
-                  type="submit"
-                  size="lg"
-                  className="bg-brand-red cursor-pointer hover:bg-red-700 text-white font-semibold px-8 h-12"
-                >
-                  Next
-                  <ChevronRight />
-                </Button>
               </div>
-            </CardContent>
+            </div>
           </form>
-        </div>
-      </Card>
 
-      {/* Footer */}
-      <div className="w-full mt-6 px-4 flex flex-col sm:flex-row justify-between items-center text-sm text-muted-foreground gap-4">
-        <div className="flex items-center gap-1 px-3 py-1 rounded-md cursor-pointer transition-colors text-brand-black font-medium">
-          English (United States) <ChevronDown className="size-4" />
-        </div>
-        <div className="flex gap-4 font-medium text-brand-black">
-          <a href="#" className="hover:underline">
-            Help
-          </a>
-          <a href="#" className="hover:underline">
-            Privacy
-          </a>
-          <a href="#" className="hover:underline">
-            Terms
-          </a>
+          {/* Footer for mobile only */}
+          <div className="lg:hidden flex items-center justify-center gap-4 text-xs text-zinc-400 mt-12 pb-8">
+            <a href="#" className="hover:text-zinc-600 transition-colors">Privacy</a>
+            <span>&bull;</span>
+            <a href="#" className="hover:text-zinc-600 transition-colors">Terms</a>
+            <span>&bull;</span>
+            <a href="#" className="hover:text-zinc-600 transition-colors">Help</a>
+          </div>
         </div>
       </div>
     </div>

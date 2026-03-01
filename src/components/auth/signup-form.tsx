@@ -15,10 +15,10 @@ import {
   ChevronDown,
   Eye,
   EyeOff,
+  CheckCircle2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
 import { signUpUser } from "@/services/auth/auth.service";
 import toast from "react-hot-toast";
 
@@ -99,263 +99,309 @@ export default function SignupForm({
   };
 
   return (
-    <div className="w-full max-w-4xl flex flex-col items-center">
-      <Card className="w-full border-0 sm:border shadow-none sm:shadow-lg bg-white overflow-hidden p-6 sm:p-10">
-        <div className="flex flex-col md:grid md:grid-cols-2 gap-10">
-          {/* Left Column: Branding Content */}
-          <div className="flex flex-col items-center md:items-start text-center md:text-left space-y-6">
-            <div className="size-12 bg-brand-red rounded-full flex items-center justify-center text-white font-bold text-xl mb-4">
-              F
-            </div>
-            <h1 className="text-4xl font-semibold text-brand-black tracking-tight">
-              {step === 1 && "Personal details"}
-              {step === 2 && "Contact details"}
-              {step === 3 && "Security and password"}
-            </h1>
-            <p className="text-xl text-brand-black">
-              {step === 1 && "Tell us your basic info"}
-              {step === 2 && "How can we reach you?"}
-              {step === 3 && "Keep your account secure"}
-            </p>
+    <div className="flex min-h-screen w-full bg-white">
+      {/* Left Panel: Branding & Value Proposition (Hidden on small screens) */}
+      <div className="hidden lg:flex lg:w-1/2 bg-zinc-950 flex-col justify-between p-12 text-white relative overflow-hidden">
+        {/* Abstract Background Accent */}
+        <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
+          <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-brand-red blur-[120px]" />
+          <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-brand-red blur-[120px]" />
+        </div>
 
-            <div className="w-full max-w-xs mt-8">
-              <div className="h-1.5 w-full bg-gray-200 rounded-full">
-                <div
-                  className="h-full bg-brand-red rounded-full transition-all duration-300 ease-in-out"
-                  style={{ width: `${(step / totalSteps) * 100}%` }}
-                />
-              </div>
-              <p className="text-sm text-gray-600 mt-2 font-medium">
-                Step {step} of {totalSteps}
-              </p>
+        <div className="relative z-10">
+          <div className="size-12 bg-brand-red rounded-xl flex items-center justify-center text-white font-bold text-2xl mb-12 shadow-lg shadow-brand-red/20">
+            F
+          </div>
+          <h1 className="text-4xl lg:text-5xl font-bold tracking-tight mb-6 leading-tight">
+            Manage your entire organization from one central hub.
+          </h1>
+          <p className="text-lg text-zinc-400 max-w-lg">
+            Create your Fitbinary account to provision users, manage billing, and oversee multiple environments with enterprise-grade controls.
+          </p>
+        </div>
+
+        <div className="relative z-10 space-y-6">
+          <div className="flex items-start gap-4">
+            <CheckCircle2 className="size-6 text-brand-red shrink-0" />
+            <div>
+              <h3 className="font-semibold text-zinc-200">Centralized Identity</h3>
+              <p className="text-sm text-zinc-500">Unified access management across all your workspaces.</p>
             </div>
           </div>
+          <div className="flex items-start gap-4">
+            <CheckCircle2 className="size-6 text-brand-red shrink-0" />
+            <div>
+              <h3 className="font-semibold text-zinc-200">Granular Permissions</h3>
+              <p className="text-sm text-zinc-500">Assign precise roles and access levels to every team member.</p>
+            </div>
+          </div>
+          <div className="flex items-start gap-4">
+            <CheckCircle2 className="size-6 text-brand-red shrink-0" />
+            <div>
+              <h3 className="font-semibold text-zinc-200">Unified Billing</h3>
+              <p className="text-sm text-zinc-500">Manage invoices, credits, and payment methods in one place.</p>
+            </div>
+          </div>
+        </div>
 
-          {/* Right Column: Form */}
+        <div className="relative z-10 flex items-center justify-between text-sm text-zinc-500 mt-12 border-t border-zinc-800 pt-8">
+          <p>© {new Date().getFullYear()} Fitbinary Inc.</p>
+          <div className="flex gap-4">
+            <a href="#" className="hover:text-zinc-300 transition-colors">Privacy</a>
+            <a href="#" className="hover:text-zinc-300 transition-colors">Terms</a>
+          </div>
+        </div>
+      </div>
+
+      {/* Right Panel: Form */}
+      <div className="w-full lg:w-1/2 flex flex-col p-6 sm:p-12 xl:p-24 overflow-y-auto">
+        <div className="w-full max-w-md mx-auto flex flex-col my-auto">
+          {/* Mobile Logo */}
+          <div className="lg:hidden size-10 bg-brand-red rounded-xl flex items-center justify-center text-white font-bold text-xl mb-8">
+            F
+          </div>
+
+          <div className="mb-10">
+            <h2 className="text-3xl font-bold text-zinc-900 tracking-tight mb-2">
+              {step === 1 && "Create your account"}
+              {step === 2 && "Contact details"}
+              {step === 3 && "Secure your account"}
+            </h2>
+            <p className="text-zinc-500">
+              {step === 1 && "Enter your personal details to get started."}
+              {step === 2 && "How should we reach you?"}
+              {step === 3 && "Set a strong password for your new account."}
+            </p>
+          </div>
+
+          {/* Minimal Progress Indicator */}
+          <div className="flex items-center gap-2 mb-8">
+            {[1, 2, 3].map((i) => (
+              <div
+                key={i}
+                className={`h-1.5 flex-1 rounded-full transition-colors duration-300 ${i <= step ? "bg-brand-red" : "bg-zinc-100"
+                  }`}
+              />
+            ))}
+          </div>
+
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            <CardContent className="space-y-6 p-0 min-h-75">
-              {step === 1 && (
-                <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Input
-                        id="first_name"
-                        placeholder="First Name"
-                        className="py-6 border border-brand-red/80 text-brand-red focus-visible:ring-brand-red"
-                        {...register("first_name")}
-                      />
-                      {errors.first_name && (
-                        <p className="text-xs text-brand-red font-medium px-1">
-                          {errors.first_name.message}
-                        </p>
-                      )}
-                    </div>
-                    <div className="space-y-2">
-                      <Input
-                        id="last_name"
-                        placeholder="Last Name"
-                        className="py-6 border border-brand-red/80 text-brand-red focus-visible:ring-brand-red"
-                        {...register("last_name")}
-                      />
-                      {errors.last_name && (
-                        <p className="text-xs text-brand-red font-medium px-1">
-                          {errors.last_name.message}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-
+            {step === 1 && (
+              <div className="space-y-5 animate-in fade-in slide-in-from-right-4 duration-500 fill-mode-both">
+                <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
+                    <label htmlFor="first_name" className="text-sm font-medium text-zinc-700">First Name</label>
                     <Input
-                      id="middle_name"
-                      placeholder="Middle Name (Optional)"
-                      className="py-6 border border-brand-red/80 text-brand-red focus-visible:ring-brand-red"
-                      {...register("middle_name")}
+                      id="first_name"
+                      placeholder="John"
+                      className="h-12 bg-zinc-50/50 border-zinc-200 focus-visible:ring-brand-red/20 focus-visible:border-brand-red transition-all"
+                      {...register("first_name")}
+                    />
+                    {errors.first_name && (
+                      <p className="text-xs text-red-500 font-medium">
+                        {errors.first_name.message}
+                      </p>
+                    )}
+                  </div>
+                  <div className="space-y-2">
+                    <label htmlFor="last_name" className="text-sm font-medium text-zinc-700">Last Name</label>
+                    <Input
+                      id="last_name"
+                      placeholder="Doe"
+                      className="h-12 bg-zinc-50/50 border-zinc-200 focus-visible:ring-brand-red/20 focus-visible:border-brand-red transition-all"
+                      {...register("last_name")}
+                    />
+                    {errors.last_name && (
+                      <p className="text-xs text-red-500 font-medium">
+                        {errors.last_name.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="middle_name" className="text-sm font-medium text-zinc-700">Middle Name <span className="text-zinc-400 font-normal">(Optional)</span></label>
+                  <Input
+                    id="middle_name"
+                    placeholder="Middle Name"
+                    className="h-12 bg-zinc-50/50 border-zinc-200 focus-visible:ring-brand-red/20 focus-visible:border-brand-red transition-all"
+                    {...register("middle_name")}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="dob" className="text-sm font-medium text-zinc-700">Date of Birth</label>
+                  <div className="relative">
+                    <Calendar className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-zinc-400" />
+                    <Input
+                      id="dob"
+                      type="date"
+                      className="h-12 pl-10 bg-zinc-50/50 border-zinc-200 focus-visible:ring-brand-red/20 focus-visible:border-brand-red transition-all text-zinc-700"
+                      {...register("dob")}
                     />
                   </div>
-
-                  <div className="space-y-2">
-                    <div className="relative">
-                      <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-brand-red" />
-                      <Input
-                        id="dob"
-                        type="date"
-                        className="py-6 pl-10 border border-brand-red/80 text-brand-red focus-visible:ring-brand-red"
-                        {...register("dob")}
-                      />
-                    </div>
-                    {errors.dob && (
-                      <p className="text-xs text-brand-red font-medium px-1">
-                        {errors.dob.message}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              )}
-
-              {step === 2 && (
-                <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
-                  <div className="space-y-2">
-                    <div className="relative">
-                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-brand-red" />
-                      <Input
-                        id="email"
-                        type="email"
-                        placeholder="Email Address"
-                        className="py-6 pl-10 border border-brand-red/80 text-brand-red focus-visible:ring-brand-red"
-                        {...register("email")}
-                      />
-                    </div>
-                    {errors.email && (
-                      <p className="text-xs text-brand-red font-medium px-1">
-                        {errors.email.message}
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="space-y-2">
-                    <div className="relative">
-                      <Phone className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-brand-red" />
-                      <Input
-                        id="phone"
-                        placeholder="Phone Number"
-                        className="py-6 pl-10 border border-brand-red/80 text-brand-red focus-visible:ring-brand-red"
-                        {...register("phone")}
-                      />
-                    </div>
-                    {errors.phone && (
-                      <p className="text-xs text-brand-red font-medium px-1">
-                        {errors.phone.message}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              )}
-
-              {step === 3 && (
-                <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
-                  <div className="space-y-2">
-                    <div className="relative">
-                      <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-brand-red" />
-                      <Input
-                        id="password"
-                        type={showPassword ? "text" : "password"}
-                        placeholder="Password"
-                        className="py-6 pl-10 pr-10 border border-brand-red/80 text-brand-red focus-visible:ring-brand-red"
-                        {...register("password")}
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-brand-red hover:text-red-700 cursor-pointer"
-                      >
-                        {showPassword ? (
-                          <EyeOff className="size-4" />
-                        ) : (
-                          <Eye className="size-4" />
-                        )}
-                      </button>
-                    </div>
-                    {errors.password && (
-                      <p className="text-xs text-brand-red font-medium px-1">
-                        {errors.password.message}
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="space-y-2">
-                    <div className="relative">
-                      <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-brand-red" />
-                      <Input
-                        id="confirm_password"
-                        type={showConfirmPassword ? "text" : "password"}
-                        placeholder="Confirm Password"
-                        className="py-6 pl-10 pr-10 border border-brand-red/80 text-brand-red focus-visible:ring-brand-red"
-                        {...register("confirm_password")}
-                      />
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setShowConfirmPassword(!showConfirmPassword)
-                        }
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-brand-red hover:text-red-700 cursor-pointer"
-                      >
-                        {showConfirmPassword ? (
-                          <EyeOff className="size-4" />
-                        ) : (
-                          <Eye className="size-4" />
-                        )}
-                      </button>
-                    </div>
-                    {errors.confirm_password && (
-                      <p className="text-xs text-brand-red font-medium px-1">
-                        {errors.confirm_password.message}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              )}
-
-              <div className="flex items-center justify-between pt-10">
-                <div className="flex gap-2">
-                  {step > 1 && (
-                    <Button
-                      type="button"
-                      onClick={prevStep}
-                      className="font-semibold text-white bg-brand-red h-12 cursor-pointer hover:bg-red-600"
-                    >
-                      <ChevronLeft />
-                      Back
-                    </Button>
+                  {errors.dob && (
+                    <p className="text-xs text-red-500 font-medium">
+                      {errors.dob.message}
+                    </p>
                   )}
-                  <a
-                    href="/signin"
-                    className="text-sm text-brand-red font-semibold hover:underline flex items-center h-12 px-4"
-                  >
-                    Sign in instead
+                </div>
+              </div>
+            )}
+
+            {step === 2 && (
+              <div className="space-y-5 animate-in fade-in slide-in-from-right-4 duration-500 fill-mode-both">
+                <div className="space-y-2">
+                  <label htmlFor="email" className="text-sm font-medium text-zinc-700">Work Email</label>
+                  <div className="relative">
+                    <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-zinc-400" />
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="john.doe@company.com"
+                      className="h-12 pl-10 bg-zinc-50/50 border-zinc-200 focus-visible:ring-brand-red/20 focus-visible:border-brand-red transition-all"
+                      {...register("email")}
+                    />
+                  </div>
+                  {errors.email && (
+                    <p className="text-xs text-red-500 font-medium">
+                      {errors.email.message}
+                    </p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="phone" className="text-sm font-medium text-zinc-700">Phone Number</label>
+                  <div className="relative">
+                    <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-zinc-400" />
+                    <Input
+                      id="phone"
+                      placeholder="+1 (555) 000-0000"
+                      className="h-12 pl-10 bg-zinc-50/50 border-zinc-200 focus-visible:ring-brand-red/20 focus-visible:border-brand-red transition-all"
+                      {...register("phone")}
+                    />
+                  </div>
+                  {errors.phone && (
+                    <p className="text-xs text-red-500 font-medium">
+                      {errors.phone.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {step === 3 && (
+              <div className="space-y-5 animate-in fade-in slide-in-from-right-4 duration-500 fill-mode-both">
+                <div className="space-y-2">
+                  <label htmlFor="password" className="text-sm font-medium text-zinc-700">Password</label>
+                  <div className="relative">
+                    <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-zinc-400" />
+                    <Input
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="••••••••"
+                      className="h-12 pl-10 pr-10 bg-zinc-50/50 border-zinc-200 focus-visible:ring-brand-red/20 focus-visible:border-brand-red transition-all"
+                      {...register("password")}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-700 transition-colors"
+                    >
+                      {showPassword ? (
+                        <EyeOff className="size-4" />
+                      ) : (
+                        <Eye className="size-4" />
+                      )}
+                    </button>
+                  </div>
+                  {errors.password && (
+                    <p className="text-xs text-red-500 font-medium">
+                      {errors.password.message}
+                    </p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="confirm_password" className="text-sm font-medium text-zinc-700">Confirm Password</label>
+                  <div className="relative">
+                    <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-zinc-400" />
+                    <Input
+                      id="confirm_password"
+                      type={showConfirmPassword ? "text" : "password"}
+                      placeholder="••••••••"
+                      className="h-12 pl-10 pr-10 bg-zinc-50/50 border-zinc-200 focus-visible:ring-brand-red/20 focus-visible:border-brand-red transition-all"
+                      {...register("confirm_password")}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-700 transition-colors"
+                    >
+                      {showConfirmPassword ? (
+                        <EyeOff className="size-4" />
+                      ) : (
+                        <Eye className="size-4" />
+                      )}
+                    </button>
+                  </div>
+                  {errors.confirm_password && (
+                    <p className="text-xs text-red-500 font-medium">
+                      {errors.confirm_password.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
+
+            <div className="flex items-center justify-between pt-6 border-t border-zinc-100 mt-8">
+              {step > 1 ? (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  onClick={prevStep}
+                  className="font-medium text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 h-11 px-4"
+                >
+                  <ChevronLeft className="mr-1 size-4" />
+                  Back
+                </Button>
+              ) : (
+                <div className="text-sm text-zinc-500">
+                  Already have an account?{" "}
+                  <a href="/signin" className="font-semibold text-brand-red hover:underline">
+                    Sign in
                   </a>
                 </div>
+              )}
 
-                {step < totalSteps ? (
-                  <Button
-                    type="button"
-                    onClick={nextStep}
-                    size="lg"
-                    className="bg-brand-red cursor-pointer hover:bg-red-700 text-white font-semibold px-8 h-12"
-                  >
-                    Next
-                    <ChevronRight />
-                  </Button>
-                ) : (
-                  <Button
-                    type="submit"
-                    size="lg"
-                    className="bg-brand-red hover:bg-red-700 text-white font-semibold px-8 h-12"
-                  >
-                    Create
-                  </Button>
-                )}
-              </div>
-            </CardContent>
+              {step < totalSteps ? (
+                <Button
+                  type="button"
+                  onClick={nextStep}
+                  className="bg-brand-red hover:bg-brand-red/90 text-white font-semibold h-11 px-6 shadow-sm shadow-brand-red/20 transition-all"
+                >
+                  Next step
+                  <ChevronRight className="ml-1 size-4" />
+                </Button>
+              ) : (
+                <Button
+                  type="submit"
+                  className="bg-zinc-900 hover:bg-zinc-800 text-white font-semibold h-11 px-8 shadow-sm transition-all"
+                >
+                  Create Account
+                </Button>
+              )}
+            </div>
           </form>
-        </div>
-      </Card>
 
-      {/* Footer */}
-      <div className="w-full mt-6 px-4 flex flex-col sm:flex-row justify-between items-center text-sm text-muted-foreground gap-4 pb-10">
-        <div className="flex items-center gap-1 px-3 py-1 rounded-md cursor-pointer transition-colors text-brand-black font-medium">
-          English (United States) <ChevronDown className="size-4" />
-        </div>
-        <div className="flex gap-4 font-medium text-brand-black">
-          <a href="#" className="hover:underline">
-            Help
-          </a>
-          <a href="#" className="hover:underline">
-            Privacy
-          </a>
-          <a href="#" className="hover:underline">
-            Terms
-          </a>
+          {/* Footer for mobile only */}
+          <div className="lg:hidden flex items-center justify-center gap-4 text-xs text-zinc-400 mt-12">
+            <a href="#" className="hover:text-zinc-600 transition-colors">Privacy</a>
+            <span>&bull;</span>
+            <a href="#" className="hover:text-zinc-600 transition-colors">Terms</a>
+            <span>&bull;</span>
+            <a href="#" className="hover:text-zinc-600 transition-colors">Help</a>
+          </div>
         </div>
       </div>
     </div>
