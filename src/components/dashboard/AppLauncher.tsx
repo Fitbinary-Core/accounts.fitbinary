@@ -1,9 +1,21 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Grid, LayoutDashboard, ExternalLink } from "lucide-react";
+import { Grid, LayoutDashboard, ExternalLink, Sparkles } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { get_all_apps } from "@/services/apps/apps.service";
+import { cn } from "@/lib/utils";
+
+const getBrandStyle = (name: string) => {
+  const lowerName = name.toLowerCase();
+  if (lowerName.includes("fitstock")) {
+    return "bg-brand-red text-white border-brand-red";
+  }
+  if (lowerName.includes("fitcloud")) {
+    return "bg-blue-600 text-white border-blue-600";
+  }
+  return "bg-zinc-900 text-white border-zinc-900";
+};
 
 export function AppLauncher() {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,79 +45,99 @@ export function AppLauncher() {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`p-2 rounded-lg transition-colors ${
+        className={cn(
+          "p-2 rounded-xl transition-all duration-300",
           isOpen
-            ? "bg-zinc-100 text-brand-red"
-            : "hover:bg-zinc-100 text-zinc-600"
-        }`}
+            ? "bg-zinc-100 text-brand-red scale-95"
+            : "hover:bg-zinc-100 text-zinc-600 hover:scale-105",
+        )}
         title="App Launcher"
       >
-        <Grid className="w-5 h-5" />
+        <Grid className="w-5 h-5 transition-transform group-hover:rotate-12" />
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-3 w-80 bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden z-50 animate-in fade-in zoom-in-95 duration-200 p-4">
-          <div className="flex items-center justify-between mb-4 px-2">
-            <h3 className="text-sm font-bold text-gray-900 uppercase tracking-widest">
-              My Applications
-            </h3>
-          </div>
-
-          <div className="grid grid-cols-3 gap-2">
-            {applications.length > 0 ? (
-              applications.map((app) => (
-                <button
-                  key={app._id}
-                  onClick={() => {
-                    if (app.baseRoute) {
-                      window.open(
-                        app.baseRoute,
-                        "_blank",
-                        "noopener,noreferrer",
-                      );
-                    }
-                    setIsOpen(false);
-                  }}
-                  className="flex flex-col items-center gap-2 p-3 rounded-2xl hover:bg-zinc-50 transition-all group"
-                >
-                  <div className="size-12 bg-zinc-100 rounded-2xl flex items-center justify-center overflow-hidden border border-zinc-200 group-hover:border-brand-red/30 group-hover:bg-white transition-all shadow-sm group-hover:shadow-md">
-                    {app.icon && app.icon.startsWith("http") ? (
-                      <img
-                        src={app.icon}
-                        alt={app.name}
-                        className="size-full object-cover"
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).src =
-                            "https://ui-avatars.com/api/?name=" +
-                            encodeURIComponent(app.name) +
-                            "&background=random";
-                        }}
-                      />
-                    ) : (
-                      <LayoutDashboard className="size-6 text-zinc-400 group-hover:text-brand-red transition-colors" />
-                    )}
-                  </div>
-                  <span className="text-[11px] font-medium text-gray-700 text-center truncate w-full capitalize">
-                    {app.name}
-                  </span>
-                </button>
-              ))
-            ) : (
-              <div className="col-span-3 py-8 text-center">
-                <p className="text-xs text-zinc-500">No applications found</p>
+        <div className="absolute right-0 mt-4 w-96 bg-white border border-zinc-100 rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] z-50 animate-in fade-in zoom-in-95 slide-in-from-top-2 duration-300 overflow-hidden">
+          <div className="p-8 pb-4">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-2">
+                <div className="size-8 bg-zinc-950 rounded-lg flex items-center justify-center">
+                  <Sparkles className="size-4 text-brand-red fill-brand-red" />
+                </div>
+                <h3 className="text-sm font-black text-zinc-900 uppercase tracking-widest">
+                  Ecosystem Apps
+                </h3>
               </div>
-            )}
+            </div>
+
+            <div className="grid grid-cols-3 gap-x-4 gap-y-6">
+              {applications.length > 0 ? (
+                applications.map((app) => {
+                  const brandStyle = getBrandStyle(app.name);
+                  return (
+                    <button
+                      key={app._id}
+                      onClick={() => {
+                        if (app.baseRoute) {
+                          window.open(
+                            app.baseRoute,
+                            "_blank",
+                            "noopener,noreferrer",
+                          );
+                        }
+                        setIsOpen(false);
+                      }}
+                      className="flex flex-col items-center gap-3 group"
+                    >
+                      <div
+                        className={cn(
+                          "size-16 rounded-2xl flex items-center justify-center overflow-hidden transition-all duration-300 group-hover:scale-110 group-active:scale-95 border-2 shadow-sm",
+                          brandStyle,
+                        )}
+                      >
+                        {app.icon && app.icon.startsWith("http") ? (
+                          <img
+                            src={app.icon}
+                            alt={app.name}
+                            className="size-full object-cover transition-transform duration-500 group-hover:scale-110"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).style.display =
+                                "none";
+                            }}
+                          />
+                        ) : (
+                          <div className="font-black text-2xl uppercase">
+                            {app.name.charAt(0)}
+                          </div>
+                        )}
+                      </div>
+                      <span className="text-[11px] font-bold text-zinc-800 tracking-tight group-hover:text-brand-red transition-colors capitalize px-1 truncate w-full">
+                        {app.name}
+                      </span>
+                    </button>
+                  );
+                })
+              ) : (
+                <div className="col-span-3 py-12 text-center bg-zinc-50 rounded-3xl">
+                  <LayoutDashboard className="size-10 text-zinc-300 mx-auto mb-3" />
+                  <p className="text-xs font-medium text-zinc-500">
+                    No apps available yet
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
 
-          <div className="mt-4 pt-4 border-t border-gray-50 flex justify-center">
+          <div className="p-4 bg-zinc-50/80 backdrop-blur-sm border-t border-zinc-100 flex justify-center">
             <button
               onClick={() => {
                 window.location.href = "/apps";
                 setIsOpen(false);
               }}
-              className="text-[11px] font-bold text-zinc-500 hover:text-brand-red uppercase tracking-widest transition-colors flex items-center gap-1"
+              className="px-6 py-2.5 bg-white border border-zinc-200 rounded-full text-[11px] font-black text-zinc-900 hover:text-brand-red hover:border-brand-red/20 hover:shadow-lg transition-all flex items-center gap-2 uppercase tracking-widest group"
             >
-              All Apps <ExternalLink className="size-3" />
+              Manage Apps{" "}
+              <ExternalLink className="size-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </button>
           </div>
         </div>
