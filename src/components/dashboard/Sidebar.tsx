@@ -304,7 +304,7 @@ export function Sidebar({
                   title={isCollapsed ? item.name : ""}
                 >
                   {isActive && !isCollapsed && (
-                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-brand-red rounded-r-full shadow-[2px_0_8px_rgba(239,68,68,0.4)]" />
+                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-brand-red rounded-r-full" />
                   )}
                   <item.icon
                     className={cn(

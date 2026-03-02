@@ -1,9 +1,9 @@
 import { PLANS_URLS, BILLING_URLS } from "@/lib/urls";
 import { apiClient } from "@/lib/apiClient";
 
-export const getSubscriptionList = async () => {
+export const getSubscriptionList = async (appId?: string) => {
     try {
-        const url = PLANS_URLS.get_all;
+        const url = appId ? `${PLANS_URLS.get_all}?app=${appId}` : PLANS_URLS.get_all;
         const response = await apiClient(url);
 
         const data = await response.json();

@@ -33,11 +33,17 @@ const stripePromise = loadStripe(
 type BillingCycle = "MONTHLY" | "YEARLY";
 const YEARLY_DISCOUNT = 0.2;
 
-const PlansAndPricing = ({
-  onStepComplete,
-}: {
+import { IApplication } from "@/types/apps";
+
+interface PlansAndPricingProps {
+  selectedApp?: IApplication | null;
   onStepComplete?: () => void;
-}) => {
+}
+
+const PlansAndPricing = ({
+  selectedApp,
+  onStepComplete,
+}: PlansAndPricingProps) => {
   const queryClient = useQueryClient();
   const [billingCycle, setBillingCycle] = useState<BillingCycle>("MONTHLY");
   const [activeStep, setActiveStep] = useState<CheckoutStep>("PLANS");
@@ -47,8 +53,8 @@ const PlansAndPricing = ({
   const [provider, setProvider] = useState<"STRIPE" | "ESEWA">("STRIPE");
 
   const { data, isLoading } = useQuery<PlansResponse>({
-    queryKey: ["all-plans"],
-    queryFn: getSubscriptionList,
+    queryKey: ["all-plans", selectedApp?._id],
+    queryFn: () => getSubscriptionList(selectedApp?._id),
   });
 
   const { data: profileRes, isLoading: isProfileLoading } =
@@ -156,7 +162,7 @@ const PlansAndPricing = ({
     );
   }
 
-  const subscriptions = data?.subscriptions || [];
+  const plans = (data as any)?.plans || [];
 
   return (
     <div className="w-full mx-auto p-4 space-y-8">
@@ -165,7 +171,7 @@ const PlansAndPricing = ({
       {activeStep === "PLANS" && (
         <>
           <PlansSection
-            subscriptions={subscriptions}
+            subscriptions={plans}
             billingCycle={billingCycle}
             setBillingCycle={setBillingCycle}
             onSelectPlan={handleSelectPlan}

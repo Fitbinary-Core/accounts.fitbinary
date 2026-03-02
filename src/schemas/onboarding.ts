@@ -171,6 +171,7 @@ export interface BusinessDetailPayload {
     business_phone: string;
     business_size: string;
     business_type: string;
+    app_id?: string;
 }
 
 // Location & Metadata Details Props

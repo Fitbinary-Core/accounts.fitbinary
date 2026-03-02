@@ -20,11 +20,15 @@ import { useMemo, useState } from "react";
 const businessDetailsSchema = z.object({
   business_name: z.string().min(1, "Business name is required"),
   business_logo: z.string().optional(),
-  business_description: z.string().min(1, "Business description is required"),
-  business_type: z.string().min(1, "Business type is required"),
-  business_size: z.string().min(1, "Business size is required"),
-  business_email: z.string().email("Invalid email"),
-  business_phone: z.string().min(5, "Phone is required"),
+  business_description: z.string().optional(),
+  business_type: z.string().optional(),
+  business_size: z.string().optional(),
+  business_email: z
+    .string()
+    .email("Invalid email")
+    .optional()
+    .or(z.literal("")),
+  business_phone: z.string().optional(),
 });
 
 // Type
@@ -32,8 +36,12 @@ type BusinessDetailsFormData = z.infer<typeof businessDetailsSchema>;
 
 const BusinessDetails = ({
   business_details,
+  selectedApp,
   onStepComplete,
-}: BusinessDetailsProps & { onStepComplete?: () => void }) => {
+}: BusinessDetailsProps & {
+  selectedApp?: any;
+  onStepComplete?: () => void;
+}) => {
   const { business_details: bd, onboarding_fields_data } = business_details;
   const { business } = bd;
 
@@ -113,7 +121,8 @@ const BusinessDetails = ({
       const response = await update_business_details({
         ...data,
         business_logo: logoUrl || "",
-      });
+        app_id: selectedApp?._id,
+      } as any);
       toast.success(
         response?.message || "Business details updated successfully",
       );
@@ -197,7 +206,7 @@ const BusinessDetails = ({
           label="Business Type"
           required
           options={businessTypeOptions}
-          value={businessType}
+          value={businessType || ""}
           onChange={(value) => setValue("business_type", value)}
           placeholder="Select business type"
           searchPlaceholder="Search business types..."
@@ -208,7 +217,7 @@ const BusinessDetails = ({
           label="Business Size"
           required
           options={businessSizeOptions}
-          value={businessSize}
+          value={businessSize || ""}
           onChange={(value) => setValue("business_size", value)}
           placeholder="Select business size"
           searchPlaceholder="Search business sizes..."

@@ -14,7 +14,7 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { IApplication } from "@/types/apps";
 import { cn } from "@/lib/utils";
 import BusinessDetails from "@/components/onboarding/BusinessDetails";
@@ -23,6 +23,7 @@ import BranchSetup from "@/components/onboarding/BranchSetup";
 import Categories from "@/components/onboarding/Categories";
 import PlansAndPricing from "@/components/onboarding/PlansAndPricing";
 import { get_onboarding_data } from "@/services/onboarding/onboarding.service";
+import { OnboardingDataRes } from "@/schemas/onboarding";
 
 enum CreateStep {
   APP_SELECTION = "APP_SELECTION",
@@ -44,10 +45,28 @@ export default function OrganizationCreatePage() {
     queryFn: () => get_all_apps(),
   });
 
-  const { data: onboardingData, isLoading: isLoadingOnboarding } = useQuery({
-    queryKey: ["onboarding-data"],
-    queryFn: get_onboarding_data,
+  const { data: onboardingData, isLoading: isLoadingOnboarding } = useQuery<OnboardingDataRes>({
+    queryKey: ["onboarding-data", selectedApp?._id || ""],
+    queryFn: () => get_onboarding_data(selectedApp?._id),
+    enabled: !!selectedApp,
   });
+
+  useEffect(() => {
+    if (onboardingData?.active_step_path) {
+      const stepMap: Record<string, CreateStep> = {
+        business_details: CreateStep.BUSINESS_DETAILS,
+        location_and_metadata: CreateStep.LOCATION_METADATA,
+        branch_details: CreateStep.BRANCH_SETUP,
+        categories_details: CreateStep.CATEGORIES,
+        subscription_and_billing: CreateStep.PLANS,
+      };
+
+      const nextStep = stepMap[onboardingData.active_step_path];
+      if (nextStep) {
+        setCurrentStep(nextStep);
+      }
+    }
+  }, [onboardingData, selectedApp]);
 
   const steps = useMemo(() => {
     return [
@@ -98,7 +117,7 @@ export default function OrganizationCreatePage() {
     }
   };
 
-  if (isLoadingApps || isLoadingOnboarding) {
+  if (isLoadingApps || (selectedApp && isLoadingOnboarding)) {
     return (
       <DashboardLayout>
         <div className="flex flex-col items-center justify-center py-32 space-y-4">
@@ -115,7 +134,7 @@ export default function OrganizationCreatePage() {
 
   return (
     <DashboardLayout>
-      <div className="w-full mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="w-full mx-auto space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
         <div className="flex items-center gap-4">
           <Link
             href="/organization/list"
@@ -135,11 +154,10 @@ export default function OrganizationCreatePage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-          {/* Progress Sidebar */}
-          <div className="lg:col-span-4 space-y-8">
-            <nav className="relative space-y-2">
-              <div className="absolute left-6 top-8 bottom-8 w-0.5 bg-gray-200/60" />
+        <div className="flex flex-col gap-6">
+          {/* Progress Header */}
+          <div className="bg-white border border-zinc-200 rounded-md p-4 shadow-sm">
+            <nav className="relative flex flex-wrap lg:flex-nowrap items-center justify-between">
               {steps.map((step, idx) => {
                 const isActive = step.id === currentStep;
                 const isPast =
@@ -150,45 +168,45 @@ export default function OrganizationCreatePage() {
                   <div
                     key={step.id}
                     className={cn(
-                      "group relative flex w-full items-center gap-4 rounded-xl p-4 text-left transition-all duration-300",
-                      isActive
-                        ? "bg-white shadow-xl shadow-gray-200/50 border border-gray-100 ring-1 ring-black/5"
-                        : "",
+                      "flex items-center gap-3 flex-1 min-w-max",
+                      idx !== steps.length - 1 && "after:content-[''] after:hidden lg:after:block after:h-px after:flex-1 after:bg-zinc-100 after:mx-4",
                     )}
                   >
-                    <div
-                      className={cn(
-                        "relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border-2 transition-all duration-500",
-                        isPast
-                          ? "border-green-500 bg-green-50 text-green-600"
-                          : isActive
-                            ? "border-brand-red bg-brand-red text-white shadow-lg shadow-red-200"
-                            : "border-gray-200 bg-white text-gray-400",
-                      )}
-                    >
-                      {isPast ? (
-                        <CheckCircle2 className="h-6 w-6 stroke-[2.5]" />
-                      ) : (
-                        <Icon className="h-6 w-6" />
-                      )}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <span
+                    <div className="flex items-center gap-3">
+                      <div
                         className={cn(
-                          "text-xs font-bold uppercase tracking-widest",
-                          isActive ? "text-brand-red" : "text-gray-400",
+                          "flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border-2 transition-all duration-500",
+                          isPast
+                            ? "border-green-500 bg-green-50 text-green-600"
+                            : isActive
+                              ? "border-brand-red bg-brand-red text-white"
+                              : "border-gray-200 bg-white text-gray-400",
                         )}
                       >
-                        Step 0{idx + 1}
-                      </span>
-                      <p
-                        className={cn(
-                          "truncate text-lg font-bold",
-                          isActive ? "text-gray-900" : "text-gray-500",
+                        {isPast ? (
+                          <CheckCircle2 className="h-5 w-5 stroke-[2.5]" />
+                        ) : (
+                          <Icon className="h-5 w-5" />
                         )}
-                      >
-                        {step.label}
-                      </p>
+                      </div>
+                      <div className="hidden sm:block">
+                        <span
+                          className={cn(
+                            "text-[10px] font-bold uppercase tracking-widest block",
+                            isActive ? "text-brand-red" : "text-gray-400",
+                          )}
+                        >
+                          Step 0{idx + 1}
+                        </span>
+                        <p
+                          className={cn(
+                            "text-sm font-bold whitespace-nowrap",
+                            isActive ? "text-gray-900" : "text-gray-500",
+                          )}
+                        >
+                          {step.label}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 );
@@ -197,42 +215,45 @@ export default function OrganizationCreatePage() {
           </div>
 
           {/* Main Content Area */}
-          <main className="lg:col-span-8">
-            <div className="bg-white border border-zinc-200 rounded-3xl p-8 shadow-sm">
+          <main className="w-full">
+            <div className="bg-white border border-zinc-200 rounded-md p-6 shadow-sm min-h-125">
               {currentStep === CreateStep.APP_SELECTION && (
                 <div className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {applications.map((app) => (
                       <button
                         key={app._id}
                         onClick={() => handleAppSelect(app)}
-                        className="group relative bg-zinc-50 border border-zinc-100 rounded-2xl p-6 text-left transition-all hover:bg-white hover:shadow-xl hover:border-zinc-200"
+                        className="group relative bg-zinc-50 border border-zinc-100 rounded-xl p-6 text-left transition-all hover:bg-white hover:shadow-xl hover:cursor-pointer hover:border-brand-red/20 active:scale-[0.98]"
                       >
                         <div className="flex items-center gap-4 mb-4">
-                          <div className="size-12 rounded-xl bg-white border border-zinc-100 flex items-center justify-center shadow-sm overflow-hidden group-hover:scale-110 transition-transform">
+                          <div className="size-14 rounded-2xl bg-white flex items-center justify-center shadow-sm overflow-hidden group-hover:scale-110 transition-transform border border-zinc-100">
                             {app.icon ? (
                               <img
                                 src="/Icon.png"
                                 alt={app.name}
-                                className="size-full object-cover"
+                                className="size-full object-cover p-2"
                               />
                             ) : (
-                              <LayoutGrid className="size-6 text-zinc-400" />
+                              <LayoutGrid className="size-7 text-zinc-400" />
                             )}
                           </div>
                           <div>
-                            <h3 className="font-bold text-zinc-900 group-hover:text-brand-red transition-colors">
+                            <h3 className="font-bold text-zinc-900 group-hover:text-brand-red transition-colors text-lg">
                               {app.name}
                             </h3>
-                            <span className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest">
+                            <span className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest bg-zinc-100 px-2 py-0.5 rounded-full">
                               {app.app_slug}
                             </span>
                           </div>
                         </div>
-                        <p className="text-xs text-zinc-500 leading-relaxed line-clamp-2">
+                        <p className="text-sm text-zinc-500 leading-relaxed line-clamp-3">
                           {app.description ||
                             "Create organization for this application service."}
                         </p>
+                        <div className="mt-4 flex items-center text-brand-red text-xs font-bold uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity">
+                          Get Started →
+                        </div>
                       </button>
                     ))}
                   </div>
@@ -240,22 +261,23 @@ export default function OrganizationCreatePage() {
               )}
 
               {currentStep === CreateStep.BUSINESS_DETAILS &&
-                onboardingData && (
+                !!onboardingData && (
                   <BusinessDetails
                     business_details={onboardingData}
+                    selectedApp={selectedApp}
                     onStepComplete={nextStep}
                   />
                 )}
 
               {currentStep === CreateStep.LOCATION_METADATA &&
-                onboardingData && (
+                !!onboardingData && (
                   <LocationAndMetadata
                     location_and_metadata={onboardingData}
                     onStepComplete={nextStep}
                   />
                 )}
 
-              {currentStep === CreateStep.BRANCH_SETUP && onboardingData && (
+              {currentStep === CreateStep.BRANCH_SETUP && !!onboardingData && (
                 <BranchSetup
                   branch_details={onboardingData.branch_details}
                   onStepComplete={nextStep}
@@ -268,9 +290,10 @@ export default function OrganizationCreatePage() {
 
               {currentStep === CreateStep.PLANS && (
                 <PlansAndPricing
-                  onStepComplete={() =>
-                    (window.location.href = "/organization/list")
-                  }
+                  selectedApp={selectedApp}
+                  onStepComplete={() => {
+                    window.location.href = "/organization/list";
+                  }}
                 />
               )}
             </div>

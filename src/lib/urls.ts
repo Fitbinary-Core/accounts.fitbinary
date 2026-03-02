@@ -78,7 +78,7 @@ export const ONBOARDING_URLS = {
 };
 
 export const CATEGORIES_URLS = {
-  get_all: `${BASE_URL}/tenant/categories/all`,
+  get_all: `${BASE_URL}/categories/list`,
   get_childrens: `${BASE_URL}/tenant/categories/childrens/:id`,
   get_detail: `${BASE_URL}/tenant/categories/:id`,
   update: `${BASE_URL}/tenant/categories/update`,
@@ -95,4 +95,10 @@ export const BILLING_URLS = {
   status: (sessionId: string) => `${BASE_URL}/billing/status/${sessionId}`,
   verify_esewa: `${BASE_URL}/billing/esewa/verify`,
   start_free_trail: `${BASE_URL}/billing/start-free-trail`,
+};
+
+export const ORGANIZATION_URLS = {
+  list: `${BASE_URL}/organizations/list`,
+  update: (org_id: string) => `${BASE_URL}/organizations/update/${org_id}`,
+  detail: (org_id: string) => `${BASE_URL}/organizations/detail/${org_id}`,
 };
