@@ -11,7 +11,6 @@ import {
   X,
   LogOut,
   ExternalLink,
-  Rocket,
   Users,
   ChevronDown,
   ChevronUp,
@@ -43,7 +42,6 @@ const navItems = [
   { name: "Security", icon: ShieldCheck, href: "/security" },
   { name: "Payments & subscriptions", icon: CreditCard, href: "/payments" },
   { name: "App management", icon: LayoutDashboard, href: "/apps" },
-  { name: "Onboarding", icon: Rocket, href: "/onboarding" },
   {
     name: "Organization",
     icon: Building2,
