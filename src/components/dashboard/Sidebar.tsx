@@ -62,7 +62,7 @@ const navItems = [
     icon: GitBranch,
     href: "/branches",
     subItems: [
-      { name: "List", icon: List, href: "/branches/list" },
+      { name: "List", icon: List, href: "/branches" },
       {
         name: "Create",
         icon: PlusCircle,
@@ -112,7 +112,7 @@ export function Sidebar({
   const [expandedMenus, setExpandedMenus] = useState<string[]>([]);
 
   useEffect(() => {
-    if (isCollapsed) return; // Don't expand menus when collapsed
+    if (isCollapsed) return;
     const currentMenu = navItems.find(
       (item) =>
         item.subItems &&
@@ -384,7 +384,9 @@ export function Sidebar({
               "flex items-center p-2 rounded-xl bg-zinc-900/40 border border-zinc-800/50 transition-all",
               isCollapsed ? "justify-center px-2" : "gap-3",
             )}
-            title={isCollapsed ? `${tenant?.first_name} ${tenant?.last_name}` : ""}
+            title={
+              isCollapsed ? `${tenant?.first_name} ${tenant?.last_name}` : ""
+            }
           >
             <div className="size-10 rounded-lg bg-zinc-800 flex items-center justify-center overflow-hidden border border-zinc-700/50 shrink-0">
               {tenant?.avatar ? (

@@ -5,22 +5,12 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import {
-  Mail,
-  Phone,
-  Calendar,
-  Lock,
-  ChevronRight,
-  ChevronLeft,
-  ChevronDown,
-  Eye,
-  EyeOff,
-  CheckCircle2,
-} from "lucide-react";
+import { Mail, Phone, Calendar, Lock, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { signUpUser } from "@/services/auth/auth.service";
 import toast from "react-hot-toast";
+import { useMutation } from "@tanstack/react-query";
 
 const signupSchema = z
   .object({
@@ -66,20 +56,9 @@ export default function SignupForm({
     mode: "onChange",
   });
 
-  const nextStep = async () => {
-    let fields: (keyof SignupValues)[] = [];
-    if (step === 1) fields = ["first_name", "last_name", "dob"];
-    if (step === 2) fields = ["email", "phone"];
-
-    const isValid = await trigger(fields);
-    if (isValid) setStep((s) => Math.min(s + 1, totalSteps));
-  };
-
-  const prevStep = () => setStep((s) => Math.max(s - 1, 1));
-
-  const onSubmit = async (data: SignupValues) => {
-    try {
-      const response = await signUpUser(data);
+  const { mutate: signup, isPending } = useMutation({
+    mutationFn: signUpUser,
+    onSuccess: (response) => {
       toast.success(response.message);
 
       if (redirectUri) {
@@ -93,316 +72,329 @@ export default function SignupForm({
           router.push("/signin");
         }
       }, 2000);
-    } catch (error: any) {
-      toast.error(error.message);
-    }
+    },
+    onError: (error: any) => {
+      toast.error(error.message || "Failed to create account");
+    },
+  });
+
+  const nextStep = async () => {
+    let fields: (keyof SignupValues)[] = [];
+    if (step === 1) fields = ["first_name", "last_name", "dob"];
+    if (step === 2) fields = ["email", "phone"];
+
+    const isValid = await trigger(fields);
+    if (isValid) setStep((s) => Math.min(s + 1, totalSteps));
+  };
+
+  const prevStep = () => setStep((s) => Math.max(s - 1, 1));
+
+  const onSubmit = (data: SignupValues) => {
+    signup(data);
   };
 
   return (
-    <div className="flex min-h-screen w-full bg-white">
-      {/* Left Panel: Branding & Value Proposition (Hidden on small screens) */}
-      <div className="hidden lg:flex lg:w-1/2 bg-zinc-950 flex-col justify-between p-12 text-white relative overflow-hidden">
-        {/* Abstract Background Accent */}
-        <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
-          <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-brand-red blur-[120px]" />
-          <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-brand-red blur-[120px]" />
-        </div>
-
-        <div className="relative z-10">
-          <div className="size-12 bg-brand-red rounded-xl flex items-center justify-center text-white font-bold text-2xl mb-12 shadow-lg shadow-brand-red/20">
-            F
-          </div>
-          <h1 className="text-4xl lg:text-5xl font-bold tracking-tight mb-6 leading-tight">
-            Manage your entire organization from one central hub.
-          </h1>
-          <p className="text-lg text-zinc-400 max-w-lg">
-            Create your Fitbinary account to provision users, manage billing, and oversee multiple environments with enterprise-grade controls.
-          </p>
-        </div>
-
-        <div className="relative z-10 space-y-6">
-          <div className="flex items-start gap-4">
-            <CheckCircle2 className="size-6 text-brand-red shrink-0" />
-            <div>
-              <h3 className="font-semibold text-zinc-200">Centralized Identity</h3>
-              <p className="text-sm text-zinc-500">Unified access management across all your workspaces.</p>
+    <div className="min-h-screen w-full flex items-center justify-center bg-gray-100 p-4">
+      <div className="w-full max-w-115">
+        <div className="bg-white border border-zinc-200 rounded-lg shadow-sm">
+          <div className="p-8">
+            {/* Logo & Header */}
+            <div className="flex flex-col items-center text-center mb-8">
+              <div className="size-10 bg-zinc-950 rounded-md flex items-center justify-center mb-6">
+                {/* <img
+                  src="/Icon.png"
+                  alt="Fitbinary"
+                  className="size-6 object-contain grayscale invert"
+                /> */}
+                F
+              </div>
+              <h1 className="text-xl font-bold text-zinc-900 tracking-tight mb-1">
+                {step === 1 && "Basic Information"}
+                {step === 2 && "Contact Details"}
+                {step === 3 && "Security"}
+              </h1>
+              <p className="text-zinc-500 text-sm">
+                {step === 1 && "Step 1 of 3"}
+                {step === 2 && "Step 2 of 3"}
+                {step === 3 && "Step 3 of 3"}
+              </p>
             </div>
-          </div>
-          <div className="flex items-start gap-4">
-            <CheckCircle2 className="size-6 text-brand-red shrink-0" />
-            <div>
-              <h3 className="font-semibold text-zinc-200">Granular Permissions</h3>
-              <p className="text-sm text-zinc-500">Assign precise roles and access levels to every team member.</p>
-            </div>
-          </div>
-          <div className="flex items-start gap-4">
-            <CheckCircle2 className="size-6 text-brand-red shrink-0" />
-            <div>
-              <h3 className="font-semibold text-zinc-200">Unified Billing</h3>
-              <p className="text-sm text-zinc-500">Manage invoices, credits, and payment methods in one place.</p>
-            </div>
-          </div>
-        </div>
 
-        <div className="relative z-10 flex items-center justify-between text-sm text-zinc-500 mt-12 border-t border-zinc-800 pt-8">
-          <p>© {new Date().getFullYear()} Fitbinary Inc.</p>
-          <div className="flex gap-4">
-            <a href="#" className="hover:text-zinc-300 transition-colors">Privacy</a>
-            <a href="#" className="hover:text-zinc-300 transition-colors">Terms</a>
-          </div>
-        </div>
-      </div>
-
-      {/* Right Panel: Form */}
-      <div className="w-full lg:w-1/2 flex flex-col p-6 sm:p-12 xl:p-24 overflow-y-auto">
-        <div className="w-full max-w-md mx-auto flex flex-col my-auto">
-          {/* Mobile Logo */}
-          <div className="lg:hidden size-10 bg-brand-red rounded-xl flex items-center justify-center text-white font-bold text-xl mb-8">
-            F
-          </div>
-
-          <div className="mb-10">
-            <h2 className="text-3xl font-bold text-zinc-900 tracking-tight mb-2">
-              {step === 1 && "Create your account"}
-              {step === 2 && "Contact details"}
-              {step === 3 && "Secure your account"}
-            </h2>
-            <p className="text-zinc-500">
-              {step === 1 && "Enter your personal details to get started."}
-              {step === 2 && "How should we reach you?"}
-              {step === 3 && "Set a strong password for your new account."}
-            </p>
-          </div>
-
-          {/* Minimal Progress Indicator */}
-          <div className="flex items-center gap-2 mb-8">
-            {[1, 2, 3].map((i) => (
-              <div
-                key={i}
-                className={`h-1.5 flex-1 rounded-full transition-colors duration-300 ${i <= step ? "bg-brand-red" : "bg-zinc-100"
+            {/* Flat Step Indicator */}
+            <div className="flex gap-2 mb-8">
+              {[1, 2, 3].map((i) => (
+                <div
+                  key={i}
+                  className={`h-1 flex-1 transition-all duration-300 ${
+                    i <= step ? "bg-zinc-950" : "bg-zinc-100"
                   }`}
-              />
-            ))}
+                />
+              ))}
+            </div>
+
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+              {step === 1 && (
+                <div className="space-y-4 animate-in fade-in duration-300">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                      <label
+                        htmlFor="first_name"
+                        className="text-[11px] font-bold text-zinc-500 uppercase tracking-wider"
+                      >
+                        First Name
+                      </label>
+                      <Input
+                        id="first_name"
+                        placeholder="John"
+                        className="h-10 text-gray-900 bg-white border-zinc-200 rounded-md focus:ring-0 focus:border-zinc-900 transition-all text-sm"
+                        {...register("first_name")}
+                      />
+                      {errors.first_name && (
+                        <p className="text-[11px] text-red-600 font-medium">
+                          {errors.first_name.message}
+                        </p>
+                      )}
+                    </div>
+                    <div className="space-y-1.5">
+                      <label
+                        htmlFor="last_name"
+                        className="text-[11px] font-bold text-zinc-500 uppercase tracking-wider"
+                      >
+                        Last Name
+                      </label>
+                      <Input
+                        id="last_name"
+                        placeholder="Doe"
+                        className="h-10 text-gray-900 bg-white border-zinc-200 rounded-md focus:ring-0 focus:border-zinc-900 transition-all text-sm"
+                        {...register("last_name")}
+                      />
+                      {errors.last_name && (
+                        <p className="text-[11px] text-red-600 font-medium">
+                          {errors.last_name.message}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label
+                      htmlFor="dob"
+                      className="text-[11px] font-bold text-zinc-500 uppercase tracking-wider"
+                    >
+                      Date of Birth
+                    </label>
+                    <div className="relative">
+                      <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-400" />
+                      <Input
+                        id="dob"
+                        type="date"
+                        className="h-10 pl-9 bg-white border-zinc-200 rounded-md focus:ring-0 focus:border-zinc-900 transition-all text-sm text-zinc-900"
+                        {...register("dob")}
+                      />
+                    </div>
+                    {errors.dob && (
+                      <p className="text-[11px] text-red-600 font-medium">
+                        {errors.dob.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {step === 2 && (
+                <div className="space-y-4 animate-in fade-in duration-300">
+                  <div className="space-y-1.5">
+                    <label
+                      htmlFor="email"
+                      className="text-[11px] font-bold text-zinc-500 uppercase tracking-wider"
+                    >
+                      Email Address
+                    </label>
+                    <div className="relative">
+                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-400" />
+                      <Input
+                        id="email"
+                        type="email"
+                        placeholder="name@company.com"
+                        className="h-10 pl-9 bg-white text-gray-900 border-zinc-200 rounded-md focus:ring-0 focus:border-zinc-900 transition-all text-sm"
+                        {...register("email")}
+                      />
+                    </div>
+                    {errors.email && (
+                      <p className="text-[11px] text-red-600 font-medium">
+                        {errors.email.message}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label
+                      htmlFor="phone"
+                      className="text-[11px] font-bold text-zinc-500 uppercase tracking-wider"
+                    >
+                      Phone Number
+                    </label>
+                    <div className="relative">
+                      <Phone className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-400" />
+                      <Input
+                        id="phone"
+                        placeholder="+1 (555) 000-0000"
+                        className="h-10 pl-9 bg-white text-gray-900 border-zinc-200 rounded-md focus:ring-0 focus:border-zinc-900 transition-all text-sm"
+                        {...register("phone")}
+                      />
+                    </div>
+                    {errors.phone && (
+                      <p className="text-[11px] text-red-600 font-medium">
+                        {errors.phone.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {step === 3 && (
+                <div className="space-y-4 animate-in fade-in duration-300">
+                  <div className="space-y-1.5">
+                    <label
+                      htmlFor="password"
+                      className="text-[11px] font-bold text-zinc-500 uppercase tracking-wider"
+                    >
+                      Password
+                    </label>
+                    <div className="relative">
+                      <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-400" />
+                      <Input
+                        id="password"
+                        type={showPassword ? "text" : "password"}
+                        placeholder="••••••••"
+                        className="h-10 pl-9 pr-9 text-gray-900 bg-white border-zinc-200 rounded-md focus:ring-0 focus:border-zinc-900 transition-all text-sm"
+                        {...register("password")}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-900"
+                      >
+                        {showPassword ? (
+                          <EyeOff className="size-4" />
+                        ) : (
+                          <Eye className="size-4" />
+                        )}
+                      </button>
+                    </div>
+                    {errors.password && (
+                      <p className="text-[11px] text-red-600 font-medium">
+                        {errors.password.message}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label
+                      htmlFor="confirm_password"
+                      className="text-[11px] font-bold text-zinc-500 uppercase tracking-wider"
+                    >
+                      Confirm Password
+                    </label>
+                    <div className="relative">
+                      <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-400" />
+                      <Input
+                        id="confirm_password"
+                        type={showConfirmPassword ? "text" : "password"}
+                        placeholder="••••••••"
+                        className="h-10 pl-9 pr-9 text-gray-900 bg-white border-zinc-200 rounded-md focus:ring-0 focus:border-zinc-900 transition-all text-sm"
+                        {...register("confirm_password")}
+                      />
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setShowConfirmPassword(!showConfirmPassword)
+                        }
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-900"
+                      >
+                        {showConfirmPassword ? (
+                          <EyeOff className="size-4" />
+                        ) : (
+                          <Eye className="size-4" />
+                        )}
+                      </button>
+                    </div>
+                    {errors.confirm_password && (
+                      <p className="text-[11px] text-red-600 font-medium">
+                        {errors.confirm_password.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              <div className="flex items-center justify-between pt-6 border-t border-zinc-100 mt-6 bg-transparent">
+                {step > 1 ? (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    onClick={prevStep}
+                    className="font-bold text-zinc-400 hover:text-zinc-900 h-10 px-4 rounded-md transition-all"
+                  >
+                    Back
+                  </Button>
+                ) : (
+                  <div className="text-sm text-zinc-500">
+                    <a
+                      href="/signin"
+                      className="font-bold text-zinc-900 hover:underline"
+                    >
+                      Sign in instead
+                    </a>
+                  </div>
+                )}
+
+                {step < totalSteps ? (
+                  <Button
+                    type="button"
+                    onClick={nextStep}
+                    className="bg-zinc-900 hover:bg-zinc-800 text-white font-bold h-10 px-6 rounded-md transition-all"
+                  >
+                    Next Step
+                  </Button>
+                ) : (
+                  <Button
+                    type="submit"
+                    disabled={isPending}
+                    className="bg-zinc-950 hover:bg-zinc-800 text-white font-bold h-10 px-6 rounded-md transition-all disabled:opacity-70"
+                  >
+                    {isPending ? "Creating account..." : "Create Account"}
+                  </Button>
+                )}
+              </div>
+            </form>
           </div>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            {step === 1 && (
-              <div className="space-y-5 animate-in fade-in slide-in-from-right-4 duration-500 fill-mode-both">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <label htmlFor="first_name" className="text-sm font-medium text-zinc-700">First Name</label>
-                    <Input
-                      id="first_name"
-                      placeholder="John"
-                      className="h-12 bg-zinc-50/50 border-zinc-200 focus-visible:ring-brand-red/20 focus-visible:border-brand-red transition-all"
-                      {...register("first_name")}
-                    />
-                    {errors.first_name && (
-                      <p className="text-xs text-red-500 font-medium">
-                        {errors.first_name.message}
-                      </p>
-                    )}
-                  </div>
-                  <div className="space-y-2">
-                    <label htmlFor="last_name" className="text-sm font-medium text-zinc-700">Last Name</label>
-                    <Input
-                      id="last_name"
-                      placeholder="Doe"
-                      className="h-12 bg-zinc-50/50 border-zinc-200 focus-visible:ring-brand-red/20 focus-visible:border-brand-red transition-all"
-                      {...register("last_name")}
-                    />
-                    {errors.last_name && (
-                      <p className="text-xs text-red-500 font-medium">
-                        {errors.last_name.message}
-                      </p>
-                    )}
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <label htmlFor="middle_name" className="text-sm font-medium text-zinc-700">Middle Name <span className="text-zinc-400 font-normal">(Optional)</span></label>
-                  <Input
-                    id="middle_name"
-                    placeholder="Middle Name"
-                    className="h-12 bg-zinc-50/50 border-zinc-200 focus-visible:ring-brand-red/20 focus-visible:border-brand-red transition-all"
-                    {...register("middle_name")}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <label htmlFor="dob" className="text-sm font-medium text-zinc-700">Date of Birth</label>
-                  <div className="relative">
-                    <Calendar className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-zinc-400" />
-                    <Input
-                      id="dob"
-                      type="date"
-                      className="h-12 pl-10 bg-zinc-50/50 border-zinc-200 focus-visible:ring-brand-red/20 focus-visible:border-brand-red transition-all text-zinc-700"
-                      {...register("dob")}
-                    />
-                  </div>
-                  {errors.dob && (
-                    <p className="text-xs text-red-500 font-medium">
-                      {errors.dob.message}
-                    </p>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {step === 2 && (
-              <div className="space-y-5 animate-in fade-in slide-in-from-right-4 duration-500 fill-mode-both">
-                <div className="space-y-2">
-                  <label htmlFor="email" className="text-sm font-medium text-zinc-700">Work Email</label>
-                  <div className="relative">
-                    <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-zinc-400" />
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="john.doe@company.com"
-                      className="h-12 pl-10 bg-zinc-50/50 border-zinc-200 focus-visible:ring-brand-red/20 focus-visible:border-brand-red transition-all"
-                      {...register("email")}
-                    />
-                  </div>
-                  {errors.email && (
-                    <p className="text-xs text-red-500 font-medium">
-                      {errors.email.message}
-                    </p>
-                  )}
-                </div>
-
-                <div className="space-y-2">
-                  <label htmlFor="phone" className="text-sm font-medium text-zinc-700">Phone Number</label>
-                  <div className="relative">
-                    <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-zinc-400" />
-                    <Input
-                      id="phone"
-                      placeholder="+1 (555) 000-0000"
-                      className="h-12 pl-10 bg-zinc-50/50 border-zinc-200 focus-visible:ring-brand-red/20 focus-visible:border-brand-red transition-all"
-                      {...register("phone")}
-                    />
-                  </div>
-                  {errors.phone && (
-                    <p className="text-xs text-red-500 font-medium">
-                      {errors.phone.message}
-                    </p>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {step === 3 && (
-              <div className="space-y-5 animate-in fade-in slide-in-from-right-4 duration-500 fill-mode-both">
-                <div className="space-y-2">
-                  <label htmlFor="password" className="text-sm font-medium text-zinc-700">Password</label>
-                  <div className="relative">
-                    <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-zinc-400" />
-                    <Input
-                      id="password"
-                      type={showPassword ? "text" : "password"}
-                      placeholder="••••••••"
-                      className="h-12 pl-10 pr-10 bg-zinc-50/50 border-zinc-200 focus-visible:ring-brand-red/20 focus-visible:border-brand-red transition-all"
-                      {...register("password")}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-700 transition-colors"
-                    >
-                      {showPassword ? (
-                        <EyeOff className="size-4" />
-                      ) : (
-                        <Eye className="size-4" />
-                      )}
-                    </button>
-                  </div>
-                  {errors.password && (
-                    <p className="text-xs text-red-500 font-medium">
-                      {errors.password.message}
-                    </p>
-                  )}
-                </div>
-
-                <div className="space-y-2">
-                  <label htmlFor="confirm_password" className="text-sm font-medium text-zinc-700">Confirm Password</label>
-                  <div className="relative">
-                    <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-zinc-400" />
-                    <Input
-                      id="confirm_password"
-                      type={showConfirmPassword ? "text" : "password"}
-                      placeholder="••••••••"
-                      className="h-12 pl-10 pr-10 bg-zinc-50/50 border-zinc-200 focus-visible:ring-brand-red/20 focus-visible:border-brand-red transition-all"
-                      {...register("confirm_password")}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-700 transition-colors"
-                    >
-                      {showConfirmPassword ? (
-                        <EyeOff className="size-4" />
-                      ) : (
-                        <Eye className="size-4" />
-                      )}
-                    </button>
-                  </div>
-                  {errors.confirm_password && (
-                    <p className="text-xs text-red-500 font-medium">
-                      {errors.confirm_password.message}
-                    </p>
-                  )}
-                </div>
-              </div>
-            )}
-
-            <div className="flex items-center justify-between pt-6 border-t border-zinc-100 mt-8">
-              {step > 1 ? (
-                <Button
-                  type="button"
-                  variant="ghost"
-                  onClick={prevStep}
-                  className="font-medium text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 h-11 px-4"
-                >
-                  <ChevronLeft className="mr-1 size-4" />
-                  Back
-                </Button>
-              ) : (
-                <div className="text-sm text-zinc-500">
-                  Already have an account?{" "}
-                  <a href="/signin" className="font-semibold text-brand-red hover:underline">
-                    Sign in
-                  </a>
-                </div>
-              )}
-
-              {step < totalSteps ? (
-                <Button
-                  type="button"
-                  onClick={nextStep}
-                  className="bg-brand-red hover:bg-brand-red/90 text-white font-semibold h-11 px-6 shadow-sm shadow-brand-red/20 transition-all"
-                >
-                  Next step
-                  <ChevronRight className="ml-1 size-4" />
-                </Button>
-              ) : (
-                <Button
-                  type="submit"
-                  className="bg-zinc-900 hover:bg-zinc-800 text-white font-semibold h-11 px-8 shadow-sm transition-all"
-                >
-                  Create Account
-                </Button>
-              )}
-            </div>
-          </form>
-
-          {/* Footer for mobile only */}
-          <div className="lg:hidden flex items-center justify-center gap-4 text-xs text-zinc-400 mt-12">
-            <a href="#" className="hover:text-zinc-600 transition-colors">Privacy</a>
-            <span>&bull;</span>
-            <a href="#" className="hover:text-zinc-600 transition-colors">Terms</a>
-            <span>&bull;</span>
-            <a href="#" className="hover:text-zinc-600 transition-colors">Help</a>
+          <div className="px-8 py-4 bg-zinc-50 border-t rounded-b-xl border-zinc-100 flex items-center justify-center gap-4">
+            <a
+              href="#"
+              className="text-[10px] font-bold text-zinc-600 hover:text-zinc-600 uppercase tracking-widest"
+            >
+              Privacy
+            </a>
+            <a
+              href="#"
+              className="text-[10px] font-bold text-zinc-600 hover:text-zinc-600 uppercase tracking-widest"
+            >
+              Terms
+            </a>
+            <a
+              href="#"
+              className="text-[10px] font-bold text-zinc-600 hover:text-zinc-600 uppercase tracking-widest"
+            >
+              Support
+            </a>
           </div>
         </div>
+
+        <p className="text-center text-[10px] font-bold text-zinc-600 uppercase tracking-[0.2em] mt-8">
+          © {new Date().getFullYear()} Fitbinary Inc.
+        </p>
       </div>
     </div>
   );

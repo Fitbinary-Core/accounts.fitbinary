@@ -10,7 +10,7 @@ export default function BranchCreatePage() {
       <div className="w-full mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
         <div className="flex items-center gap-4">
           <Link
-            href="/branches/list"
+            href="/branches"
             className="size-10 bg-zinc-100 rounded-xl flex items-center justify-center text-zinc-500 hover:bg-zinc-200 transition-all"
           >
             <MoveLeft className="size-5" />
@@ -61,7 +61,7 @@ export default function BranchCreatePage() {
 
           <div className="flex items-center justify-end gap-3 pt-4 border-t border-zinc-50">
             <Link
-              href="/branches/list"
+              href="/branches"
               className="h-12 px-6 bg-zinc-100 text-zinc-600 text-xs font-bold uppercase tracking-widest rounded-xl hover:bg-zinc-200 transition-all"
             >
               Cancel
