@@ -1,10 +1,5 @@
 import type { NextConfig } from "next";
 
-const BACKEND_URL =
-  process.env.NODE_ENV === "development"
-    ? "https://localhost:4200/api/v1"
-    : "https://admin.fitbinary.com/api/v1";
-
 const nextConfig: NextConfig = {
   reactCompiler: true,
 
@@ -14,7 +9,10 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/api/:path*",
-        destination: `${BACKEND_URL}/:path*`,
+        destination:
+          process.env.NODE_ENV === "development"
+            ? "http://localhost:4200/api/v1/:path*"
+            : "https://admin.fitbinary.com/api/v1/:path*",
       },
     ];
   },
