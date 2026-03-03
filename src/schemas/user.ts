@@ -19,34 +19,31 @@ export interface User {
   organization: {
     _id: string;
     business_name: string;
+    business_logo?: string;
   };
   branches: Array<{
     _id: string;
     branch_name: string;
     branch_location: string;
   }>;
-  branch?:
-  | {
+  app: {
     _id: string;
-    branch_name: string;
-    branch_location: string;
-  }
-  | string;
-  role:
-  | {
+    name: string;
+    app_slug: string;
+  };
+  role: {
     _id: string;
     role_name: string;
     role_key: string;
-    permissions: Array<{
+    permissions?: Array<{
       _id: string;
       label: string;
       key: string;
     }>;
-  }
-  | string;
+    role_scope?: "ORGANIZATION" | "BRANCH";
+  };
   createdAt: string;
   updatedAt: string;
-  app?: string | any;
 }
 
 export interface ApiResponse<T> {

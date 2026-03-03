@@ -46,7 +46,7 @@ export default function UserDetailPage() {
           The user you are looking for does not exist or has been deleted.
         </p>
         <Button
-          onClick={() => router.push("/user-management")}
+          onClick={() => router.push("/user-management/users")}
           className="mt-6 bg-red-600 hover:bg-red-700 text-white border-none px-6"
         >
           Back to Users
