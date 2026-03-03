@@ -154,7 +154,7 @@ export default function OrganizationCreatePage() {
           </div>
         </div>
 
-        <div className="flex flex-col gap-6">
+        <div className="w-full flex flex-col gap-6">
           {/* Progress Header */}
           <div className="bg-white border border-zinc-200 rounded-md p-4 shadow-sm">
             <nav className="relative flex flex-wrap lg:flex-nowrap items-center justify-between">
@@ -172,7 +172,7 @@ export default function OrganizationCreatePage() {
                       idx !== steps.length - 1 && "after:content-[''] after:hidden lg:after:block after:h-px after:flex-1 after:bg-zinc-100 after:mx-4",
                     )}
                   >
-                    <div className="flex items-center gap-3">
+                    <div className="flex flex-col items-center">
                       <div
                         className={cn(
                           "flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border-2 transition-all duration-500",
@@ -189,10 +189,10 @@ export default function OrganizationCreatePage() {
                           <Icon className="h-5 w-5" />
                         )}
                       </div>
-                      <div className="hidden sm:block">
+                      <div className="hidden sm:block mt-2">
                         <span
                           className={cn(
-                            "text-[10px] font-bold uppercase tracking-widest block",
+                            "text-[10px] text-center font-bold uppercase tracking-widest block",
                             isActive ? "text-brand-red" : "text-gray-400",
                           )}
                         >
@@ -216,10 +216,10 @@ export default function OrganizationCreatePage() {
 
           {/* Main Content Area */}
           <main className="w-full">
-            <div className="bg-white border border-zinc-200 rounded-md p-6 shadow-sm min-h-125">
+            <div className="bg-white border border-zinc-200 rounded-md shadow-sm min-h-125">
               {currentStep === CreateStep.APP_SELECTION && (
                 <div className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:p-4">
                     {applications.map((app) => (
                       <button
                         key={app._id}
@@ -227,12 +227,12 @@ export default function OrganizationCreatePage() {
                         className="group relative bg-zinc-50 border border-zinc-100 rounded-xl p-6 text-left transition-all hover:bg-white hover:shadow-xl hover:cursor-pointer hover:border-brand-red/20 active:scale-[0.98]"
                       >
                         <div className="flex items-center gap-4 mb-4">
-                          <div className="size-14 rounded-2xl bg-white flex items-center justify-center shadow-sm overflow-hidden group-hover:scale-110 transition-transform border border-zinc-100">
+                          <div className="size-14 rounded-full bg-white flex items-center justify-center shadow-sm overflow-hidden group-hover:scale-110 transition-transform border border-zinc-100">
                             {app.icon ? (
                               <img
                                 src="/Icon.png"
                                 alt={app.name}
-                                className="size-full object-cover p-2"
+                                className="size-full object-cover"
                               />
                             ) : (
                               <LayoutGrid className="size-7 text-zinc-400" />

@@ -147,7 +147,7 @@ export const PaymentSection = ({
                                     className={`p-2 rounded-sm ${provider === "ESEWA" ? "bg-green-600 text-white" : "bg-gray-100 text-gray-400"}`}
                                 >
                                     <Image
-                                        src={"/Esewa_logo.png"}
+                                        src={"/public/Esewa_logo.png"}
                                         width={40}
                                         height={40}
                                         alt="Pay with esewa"

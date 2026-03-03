@@ -45,3 +45,19 @@ export const createCheckoutSession = async (data: {
         throw error;
     }
 };
+export const getSessionStatus = async (sessionId: string) => {
+    try {
+        const url = BILLING_URLS.status(sessionId);
+        const response = await apiClient(url);
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || "Failed to get session status");
+        }
+
+        return data;
+    } catch (error) {
+        console.log("Error: ", error);
+        throw error;
+    }
+};
