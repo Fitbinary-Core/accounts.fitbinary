@@ -89,12 +89,10 @@ export default function EditBranchPage() {
       <DashboardBreadcrumb
         title="Edit Branch"
         description="Modify the details of your business location."
-        icon={Building2}
-        items={[{ label: "Branches" }, { label: "Edit" }]}
         actions={
           <Button
             onClick={() => router.push("/branches")}
-            className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-5 py-5.5 rounded-sm transition-all shadow-md shadow-red-200 border-none cursor-pointer"
+            className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-5 py-5.5 rounded-sm transition-all border-none cursor-pointer"
           >
             <ArrowLeft size={16} />
             <span>Cancel</span>

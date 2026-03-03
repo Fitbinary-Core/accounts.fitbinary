@@ -3,6 +3,7 @@
 import { userProfile } from "@/services/auth/auth.service";
 import { useQuery } from "@tanstack/react-query";
 import { User, Mail, Phone, Calendar, Loader2 } from "lucide-react";
+import DashboardBreadcrumb from "@/components/common/DashboardBreadcrumb";
 import { DashboardLayout } from "@/components/dashboard/Layout";
 
 export default function PersonalPage() {
@@ -16,14 +17,10 @@ export default function PersonalPage() {
   return (
     <DashboardLayout>
       <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-        <div>
-          <h1 className="text-3xl font-black text-zinc-900 tracking-tight mb-2">
-            Personal Information
-          </h1>
-          <p className="text-zinc-500">
-            Manage the basic information used across the Fitbinary dashboard.
-          </p>
-        </div>
+        <DashboardBreadcrumb
+          title="Personal Information"
+          description="Manage the basic information used across the Fitbinary dashboard."
+        />
 
         <div className="grid gap-6">
           <div className="bg-white border border-zinc-200 rounded-2xl overflow-hidden">
@@ -65,10 +62,10 @@ export default function PersonalPage() {
                       label: "Birthday",
                       value: tenant?.dob
                         ? new Date(tenant.dob).toLocaleDateString("en-US", {
-                            month: "long",
-                            day: "numeric",
-                            year: "numeric",
-                          })
+                          month: "long",
+                          day: "numeric",
+                          year: "numeric",
+                        })
                         : "---",
                       icon: Calendar,
                     },

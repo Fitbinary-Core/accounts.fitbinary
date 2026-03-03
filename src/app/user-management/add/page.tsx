@@ -117,12 +117,10 @@ export default function AddUserPage() {
       <DashboardBreadcrumb
         title="Add New User"
         description="Register a new member to your organization."
-        items={[{ label: "Users" }, { label: "Add User" }]}
-        icon={UserPlus}
         actions={
           <Button
             onClick={() => router.push("/user-management")}
-            className="flex items-center bg-red-600 hover:bg-red-700 text-white cursor-pointer gap-2 px-5 py-5.5 rounded-sm transition-all shadow-md shadow-red-200 border-none"
+            className="flex items-center bg-red-600 hover:bg-red-700 text-white cursor-pointer gap-2 px-5 py-5.5 rounded-sm transition-all  border-none"
           >
             <ArrowLeft size={16} />
             <span>Back to Users</span>

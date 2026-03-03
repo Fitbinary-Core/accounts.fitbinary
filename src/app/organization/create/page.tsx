@@ -219,7 +219,7 @@ export default function OrganizationCreatePage() {
             <div className="bg-white border border-zinc-200 rounded-md shadow-sm min-h-125">
               {currentStep === CreateStep.APP_SELECTION && (
                 <div className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:p-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
                     {applications.map((app) => (
                       <button
                         key={app._id}
@@ -280,6 +280,7 @@ export default function OrganizationCreatePage() {
               {currentStep === CreateStep.BRANCH_SETUP && !!onboardingData && (
                 <BranchSetup
                   branch_details={onboardingData.branch_details}
+                  selectedApp={selectedApp}
                   onStepComplete={nextStep}
                 />
               )}

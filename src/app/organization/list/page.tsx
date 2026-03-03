@@ -133,7 +133,7 @@ export default function OrganizationListPage() {
                       {/* Business Entity */}
                       <td className="p-4">
                         <div className="flex items-center gap-4">
-                          <div className="relative size-14 shrink-0 rounded-2xl bg-zinc-50 border border-zinc-100 flex items-center justify-center overflow-hidden shadow-sm group-hover:scale-105 transition-transform duration-500">
+                          <div className="relative size-10 shrink-0 rounded-full bg-zinc-50 border border-zinc-100 flex items-center justify-center overflow-hidden shadow-sm group-hover:scale-105 transition-transform duration-500">
                             {org.business_logo ? (
                               <img
                                 src={org.business_logo}
@@ -155,7 +155,7 @@ export default function OrganizationListPage() {
                               {org.business_name}
                             </span>
                             <div className="flex items-center gap-2 mt-1">
-                              <span className="text-[10px] text-zinc-400 font-bold uppercase tracking-wider truncate max-w-37.5">
+                              <span className="text-[10px] text-zinc-600 font-bold tracking-wider truncate max-w-37.5">
                                 {org.business_email}
                               </span>
                               <span className="size-1 bg-zinc-200 rounded-full" />

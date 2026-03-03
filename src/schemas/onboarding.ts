@@ -202,6 +202,7 @@ export interface Feature {
 
 export interface BranchDetailsProps {
     branch_details: BranchDetails;
+    selectedApp?: any;
 }
 
 export interface BranchInput {

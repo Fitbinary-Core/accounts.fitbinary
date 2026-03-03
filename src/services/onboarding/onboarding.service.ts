@@ -130,7 +130,10 @@ export const getLogoPresignedUrl = async (key: string) => {
   }
 };
 
-export const startFreeTrial = async (planId: string | undefined) => {
+export const startFreeTrial = async (
+  planId: string | undefined,
+  appId?: string,
+) => {
   try {
     const url = BILLING_URLS.start_free_trail;
     const response = await apiClient(url, {
@@ -138,7 +141,7 @@ export const startFreeTrial = async (planId: string | undefined) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ planId, provider: "TRAIL" }),
+      body: JSON.stringify({ planId, provider: "TRIAL", appId }),
     });
 
     const data = await response.json();

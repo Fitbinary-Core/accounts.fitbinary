@@ -93,6 +93,7 @@ const PlansAndPricing = ({
       const response = await createCheckoutSession({
         planId: selectedPlan._id,
         provider: provider,
+        appId: selectedApp?._id,
       });
 
       return response;
@@ -134,7 +135,10 @@ const PlansAndPricing = ({
 
   const handleConfirmFreeTrial = async () => {
     try {
-      const response = await startFreeTrial(selectedPlan?._id);
+      const response = await startFreeTrial(
+        selectedPlan?._id,
+        selectedApp?._id,
+      );
       if (response.message) {
         toast.success(response.message);
       } else {

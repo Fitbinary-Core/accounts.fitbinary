@@ -13,6 +13,7 @@ import { BranchDetailsProps } from "@/schemas/onboarding";
 
 const BranchSetup = ({
   branch_details,
+  selectedApp,
   onStepComplete,
 }: BranchDetailsProps & { onStepComplete?: () => void }) => {
   const [loading, setLoading] = useState(false);
@@ -26,7 +27,9 @@ const BranchSetup = ({
     defaultValues: {
       branch_name: branch_details?.main_branch?.branch_name || "",
       branch_location: branch_details?.main_branch?.branch_location || "",
-      branch_type: "Head Office" as any,
+      branch_type: (branch_details?.main_branch?.branch_type ||
+        "Head Office") as any,
+      application: selectedApp?._id || "",
       is_main: true,
     },
   });
@@ -42,9 +45,6 @@ const BranchSetup = ({
       if (onStepComplete) {
         onStepComplete();
       }
-      if (onStepComplete) {
-        onStepComplete();
-      }
     } catch (error: any) {
       toast.error(error.message || "Failed to setup branch");
     } finally {
@@ -53,7 +53,7 @@ const BranchSetup = ({
   };
 
   return (
-    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 p-4">
       {/* Header Section */}
       <div className="space-y-2">
         <div className="flex items-center gap-3">

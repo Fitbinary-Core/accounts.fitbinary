@@ -22,6 +22,7 @@ export const getSubscriptionList = async (appId?: string) => {
 export const createCheckoutSession = async (data: {
     planId: string;
     provider: string;
+    appId?: string;
 }) => {
     try {
         const url = BILLING_URLS.checkout;

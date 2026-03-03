@@ -194,8 +194,6 @@ const AllUsersPage = () => {
         <DashboardBreadcrumb
           title="Users Management"
           description="View and manage users who have access to your system."
-          items={[{ label: "Users" }]}
-          icon={Users}
           actions={
             <div className="flex items-center gap-3">
               <Button
@@ -210,7 +208,7 @@ const AllUsersPage = () => {
               </Button>
               <Button
                 onClick={() => router.push("/user-management/add")}
-                className="bg-red-600 cursor-pointer hover:bg-red-700 text-white flex items-center gap-2 px-5 py-5.5 rounded-sm transition-all shadow-md shadow-red-200 border-none"
+                className="bg-red-600 cursor-pointer hover:bg-red-700 text-white flex items-center gap-2 px-5 py-5.5 rounded-sm transition-all border-none"
               >
                 <UserPlus size={18} />
                 <span>Create User</span>

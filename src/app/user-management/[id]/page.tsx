@@ -60,8 +60,6 @@ export default function UserDetailPage() {
       <DashboardBreadcrumb
         title="User Profile"
         description="Detailed view of user account and permissions."
-        items={[{ label: "Users" }, { label: "User Detail" }]}
-        icon={UserIcon}
         actions={
           <div className="flex gap-3">
             <Button
@@ -196,8 +194,8 @@ export default function UserDetailPage() {
             </h3>
 
             {typeof user.role === "object" &&
-            user.role.permissions &&
-            user.role.permissions.length > 0 ? (
+              user.role.permissions &&
+              user.role.permissions.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                 {user.role.permissions.map((perm: any) => (
                   <div

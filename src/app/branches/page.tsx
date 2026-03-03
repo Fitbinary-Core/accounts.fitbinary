@@ -71,11 +71,9 @@ export default function BranchesListingPage() {
         <DashboardBreadcrumb
           title="Branches"
           description="Manage your business branches across different locations."
-          items={[{ label: "Branches" }]}
-          icon={Building2}
           actions={
-            <Link href="/branches/add">
-              <Button className="bg-red-600 hover:bg-red-700 text-white flex items-center gap-2 px-5 py-5.5 rounded-sm cursor-pointer transition-all shadow-md shadow-red-200 border-none">
+            <Link href="/branches/create">
+              <Button className="bg-red-600 hover:bg-red-700 text-white flex items-center gap-2 px-5 py-5.5 rounded-sm cursor-pointer transition-all border-none">
                 <Plus size={18} />
                 <span>Add New Branch</span>
               </Button>
@@ -83,7 +81,7 @@ export default function BranchesListingPage() {
           }
         />
 
-        <div className="p-4 w-full mx-auto">
+        <div className="w-full mx-auto">
           {branches.length === 0 ? (
             <div className="bg-white rounded-2xl border border-gray-100 p-12 text-center shadow-sm">
               <div className="bg-red-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -96,11 +94,8 @@ export default function BranchesListingPage() {
                 You haven&apos;t added any branches yet. Start by adding your
                 first branch to manage your locations.
               </p>
-              <Link href="/branches/add" className="mt-6 inline-block">
-                <Button
-                  variant="outline"
-                  className="border-red-200 text-red-600 hover:bg-red-50"
-                >
+              <Link href="/branches/create" className="mt-6 inline-block">
+                <Button className="text-white py-5 cursor-pointer rounded-sm bg-red-500 transition-colors duration-300 hover:bg-red-600">
                   Create First Branch
                 </Button>
               </Link>
@@ -137,7 +132,10 @@ export default function BranchesListingPage() {
                   </h3>
 
                   <div className="flex items-start gap-2 text-gray-500 text-sm mb-4">
-                    <MapPin size={16} className="mt-0.5 shrink-0 text-red-500" />
+                    <MapPin
+                      size={16}
+                      className="mt-0.5 shrink-0 text-red-500"
+                    />
                     <span>{branch.branch_location}</span>
                   </div>
 

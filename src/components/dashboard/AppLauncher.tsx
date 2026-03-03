@@ -65,7 +65,7 @@ export function AppLauncher() {
                   <Sparkles className="size-4 text-brand-red fill-brand-red" />
                 </div>
                 <h3 className="text-sm font-black text-zinc-900 uppercase tracking-widest">
-                  Ecosystem Apps
+                  Fitbinary Apps
                 </h3>
               </div>
             </div>
