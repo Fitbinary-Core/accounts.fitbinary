@@ -202,16 +202,16 @@ const AllUsersPage = () => {
                 onClick={() =>
                   queryClient.invalidateQueries({ queryKey: ["users"] })
                 }
-                className="h-11 w-11 rounded-sm border-gray-200 hover:bg-gray-50 active:scale-95 transition-all"
+                className="h-9 w-9 rounded-sm border-gray-200 hover:bg-gray-50 active:scale-95 transition-all shadow-none"
               >
-                <RefreshCw size={18} className="text-gray-500" />
+                <RefreshCw size={16} className="text-gray-500" />
               </Button>
               <Button
                 onClick={() => router.push("/user-management/add")}
-                className="bg-red-600 cursor-pointer hover:bg-red-700 text-white flex items-center gap-2 px-5 py-5.5 rounded-sm transition-all border-none"
+                className="bg-zinc-900 cursor-pointer hover:bg-black text-white flex items-center gap-2 px-4 py-2 h-9 rounded-sm transition-all border-none shadow-sm"
               >
-                <UserPlus size={18} />
-                <span>Create User</span>
+                <UserPlus size={16} />
+                <span className="text-sm">Create User</span>
               </Button>
             </div>
           }
@@ -235,30 +235,30 @@ const AllUsersPage = () => {
             </div>
 
             {isLoading ? (
-              <div className="flex flex-col items-center justify-center h-[50vh] bg-white rounded-md border border-gray-100 shadow-sm">
-                <Loader2 className="h-10 w-10 animate-spin text-red-600 mb-4" />
-                <p className="text-gray-500 font-medium animate-pulse">
+              <div className="flex flex-col items-center justify-center h-[50vh] bg-white rounded-sm border border-gray-100 shadow-none">
+                <Loader2 className="h-8 w-8 animate-spin text-zinc-900 mb-4" />
+                <p className="text-zinc-500 text-xs font-bold uppercase tracking-widest animate-pulse">
                   Fetching users...
                 </p>
               </div>
             ) : users.length === 0 ? (
-              <div className="bg-white rounded-2xl border border-gray-100 p-16 text-center shadow-sm">
-                <div className="bg-red-50 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Users className="text-red-600" size={40} />
+              <div className="bg-white rounded-sm border border-gray-100 p-12 text-center shadow-none">
+                <div className="bg-gray-50 w-16 h-16 rounded-sm flex items-center justify-center mx-auto mb-4 border border-gray-100">
+                  <Users className="text-zinc-400" size={32} />
                 </div>
-                <h2 className="text-2xl font-black text-gray-900 tracking-tight">
+                <h2 className="text-xl font-bold text-zinc-900">
                   No Users Found
                 </h2>
-                <p className="text-gray-500 mt-2 max-w-sm mx-auto font-medium">
+                <p className="text-sm text-zinc-500 mt-1 max-w-xs mx-auto">
                   Start by creating your team members to collaborate on the
                   platform.
                 </p>
                 <Button
                   onClick={() => router.push("/user-management/add")}
-                  className="mt-8 bg-red-600 hover:bg-red-700 text-white border-none px-8 py-6 rounded-md shadow-lg shadow-red-100 transition-all active:scale-95"
+                  className="mt-6 bg-zinc-900 hover:bg-black text-white border-none px-6 py-2 h-10 rounded-sm shadow-sm transition-all active:scale-95"
                 >
-                  <UserPlus size={18} className="mr-2" />
-                  <span>Create First User</span>
+                  <UserPlus size={16} className="mr-2" />
+                  <span className="text-sm">Create First User</span>
                 </Button>
               </div>
             ) : (
@@ -266,23 +266,23 @@ const AllUsersPage = () => {
                 <div className="overflow-x-auto">
                   <table className="w-full text-left border-collapse">
                     <thead>
-                      <tr className="bg-gray-50/50 border-b border-gray-100">
-                        <th className="px-6 py-5 text-[11px] font-black uppercase tracking-widest text-gray-400">
+                      <tr className="bg-gray-50 border-b border-gray-200">
+                        <th className="px-4 py-3 text-[10px] font-bold uppercase tracking-wider text-gray-500">
                           User & Organization
                         </th>
-                        <th className="px-6 py-5 text-[11px] font-black uppercase tracking-widest text-gray-400">
+                        <th className="px-4 py-3 text-[10px] font-bold uppercase tracking-wider text-gray-500">
                           Contact
                         </th>
-                        <th className="px-6 py-5 text-[11px] font-black uppercase tracking-widest text-gray-400">
+                        <th className="px-4 py-3 text-[10px] font-bold uppercase tracking-wider text-gray-500">
                           App
                         </th>
-                        <th className="px-6 py-5 text-[11px] font-black uppercase tracking-widest text-gray-400">
+                        <th className="px-4 py-3 text-[10px] font-bold uppercase tracking-wider text-gray-500">
                           Branch
                         </th>
-                        <th className="px-6 py-5 text-[11px] text-center font-black uppercase tracking-widest text-gray-400">
+                        <th className="px-4 py-3 text-[10px] text-center font-bold uppercase tracking-wider text-gray-500">
                           Role
                         </th>
-                        <th className="px-6 py-5 text-[11px] font-black uppercase tracking-widest text-gray-400 text-right">
+                        <th className="px-4 py-3 text-[10px] font-bold uppercase tracking-wider text-gray-500 text-right">
                           Actions
                         </th>
                       </tr>
@@ -291,17 +291,17 @@ const AllUsersPage = () => {
                       {users.map((user: User) => (
                         <tr
                           key={user._id}
-                          className="hover:bg-gray-50/50 transition-colors group"
+                          className="hover:bg-gray-50/30 transition-colors border-b border-gray-100"
                         >
                           {/* Name & ID */}
-                          <td className="px-6 py-5">
-                            <div className="flex items-center gap-4">
-                              <div className="h-11 w-11 rounded-xl bg-red-50 flex items-center justify-center text-red-600 font-black border border-red-100 group-hover:bg-red-600 group-hover:text-white transition-all duration-300">
+                          <td className="px-4 py-3">
+                            <div className="flex items-center gap-3">
+                              <div className="h-9 w-9 rounded-sm bg-gray-100 flex items-center justify-center text-gray-600 font-bold border border-gray-200">
                                 {user.first_name[0]}
                                 {user.last_name[0]}
                               </div>
                               <div>
-                                <p className="text-sm font-bold text-gray-900 group-hover:text-red-600 transition-colors">
+                                <p className="text-sm font-semibold text-gray-900 leading-none">
                                   {user.first_name} {user.middle_name}{" "}
                                   {user.last_name}
                                 </p>
@@ -311,23 +311,23 @@ const AllUsersPage = () => {
                                       <img
                                         src={user.organization.business_logo}
                                         alt=""
-                                        className="h-3.5 w-3.5 rounded-full object-cover border border-gray-100"
+                                        className="h-3 w-3 rounded-sm object-cover border border-gray-100"
                                       />
                                     )}
-                                    <span className="text-[10px] text-gray-500 font-bold uppercase tracking-tight">
+                                    <span className="text-[10px] text-gray-500 font-semibold uppercase tracking-tight">
                                       {user.organization?.business_name}
                                     </span>
                                   </div>
                                   <div
                                     onClick={() => handleCopyId(user._id)}
-                                    className="flex items-center gap-1 group/id cursor-pointer w-fit"
+                                    className="flex items-center gap-1 cursor-pointer w-fit"
                                   >
                                     <p className="text-[9px] text-gray-400 font-medium">
-                                      ID: {user._id.slice(0, 8)}...
+                                      ID: {user._id.slice(0, 8)}
                                     </p>
                                     <Copy
                                       size={8}
-                                      className="text-gray-400 opacity-0 group-hover/id:opacity-100 transition-opacity hover:text-red-600"
+                                      className="text-gray-400 hover:text-zinc-900"
                                     />
                                   </div>
                                 </div>
@@ -336,33 +336,33 @@ const AllUsersPage = () => {
                           </td>
 
                           {/* Contact */}
-                          <td className="px-6 py-5">
-                            <div className="space-y-1.5">
-                              <div className="flex items-center gap-2 text-xs text-gray-600 font-medium">
-                                <Mail size={12} className="text-red-500/70" />
+                          <td className="px-4 py-3">
+                            <div className="space-y-1">
+                              <div className="flex items-center gap-2 text-[11px] text-gray-500">
+                                <Mail size={11} className="text-gray-400" />
                                 <span>{user.email}</span>
                               </div>
-                              <div className="flex items-center gap-2 text-xs text-gray-600 font-medium">
-                                <Phone size={12} className="text-red-500/70" />
+                              <div className="flex items-center gap-2 text-[11px] text-gray-500">
+                                <Phone size={11} className="text-gray-400" />
                                 <span>{user.phone}</span>
                               </div>
                             </div>
                           </td>
 
                           {/* App */}
-                          <td className="px-6 py-5">
-                            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-50 text-red-700 text-[10px] font-black uppercase tracking-widest border border-red-100 shadow-sm transition-all group-hover:bg-red-600 group-hover:text-white">
+                          <td className="px-4 py-3">
+                            <span className="inline-flex items-center px-2 py-0.5 rounded-sm bg-gray-50 text-gray-600 text-[10px] font-bold uppercase tracking-wide border border-gray-200">
                               {user.app?.name || "N/A"}
                             </span>
                           </td>
 
                           {/* Org & Branch */}
-                          <td className="px-6 py-5">
+                          <td className="px-4 py-3">
                             <div className="space-y-1">
                               {user.branches && user.branches.length > 0 ? (
                                 user.branches.length === 1 ? (
-                                  <div className="flex items-center gap-1 text-[10px] text-gray-500 font-bold uppercase tracking-wide">
-                                    <span className="h-1 w-1 bg-red-400 rounded-full" />
+                                  <div className="flex items-center gap-1.5 text-[10px] text-gray-500 font-semibold uppercase">
+                                    <MapPin size={10} className="text-gray-400" />
                                     {user.branches[0].branch_name}
                                   </div>
                                 ) : (
@@ -371,24 +371,23 @@ const AllUsersPage = () => {
                                       setSelectedBranchesUser(user);
                                       setIsBranchModalOpen(true);
                                     }}
-                                    className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-blue-50 text-blue-700 text-[10px] font-black uppercase tracking-widest border border-blue-100 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all cursor-pointer shadow-sm"
+                                    className="flex items-center gap-1 px-2 py-0.5 rounded-sm bg-gray-50 text-gray-600 text-[10px] font-bold uppercase tracking-wide border border-gray-200 hover:bg-gray-100 transition-all cursor-pointer"
                                   >
-                                    <Building2 size={10} strokeWidth={3} />
-                                    View Branches ({user.branches.length})
+                                    <Building2 size={10} strokeWidth={2} />
+                                    Branches ({user.branches.length})
                                   </button>
                                 )
                               ) : (
-                                <div className="flex items-center gap-1 text-[10px] text-gray-400 font-bold uppercase tracking-wide italic">
-                                  No branches assigned
+                                <div className="text-[10px] text-gray-400 font-semibold uppercase italic">
+                                  Unassigned
                                 </div>
                               )}
                             </div>
                           </td>
 
                           {/* Role Badge */}
-                          <td className="px-6 py-5 text-center">
-                            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-100 text-gray-700 text-[10px] font-black uppercase tracking-widest border border-gray-200 shadow-sm transition-all group-hover:bg-red-50 group-hover:text-red-700 group-hover:border-red-100">
-                              <Shield size={10} strokeWidth={3} />
+                          <td className="px-4 py-3 text-center">
+                            <span className="inline-flex items-center px-2 py-0.5 rounded-sm bg-blue-50 text-blue-700 text-[10px] font-bold uppercase tracking-wide border border-blue-100">
                               {typeof user.role === "object"
                                 ? user.role.role_name
                                 : user.role}
@@ -396,29 +395,29 @@ const AllUsersPage = () => {
                           </td>
 
                           {/* Actions */}
-                          <td className="p-4 text-right">
-                            <div className="flex items-center justify-end gap-2 duration-300">
+                          <td className="px-4 py-3 text-right">
+                            <div className="flex items-center justify-end gap-1.5">
                               <button
                                 onClick={() => handleDetail(user._id)}
-                                className="p-2.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl border border-transparent hover:border-blue-100 transition-all shadow-sm active:scale-90 cursor-pointer"
+                                className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-sm border border-transparent hover:border-blue-100 transition-all active:scale-95 cursor-pointer"
                               >
-                                <Eye size={16} />
+                                <Eye size={14} />
                               </button>
                               <button
                                 onClick={() => handleEdit(user._id)}
-                                className="p-2.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-xl border border-transparent hover:border-red-100 transition-all shadow-sm active:scale-90 cursor-pointer"
+                                className="p-1.5 text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 rounded-sm border border-transparent hover:border-zinc-200 transition-all active:scale-95 cursor-pointer"
                               >
-                                <Edit2 size={16} />
+                                <Edit2 size={14} />
                               </button>
                               <button
                                 onClick={() => handleDelete(user._id)}
                                 disabled={deleteMutation.isPending}
-                                className="p-2.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-xl border border-transparent hover:border-red-100 transition-all shadow-sm active:scale-90 cursor-pointer disabled:opacity-50"
+                                className="p-1.5 text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 rounded-sm border border-transparent hover:border-zinc-200 transition-all active:scale-95 cursor-pointer disabled:opacity-50"
                               >
                                 {deleteMutation.isPending ? (
-                                  <Loader2 size={16} className="animate-spin" />
+                                  <Loader2 size={14} className="animate-spin" />
                                 ) : (
-                                  <Trash2 size={16} />
+                                  <Trash2 size={14} />
                                 )}
                               </button>
                             </div>
@@ -449,8 +448,8 @@ const AllUsersPage = () => {
             onClose={() => setIsDeleteModalOpen(false)}
             onConfirm={confirmDelete}
             title="Delete User"
-            description="Are you sure you want to delete this user account? This action cannot be undone and the user will lose all access to the system."
-            confirmText="Delete User"
+            description="Are you sure you want to delete this user account? This action cannot be undone."
+            confirmText="Delete"
             cancelText="Cancel"
             isLoading={deleteMutation.isPending}
             variant="danger"
@@ -465,31 +464,30 @@ const AllUsersPage = () => {
             }}
             title={
               <div className="flex flex-col">
-                <span className="text-xl font-black">Assigned Branches</span>
+                <span className="text-lg font-bold">Assigned Branches</span>
                 {selectedBranchesUser && (
-                  <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">
-                    User: {selectedBranchesUser.first_name}{" "}
-                    {selectedBranchesUser.last_name}
+                  <span className="text-[10px] text-gray-500 font-semibold uppercase tracking-wider mt-0.5">
+                    User: {selectedBranchesUser.first_name} {selectedBranchesUser.last_name}
                   </span>
                 )}
               </div>
             }
             maxWidth="md"
           >
-            <div className="py-6 space-y-4 pr-1 text-left">
+            <div className="py-4 space-y-2 pr-1 text-left">
               {selectedBranchesUser?.branches?.map((branch) => (
                 <div
                   key={branch._id}
-                  className="group flex items-start gap-4 p-4 rounded-xl border border-gray-100 hover:border-red-100 hover:bg-red-50/30 transition-all duration-300"
+                  className="flex items-start gap-3 p-3 rounded-sm border border-gray-100 hover:bg-gray-50 transition-colors"
                 >
-                  <div className="h-10 w-10 shrink-0 rounded-lg bg-gray-50 flex items-center justify-center text-gray-400 group-hover:bg-red-100 group-hover:text-red-600 transition-colors">
-                    <MapPin size={18} />
+                  <div className="h-8 w-8 shrink-0 rounded-sm bg-gray-100 flex items-center justify-center text-gray-500">
+                    <MapPin size={16} />
                   </div>
-                  <div className="space-y-1">
-                    <p className="font-bold text-gray-900 group-hover:text-red-700 transition-colors">
+                  <div className="space-y-0.5">
+                    <p className="text-sm font-bold text-gray-900">
                       {branch.branch_name}
                     </p>
-                    <p className="text-xs text-gray-500 font-medium leading-relaxed">
+                    <p className="text-[11px] text-gray-500 font-medium">
                       {branch.branch_location}
                     </p>
                   </div>
