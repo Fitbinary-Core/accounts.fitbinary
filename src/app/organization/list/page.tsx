@@ -5,10 +5,8 @@ import { get_organization_list } from "@/services/organization/organization.serv
 import { useQuery } from "@tanstack/react-query";
 import {
   Building2,
-  Plus,
   Search,
   Edit2,
-  Loader2,
   User,
   Globe,
   Calendar,
@@ -54,7 +52,7 @@ export default function OrganizationListPage() {
         </div>
 
         <div className="bg-white border border-zinc-200 rounded-lg overflow-hidden shadow-sm">
-          <div className="p-6 border-b border-zinc-100 flex items-center justify-between gap-4 bg-zinc-50/30">
+          <div className="p-4 border-b border-zinc-100 flex items-center justify-between gap-4 bg-zinc-50/30">
             <div className="relative flex-1 max-w-md">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-zinc-400" />
               <input
@@ -133,7 +131,7 @@ export default function OrganizationListPage() {
                       className="group hover:bg-zinc-50/80 transition-all duration-300"
                     >
                       {/* Business Entity */}
-                      <td className="px-8 py-6">
+                      <td className="p-4">
                         <div className="flex items-center gap-4">
                           <div className="relative size-14 shrink-0 rounded-2xl bg-zinc-50 border border-zinc-100 flex items-center justify-center overflow-hidden shadow-sm group-hover:scale-105 transition-transform duration-500">
                             {org.business_logo ? (
@@ -253,18 +251,6 @@ export default function OrganizationListPage() {
                 </tbody>
               </table>
             )}
-          </div>
-
-          <div className="p-6 bg-zinc-50/50 border-t border-zinc-100 flex items-center justify-between">
-            <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-[0.2em]">
-              System Status: Operational
-            </span>
-            <div className="flex items-center gap-1">
-              <div className="size-1.5 bg-emerald-500 rounded-full" />
-              <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">
-                v1.0.4-stable
-              </span>
-            </div>
           </div>
         </div>
       </div>
