@@ -79,11 +79,6 @@ const navItems = [
         icon: Shield,
         href: "/user-management/roles",
       },
-      {
-        name: "Roles mapping",
-        icon: Key,
-        href: "/user-management/mapping",
-      },
     ],
   },
 ];
@@ -321,7 +316,7 @@ export function Sidebar({
           </div>
 
           {applications.length > 0 && (
-            <div className="py-6 space-y-3">
+            <div className="py-2 space-y-3">
               {!isCollapsed && (
                 <h4 className="px-3 text-[10px] font-bold text-zinc-600 uppercase tracking-widest whitespace-nowrap">
                   My Workspace

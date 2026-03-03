@@ -62,24 +62,23 @@ const BranchTypeSelector: React.FC<BranchTypeSelectorProps> = ({
   return (
     <div className="space-y-4">
       <div className="relative">
-        <Search
-          className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-          size={18}
-        />
+        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-zinc-400">
+          <Search size={14} />
+        </span>
         <Input
-          placeholder="Search branch types..."
+          placeholder="Search infrastructure types..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="pl-10 py-5.5 rounded-sm border-gray-200 focus:border-red-500 focus:ring-red-500 text-gray-800"
+          className="w-full h-11 pl-9 border-zinc-200 focus:border-zinc-900 focus:ring-0 text-zinc-900 text-sm placeholder:text-zinc-300 rounded-sm shadow-none"
           disabled={disabled}
         />
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
         {filteredTypes.length === 0 ? (
-          <div className="col-span-full py-8 text-center border-2 border-dashed border-gray-100 rounded-xl">
-            <p className="text-gray-400 text-sm italic">
-              No branch types match your search.
+          <div className="col-span-full py-12 text-center border border-dashed border-zinc-200 rounded-sm bg-zinc-50/50">
+            <p className="text-zinc-400 text-[11px] font-bold uppercase tracking-widest italic">
+              No registry matches found.
             </p>
           </div>
         ) : (
@@ -94,35 +93,35 @@ const BranchTypeSelector: React.FC<BranchTypeSelectorProps> = ({
                 disabled={disabled}
                 onClick={() => onChange(type)}
                 className={cn(
-                  "flex items-center gap-3 p-4 text-left rounded-lg border-2 transition-all duration-200 group relative cursor-pointer",
+                  "flex items-center gap-3 p-3 text-left rounded-sm border transition-all duration-200 group relative cursor-pointer shadow-none",
                   isSelected
-                    ? "border-red-500 bg-red-50/50 ring-1 ring-red-500/20"
-                    : "border-gray-100 bg-white hover:border-gray-200 hover:shadow-sm",
+                    ? "border-zinc-900 bg-zinc-900 text-white z-10"
+                    : "border-zinc-100 bg-white hover:border-zinc-400 hover:bg-zinc-50/50",
                 )}
               >
                 <div
                   className={cn(
-                    "p-2 rounded-lg transition-colors",
+                    "p-2 rounded-sm transition-colors",
                     isSelected
-                      ? "bg-red-500 text-white"
-                      : "bg-gray-50 text-gray-400 group-hover:bg-gray-100 group-hover:text-gray-600",
+                      ? "bg-white/10 text-white"
+                      : "bg-zinc-50 text-zinc-400 group-hover:bg-zinc-100 group-hover:text-zinc-900",
                   )}
                 >
-                  <Icon size={20} />
+                  <Icon size={16} />
                 </div>
                 <div className="flex-1 pr-6">
                   <p
                     className={cn(
-                      "text-sm font-semibold transition-colors",
-                      isSelected ? "text-red-900" : "text-gray-700",
+                      "text-[11px] font-bold uppercase tracking-tight transition-colors",
+                      isSelected ? "text-white" : "text-zinc-600",
                     )}
                   >
                     {type}
                   </p>
                 </div>
                 {isSelected && (
-                  <div className="absolute right-3 top-1/2 -translate-y-1/2 bg-red-500 text-white rounded-full p-0.5">
-                    <Check size={12} strokeWidth={3} />
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2 text-white">
+                    <Check size={14} strokeWidth={3} />
                   </div>
                 )}
               </button>
