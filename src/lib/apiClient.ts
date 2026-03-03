@@ -13,10 +13,10 @@ export async function apiClient(
 
   const res = await fetch(url, opts);
 
-  if (res.status === 403) {
-    window.location.href = "/unauthorized";
-    return Promise.reject(new Error("Forbidden"));
-  }
+  // if (res.status === 403) {
+  //   window.location.href = "/unauthorized";
+  //   return Promise.reject(new Error("Forbidden"));
+  // }
 
   return res;
 }

@@ -12,6 +12,7 @@ import { ConfirmationModal } from "@/components/common/modals/ConfirmationModal"
 import { useState } from "react";
 import Pagination from "@/components/common/Pagination";
 import { DashboardLayout } from "@/components/dashboard/Layout";
+import { formatDateTime } from "@/utils/utils";
 
 export default function BranchesListingPage() {
   const queryClient = useQueryClient();
@@ -155,7 +156,7 @@ export default function BranchesListingPage() {
                       </span>
                     </div>
                     <span className="text-[10px] text-gray-800">
-                      Added {new Date(branch.createdAt).toLocaleDateString()}
+                      Created At :- {formatDateTime(branch.createdAt)}
                     </span>
                   </div>
                 </div>

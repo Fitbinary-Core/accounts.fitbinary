@@ -2,8 +2,11 @@
 
 import { DashboardLayout } from "@/components/dashboard/Layout";
 import { Users, UserPlus, Search } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function UsersListPage() {
+  const router = useRouter();
+
   return (
     <DashboardLayout>
       <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
@@ -16,7 +19,10 @@ export default function UsersListPage() {
               Manage all users across your organization's workspace.
             </p>
           </div>
-          <button className="h-12 px-6 bg-brand-red text-white text-xs font-bold uppercase tracking-widest rounded-xl hover:bg-brand-red/90 transition-all shadow-lg shadow-brand-red/20 flex items-center gap-2">
+          <button
+            onClick={() => router.push("/user-management/add")}
+            className="h-12 px-6 bg-brand-red text-white text-xs font-bold uppercase tracking-widest rounded-xl hover:bg-brand-red/90 transition-all shadow-lg shadow-brand-red/20 flex items-center gap-2"
+          >
             <UserPlus className="size-4" />
             Add New User
           </button>

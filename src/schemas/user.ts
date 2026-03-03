@@ -26,26 +26,27 @@ export interface User {
     branch_location: string;
   }>;
   branch?:
-    | {
-        _id: string;
-        branch_name: string;
-        branch_location: string;
-      }
-    | string;
+  | {
+    _id: string;
+    branch_name: string;
+    branch_location: string;
+  }
+  | string;
   role:
-    | {
-        _id: string;
-        role_name: string;
-        role_key: string;
-        permissions: Array<{
-          _id: string;
-          label: string;
-          key: string;
-        }>;
-      }
-    | string;
+  | {
+    _id: string;
+    role_name: string;
+    role_key: string;
+    permissions: Array<{
+      _id: string;
+      label: string;
+      key: string;
+    }>;
+  }
+  | string;
   createdAt: string;
   updatedAt: string;
+  app?: string | any;
 }
 
 export interface ApiResponse<T> {
@@ -69,6 +70,7 @@ export const userSchema = z.object({
   password: z.string().min(6, "Password must be at least 6 characters"),
   role: z.string().optional(),
   organization: z.string().optional(),
+  app: z.string().min(1, "Application is required"),
   branches: z.array(z.string()),
 });
 

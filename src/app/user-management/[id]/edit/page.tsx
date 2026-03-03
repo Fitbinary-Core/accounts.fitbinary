@@ -63,8 +63,9 @@ export default function EditUserPage() {
   });
 
   const { data: roles } = useQuery({
-    queryKey: ["user-roles"],
-    queryFn: get_user_roles_list,
+    queryKey: ["user-roles", userResponse?.data?.app],
+    queryFn: () => get_user_roles_list(userResponse?.data?.app),
+    enabled: !!userResponse?.data?.app,
   });
 
   const { data: branches, isLoading: isLoadingBranches } = useQuery({
@@ -169,7 +170,7 @@ export default function EditUserPage() {
         }
       />
 
-      <div className="p-4 mx-auto w-full">
+      <div className="mx-auto w-full">
         <div className="overflow-hidden rounded-md border border-gray-200 bg-white shadow-xl">
           <div className="border-b border-gray-100 bg-gray-50/50 px-6 py-4 md:px-8">
             <h2 className="text-lg font-bold text-gray-800">
