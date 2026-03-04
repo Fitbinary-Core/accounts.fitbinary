@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { User, LogOut, Settings, X, AlertCircle } from "lucide-react";
-import { Tenant, logoutUser } from "@/services/auth/auth.service";
+import { logoutUser } from "@/services/auth/auth.service";
 import { useRouter } from "next/navigation";
 import { createPortal } from "react-dom";
+import { Tenant } from "@/types/auth";
 
 export interface TenantProps {
   tenant?: Tenant;
