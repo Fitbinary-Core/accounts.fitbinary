@@ -95,6 +95,7 @@ export const BILLING_URLS = {
   status: (sessionId: string) => `${BASE_URL}/billing/status/${sessionId}`,
   verify_esewa: `${BASE_URL}/billing/esewa/verify`,
   start_free_trail: `${BASE_URL}/billing/start-free-trail`,
+  organization_subscriptions: `${BASE_URL}/billing/organizations/subscriptions`,
 };
 
 export const ORGANIZATION_URLS = {

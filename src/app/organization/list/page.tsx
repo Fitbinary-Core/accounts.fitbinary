@@ -6,7 +6,6 @@ import { useQuery } from "@tanstack/react-query";
 import {
   Building2,
   Search,
-  Edit2,
   User,
   Globe,
   Calendar,
@@ -107,6 +106,9 @@ export default function OrganizationListPage() {
                       Business Identity
                     </th>
                     <th className="px-5 py-3 text-[10px] font-bold text-zinc-500 uppercase tracking-wider">
+                      Business Size
+                    </th>
+                    <th className="px-5 py-3 text-[10px] text-center font-bold text-zinc-500 uppercase tracking-wider">
                       Owner
                     </th>
                     <th className="px-5 py-3 text-[10px] font-bold text-zinc-500 uppercase tracking-wider">
@@ -117,9 +119,6 @@ export default function OrganizationListPage() {
                     </th>
                     <th className="px-5 py-3 text-[10px] font-bold text-zinc-500 uppercase tracking-wider">
                       Created
-                    </th>
-                    <th className="px-5 py-3 text-[10px] font-bold text-zinc-500 uppercase tracking-wider text-right">
-                      Actions
                     </th>
                   </tr>
                 </thead>
@@ -151,13 +150,16 @@ export default function OrganizationListPage() {
                               <span className="text-[10px] text-zinc-500 font-semibold truncate max-w-[120px]">
                                 {org.business_email}
                               </span>
-                              <span className="size-1 bg-zinc-200 rounded-full" />
-                              <span className="text-[9px] font-bold text-zinc-400 uppercase tracking-wider">
-                                {org.business_size}
-                              </span>
                             </div>
                           </div>
                         </div>
+                      </td>
+
+                      {/* Business Size */}
+                      <td className="px-5 py-3 text-left font-medium">
+                        <span className="text-xs font-bold text-zinc-700">
+                          {org.business_size}
+                        </span>
                       </td>
 
                       {/* Owner Info */}
@@ -222,19 +224,6 @@ export default function OrganizationListPage() {
                           <span className="text-[10px] font-bold">
                             {formatDate(org.createdAt)}
                           </span>
-                        </div>
-                      </td>
-
-                      {/* Actions */}
-                      <td className="px-5 py-3 text-right">
-                        <div className="flex items-center justify-end gap-1.5">
-                          <Link
-                            href={`/organization/${org._id}/edit`}
-                            className="p-1.5 text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 rounded-sm border border-transparent hover:border-zinc-200 transition-all active:scale-95"
-                            title="Edit"
-                          >
-                            <Edit2 className="size-3.5" />
-                          </Link>
                         </div>
                       </td>
                     </tr>
