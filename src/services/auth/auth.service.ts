@@ -99,10 +99,7 @@ export const signUpUser = async (
       body: JSON.stringify(payload),
     });
 
-    console.log("Response: ", response);
-
     const body = await response.json();
-    console.log("BODY: ", body);
 
     if (!response.ok) {
       throw new Error(body.message || "Signup failed");
@@ -118,7 +115,7 @@ export const signUpUser = async (
 export async function logoutUser() {
   try {
     const url = TENANT_AUTH_URLS.logout;
-    const response = await fetch(url, {
+    const response = await apiClient(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

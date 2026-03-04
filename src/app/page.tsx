@@ -122,24 +122,28 @@ export default function Home() {
             description="Manage your data lifecycle, export your information, and control how your activity is processed."
             icon={Database}
             linkText="Configure Privacy"
+            path='/privacy'
           />
           <AccountCard
             title="Security & Access"
             description="Update your credentials, monitor active sessions, and configure multi-factor authentication."
             icon={ShieldCheck}
             linkText="Manage Security"
+            path='/security'
           />
           <AccountCard
             title="Organization & Users"
             description="Manage your team members, define granular roles, and oversee organizational policies."
             icon={User}
             linkText="Team Settings"
+            path='/user-management/users'
           />
           <AccountCard
             title="Billing & Infrastructure"
             description="Monitor credit usage, manage payment methods, and oversee global subscription plans."
             icon={Settings}
             linkText="Financial Hub"
+            path='/payments'
           />
         </div>
 

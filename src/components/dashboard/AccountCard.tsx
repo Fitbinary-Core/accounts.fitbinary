@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { useRouter } from "next/navigation";
 import { LucideIcon, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -11,6 +11,7 @@ interface AccountCardProps {
   image?: string;
   linkText: string;
   className?: string;
+  path?: string;
 }
 
 export function AccountCard({
@@ -19,13 +20,17 @@ export function AccountCard({
   icon: Icon,
   linkText,
   className,
+  path
 }: AccountCardProps) {
+  const router = useRouter();
+
   return (
     <div
       className={cn(
         "group bg-white border border-zinc-200 rounded-2xl p-8 flex flex-col h-full hover:shadow-xl hover:shadow-zinc-200/50 hover:border-zinc-300 transition-all cursor-pointer relative overflow-hidden",
         className,
       )}
+      onClick={() => path && router.push(path)}
     >
       <div className="absolute top-0 right-0 w-32 h-32 bg-zinc-50 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-brand-red/5 transition-colors duration-500" />
 
