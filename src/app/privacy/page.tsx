@@ -22,7 +22,7 @@ export default function PrivacyPage() {
 
     return (
         <DashboardLayout>
-            <div className="max-w-4xl mx-auto space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-1000">
+            <div className="w-full p-8 mx-auto space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-1000">
                 {/* Header Section */}
                 <div className="space-y-4">
                     <div className="flex items-center gap-2">
@@ -144,14 +144,14 @@ export default function PrivacyPage() {
                             data export for any of your subscribed applications (Fitstock/Fitcloud) at any time. We do
                             not sell your business intelligence to third parties; your data is your capital.
                         </p>
-                        <div className="flex flex-wrap gap-4 pt-4">
+                        {/* <div className="flex flex-wrap gap-4 pt-4">
                             <button className="px-6 py-2 bg-white text-zinc-900 text-xs font-bold uppercase tracking-widest rounded-lg hover:bg-zinc-100 transition-all">
                                 Download Data
                             </button>
                             <button className="px-6 py-2 bg-zinc-800 text-white text-xs font-bold uppercase tracking-widest rounded-lg hover:bg-zinc-700 transition-all border border-zinc-700">
                                 Security Audit
                             </button>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
 

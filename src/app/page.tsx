@@ -13,8 +13,11 @@ import {
   Sparkles,
   Zap,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
+
   const { data } = useQuery({
     queryKey: ["profile"],
     queryFn: () => userProfile(),
@@ -75,9 +78,11 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Quick Actions / Stats Banner */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-zinc-900 rounded-2xl p-6 text-white group cursor-pointer hover:bg-zinc-800 transition-all border border-zinc-800">
+          <div
+            onClick={() => window.open('/quick-setup', '_blank', 'noopener,noreferrer')}
+            className="bg-zinc-900 rounded-2xl p-6 text-white group cursor-pointer hover:bg-zinc-800 transition-all border border-zinc-800"
+          >
             <div className="size-10 bg-zinc-800 rounded-xl flex items-center justify-center mb-4 group-hover:bg-brand-red transition-colors">
               <Zap className="size-5" />
             </div>
@@ -89,6 +94,7 @@ export default function Home() {
               Start Guide <ArrowRight className="size-3" />
             </div>
           </div>
+
           <div className="bg-white border border-zinc-200 rounded-2xl p-6 group cursor-pointer hover:border-zinc-300 transition-all">
             <div className="size-10 bg-zinc-50 rounded-xl flex items-center justify-center mb-4 group-hover:bg-zinc-100 transition-colors">
               <ShieldCheck className="size-5 text-zinc-600" />
