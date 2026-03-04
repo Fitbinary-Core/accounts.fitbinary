@@ -120,7 +120,7 @@ export default function AddUserPage() {
     try {
       await createUserService(data);
       toast.success("User created successfully!");
-      router.push("/user-management");
+      router.push("/user-management/users");
       queryClient.invalidateQueries({ queryKey: ["users"] });
     } catch (error: any) {
       toast.error(error?.message || "Something went wrong. Please try again.");
@@ -211,7 +211,7 @@ export default function AddUserPage() {
                     {selectedApp.app_slug}
                   </span>
                   <h2 className="text-sm font-black text-zinc-900 uppercase tracking-tight">
-                    Member Credentials
+                    User Credentials
                   </h2>
                 </div>
               </div>
@@ -378,7 +378,7 @@ export default function AddUserPage() {
                                 onValueChange={handleRoleChange}
                                 defaultValue={field.value}
                               >
-                                <SelectTrigger className="w-full h-11 border-zinc-200 focus:ring-0 focus:border-zinc-900 text-zinc-900 text-sm rounded-sm shadow-none">
+                                <SelectTrigger className="w-full py-5 border-zinc-200 focus:ring-0 focus:border-zinc-900 text-zinc-900 text-sm rounded-sm shadow-none">
                                   <SelectValue placeholder="Assign privilege role" />
                                 </SelectTrigger>
                                 <SelectContent className="bg-white border-zinc-200 rounded-sm shadow-xl">

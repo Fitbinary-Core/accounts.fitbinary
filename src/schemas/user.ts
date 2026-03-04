@@ -64,7 +64,13 @@ export const userSchema = z.object({
   last_name: z.string().min(1, "Last name is required"),
   email: z.string().email("Invalid email address"),
   phone: z.string().min(1, "Phone number is required"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
+  password: z
+    .string()
+    .optional()
+    .or(z.literal(""))
+    .refine((val) => !val || val.length >= 6, {
+      message: "Password must be at least 6 characters",
+    }),
   role: z.string().optional(),
   organization: z.string().optional(),
   app: z.string().min(1, "Application is required"),

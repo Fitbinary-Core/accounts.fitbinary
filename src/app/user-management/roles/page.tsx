@@ -146,7 +146,7 @@ export default function RolesPermissionsPage() {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {filteredRoles.map((role: Role) => (
               <div
                 key={role._id}

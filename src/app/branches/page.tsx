@@ -73,7 +73,7 @@ export default function BranchesListingPage() {
     <DashboardLayout>
       <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
         <DashboardBreadcrumb
-          title="Physical Nodes"
+          title="Physical Branches"
           description="Manage organizational branches and localized business centers."
           actions={
             <Link href="/branches/create">
@@ -95,8 +95,8 @@ export default function BranchesListingPage() {
                 No Active Branches
               </h2>
               <p className="text-xs text-zinc-500 mt-1 max-w-xs font-medium leading-relaxed">
-                The organizational registry is empty. Deploy your first branch to
-                begin localized operations.
+                The organizational registry is empty. Deploy your first branch
+                to begin localized operations.
               </p>
               <Link href="/branches/create" className="mt-6">
                 <Button className="h-10 px-6 bg-zinc-900 text-white text-[11px] font-bold uppercase tracking-widest rounded-sm hover:bg-black transition-all shadow-sm">
@@ -109,7 +109,7 @@ export default function BranchesListingPage() {
               {branches.map((branch) => (
                 <div
                   key={branch._id}
-                  className="bg-white border border-zinc-200 rounded-sm overflow-hidden flex flex-col hover:border-zinc-400 transition-all transition-shadow shadow-none group"
+                  className="bg-white border border-zinc-200 rounded-sm overflow-hidden flex flex-col hover:border-zinc-400 transition-all shadow-none group"
                 >
                   <div className="p-4 border-b border-zinc-100 flex items-center justify-between bg-zinc-50/20">
                     <div className="flex items-center gap-3">
@@ -117,13 +117,13 @@ export default function BranchesListingPage() {
                         <Building2 size={16} />
                       </div>
                       <div>
-                        <h3 className="text-sm font-bold text-zinc-900 tracking-tight truncate max-w-[150px]">
+                        <h3 className="text-sm font-bold text-zinc-900 tracking-tight truncate max-w-37.5">
                           {branch.branch_name}
                         </h3>
                         <div className="flex items-center gap-1.5 mt-0.5">
                           {branch.is_main && (
                             <span className="text-[8px] bg-zinc-900 text-white px-1.5 py-0.5 rounded-sm font-black uppercase tracking-widest">
-                              Main Node
+                              Main Branch
                             </span>
                           )}
                           <span className="text-[8px] bg-zinc-100 text-zinc-500 border border-zinc-200 px-1.5 py-0.5 rounded-sm font-black uppercase tracking-widest">

@@ -133,7 +133,7 @@ const LocationAndMetadata = ({
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-4">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div className="space-y-4">
           <h3 className="text-lg font-bold text-gray-900 border-b-2 border-red-500 pb-2 inline-block">

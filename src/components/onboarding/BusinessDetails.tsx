@@ -145,7 +145,7 @@ const BusinessDetails = ({
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 p-4">
       <div>
         <label className="block text-sm font-semibold text-gray-700 mb-2">
           Business Name <span className="text-red-600">*</span>
