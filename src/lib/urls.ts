@@ -51,11 +51,11 @@ export const BRANCH_URLS = {
 };
 
 export const USERS_URLS = {
-  create: `${BASE_URL}/users/create`,
-  get_all: `${BASE_URL}/users/list`,
-  get_one: `${BASE_URL}/users/:id`,
-  update: `${BASE_URL}/users/:id`,
-  delete: `${BASE_URL}/users/:id`,
+  create: `${BASE_URL}/org-users/create`,
+  get_all: `${BASE_URL}/org-users/list`,
+  get_one: `${BASE_URL}/org-users/:id`,
+  update: `${BASE_URL}/org-users/:id`,
+  delete: `${BASE_URL}/org-users/:id`,
 };
 
 export const ROLES_URLS = {
