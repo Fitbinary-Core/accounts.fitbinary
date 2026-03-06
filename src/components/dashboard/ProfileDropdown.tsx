@@ -140,7 +140,7 @@ export function ProfileDropdown({ tenant }: TenantProps) {
       />
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden z-50 animate-in fade-in zoom-in duration-200">
+        <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-xl border border-gray-200 overflow-hidden z-50 animate-in fade-in zoom-in duration-200">
           <div className="p-6 text-center border-b border-gray-100">
             <div className="relative w-16 h-16 mx-auto mb-3 group/avatar">
               <div className="w-16 h-16 bg-brand-red text-white text-2xl font-bold flex items-center justify-center rounded-full overflow-hidden border-2 border-white shadow-sm">
@@ -208,10 +208,10 @@ export function ProfileDropdown({ tenant }: TenantProps) {
               className="absolute inset-0 bg-black/40 backdrop-blur-sm animate-in fade-in duration-300"
               onClick={() => !isLoggingOut && setShowLogoutModal(false)}
             />
-            <div className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 fade-in duration-300">
+            <div className="relative w-full max-w-md bg-white rounded-lg shadow-2xl overflow-hidden animate-in zoom-in-95 fade-in duration-300">
               <div className="p-8">
                 <div className="flex justify-between items-start mb-6">
-                  <div className="w-12 h-12 bg-red-50 rounded-2xl flex items-center justify-center text-brand-red">
+                  <div className="w-12 h-12 bg-red-50 rounded-md flex items-center justify-center text-brand-red">
                     <AlertCircle className="w-6 h-6" />
                   </div>
                   <button
@@ -235,14 +235,14 @@ export function ProfileDropdown({ tenant }: TenantProps) {
                   <button
                     onClick={() => setShowLogoutModal(false)}
                     disabled={isLoggingOut}
-                    className="flex-1 px-6 py-3 text-sm font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-2xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="flex-1 px-6 py-3 text-sm font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Cancel
                   </button>
                   <button
                     onClick={handleLogout}
                     disabled={isLoggingOut}
-                    className="flex-1 px-6 py-3 text-sm font-semibold text-white bg-brand-red hover:bg-red-700 rounded-2xl transition-all shadow-lg shadow-red-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    className="flex-1 px-6 py-3 text-sm font-semibold text-white bg-brand-red hover:bg-red-700 rounded-lg transition-all shadow-lg shadow-red-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   >
                     {isLoggingOut ? (
                       <>
