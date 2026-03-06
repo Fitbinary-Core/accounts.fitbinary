@@ -13,7 +13,6 @@ import {
   Loader2,
   Mail,
   Phone,
-  Shield,
   Trash2,
   UserPlus,
   Users,
@@ -73,10 +72,12 @@ const AllUsersPage = () => {
   });
 
   const branchOptions =
-    branchesData?.data?.map((b: any) => ({
-      label: b.branch_name,
-      value: b._id,
-    })) || [];
+    branchesData?.data && Array.isArray(branchesData.data)
+      ? branchesData.data.map((b: any) => ({
+          label: b.branch_name,
+          value: b._id,
+        }))
+      : [];
 
   const roleOptions =
     rolesData?.data?.map((r: any) => ({
@@ -288,42 +289,42 @@ const AllUsersPage = () => {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-50">
-                      {users.map((user: User) => (
+                      {users?.map((user: User) => (
                         <tr
-                          key={user._id}
+                          key={user?._id}
                           className="hover:bg-gray-50/30 transition-colors border-b border-gray-100"
                         >
                           {/* Name & ID */}
                           <td className="px-4 py-3">
                             <div className="flex items-center gap-3">
                               <div className="h-9 w-9 rounded-sm bg-gray-100 flex items-center justify-center text-gray-600 font-bold border border-gray-200">
-                                {user.first_name[0]}
-                                {user.last_name[0]}
+                                {user?.first_name[0]}
+                                {user?.last_name[0]}
                               </div>
                               <div>
                                 <p className="text-sm font-semibold text-gray-900 leading-none">
-                                  {user.first_name} {user.middle_name}{" "}
-                                  {user.last_name}
+                                  {user?.first_name} {user?.middle_name}{" "}
+                                  {user?.last_name}
                                 </p>
                                 <div className="flex flex-col gap-0.5 mt-1">
                                   <div className="flex items-center gap-1.5">
-                                    {user.organization?.business_logo && (
+                                    {user?.organization?.business_logo && (
                                       <img
-                                        src={user.organization.business_logo}
+                                        src={user?.organization?.business_logo}
                                         alt=""
                                         className="h-3 w-3 rounded-sm object-cover border border-gray-100"
                                       />
                                     )}
                                     <span className="text-[10px] text-gray-500 font-semibold uppercase tracking-tight">
-                                      {user.organization?.business_name}
+                                      {user?.organization?.business_name}
                                     </span>
                                   </div>
                                   <div
-                                    onClick={() => handleCopyId(user._id)}
+                                    onClick={() => handleCopyId(user?._id)}
                                     className="flex items-center gap-1 cursor-pointer w-fit"
                                   >
                                     <p className="text-[9px] text-gray-400 font-medium">
-                                      ID: {user._id.slice(0, 8)}
+                                      ID: {user?._id.slice(0, 8)}
                                     </p>
                                     <Copy
                                       size={8}
@@ -340,11 +341,11 @@ const AllUsersPage = () => {
                             <div className="space-y-1">
                               <div className="flex items-center gap-2 text-[11px] text-gray-500">
                                 <Mail size={11} className="text-gray-400" />
-                                <span>{user.email}</span>
+                                <span>{user?.email}</span>
                               </div>
                               <div className="flex items-center gap-2 text-[11px] text-gray-500">
                                 <Phone size={11} className="text-gray-400" />
-                                <span>{user.phone}</span>
+                                <span>{user?.phone}</span>
                               </div>
                             </div>
                           </td>
@@ -352,18 +353,21 @@ const AllUsersPage = () => {
                           {/* App */}
                           <td className="px-4 py-3">
                             <span className="inline-flex items-center px-2 py-0.5 rounded-sm bg-gray-50 text-gray-600 text-[10px] font-bold uppercase tracking-wide border border-gray-200">
-                              {user.app?.name || "N/A"}
+                              {user?.app?.name || "N/A"}
                             </span>
                           </td>
 
                           {/* Org & Branch */}
                           <td className="px-4 py-3">
                             <div className="space-y-1">
-                              {user.branches && user.branches.length > 0 ? (
-                                user.branches.length === 1 ? (
+                              {user?.branches && user?.branches?.length > 0 ? (
+                                user?.branches?.length === 1 ? (
                                   <div className="flex items-center gap-1.5 text-[10px] text-gray-500 font-semibold uppercase">
-                                    <MapPin size={10} className="text-gray-400" />
-                                    {user.branches[0].branch_name}
+                                    <MapPin
+                                      size={10}
+                                      className="text-gray-400"
+                                    />
+                                    {user?.branches[0]?.branch_name}
                                   </div>
                                 ) : (
                                   <button
@@ -374,7 +378,7 @@ const AllUsersPage = () => {
                                     className="flex items-center gap-1 px-2 py-0.5 rounded-sm bg-gray-50 text-gray-600 text-[10px] font-bold uppercase tracking-wide border border-gray-200 hover:bg-gray-100 transition-all cursor-pointer"
                                   >
                                     <Building2 size={10} strokeWidth={2} />
-                                    Branches ({user.branches.length})
+                                    Branches ({user?.branches?.length})
                                   </button>
                                 )
                               ) : (
@@ -389,8 +393,8 @@ const AllUsersPage = () => {
                           <td className="px-4 py-3 text-center">
                             <span className="inline-flex items-center px-2 py-0.5 rounded-sm bg-blue-50 text-blue-700 text-[10px] font-bold uppercase tracking-wide border border-blue-100">
                               {typeof user.role === "object"
-                                ? user.role.role_name
-                                : user.role}
+                                ? user?.role?.role_name
+                                : user?.role}
                             </span>
                           </td>
 
@@ -398,19 +402,19 @@ const AllUsersPage = () => {
                           <td className="px-4 py-3 text-right">
                             <div className="flex items-center justify-end gap-1.5">
                               <button
-                                onClick={() => handleDetail(user._id)}
+                                onClick={() => handleDetail(user?._id)}
                                 className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-sm border border-transparent hover:border-blue-100 transition-all active:scale-95 cursor-pointer"
                               >
                                 <Eye size={14} />
                               </button>
                               <button
-                                onClick={() => handleEdit(user._id)}
+                                onClick={() => handleEdit(user?._id)}
                                 className="p-1.5 text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 rounded-sm border border-transparent hover:border-zinc-200 transition-all active:scale-95 cursor-pointer"
                               >
                                 <Edit2 size={14} />
                               </button>
                               <button
-                                onClick={() => handleDelete(user._id)}
+                                onClick={() => handleDelete(user?._id)}
                                 disabled={deleteMutation.isPending}
                                 className="p-1.5 text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 rounded-sm border border-transparent hover:border-zinc-200 transition-all active:scale-95 cursor-pointer disabled:opacity-50"
                               >
@@ -467,7 +471,8 @@ const AllUsersPage = () => {
                 <span className="text-lg font-bold">Assigned Branches</span>
                 {selectedBranchesUser && (
                   <span className="text-[10px] text-gray-500 font-semibold uppercase tracking-wider mt-0.5">
-                    User: {selectedBranchesUser.first_name} {selectedBranchesUser.last_name}
+                    User: {selectedBranchesUser.first_name}{" "}
+                    {selectedBranchesUser.last_name}
                   </span>
                 )}
               </div>
@@ -477,7 +482,7 @@ const AllUsersPage = () => {
             <div className="py-4 space-y-2 pr-1 text-left">
               {selectedBranchesUser?.branches?.map((branch) => (
                 <div
-                  key={branch._id}
+                  key={branch?._id}
                   className="flex items-start gap-3 p-3 rounded-sm border border-gray-100 hover:bg-gray-50 transition-colors"
                 >
                   <div className="h-8 w-8 shrink-0 rounded-sm bg-gray-100 flex items-center justify-center text-gray-500">
@@ -485,10 +490,10 @@ const AllUsersPage = () => {
                   </div>
                   <div className="space-y-0.5">
                     <p className="text-sm font-bold text-gray-900">
-                      {branch.branch_name}
+                      {branch?.branch_name}
                     </p>
                     <p className="text-[11px] text-gray-500 font-medium">
-                      {branch.branch_location}
+                      {branch?.branch_location}
                     </p>
                   </div>
                 </div>
