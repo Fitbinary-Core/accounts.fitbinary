@@ -123,7 +123,7 @@ export function Sidebar({
   };
 
   const { data: profileData } = useQuery({
-    queryKey: ["user-profile"],
+    queryKey: ["profile"],
     queryFn: () => userProfile(),
   });
 
