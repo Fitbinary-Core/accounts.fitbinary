@@ -114,11 +114,21 @@ export default function PersonalPage() {
 
         {/* Profile Card */}
         <div className="bg-white rounded-lg border border-zinc-200 shadow-sm overflow-hidden transition-all hover:shadow-md">
-          <div className="h-32 bg-zinc-900" />
+          <div className="h-38 bg-zinc-900">
+            <div className="p-4">
+              <h1 className="text-3xl font-bold text-white tracking-tight">
+                {tenant?.first_name} {tenant?.last_name}
+              </h1>
+              <p className="text-zinc-300 flex items-center gap-2 justify-center md:justify-start">
+                {tenant?.email}
+                <CheckCircle2 className="w-4 h-4 text-blue-500" />
+              </p>
+            </div>
+          </div>
 
-          <div className="px-8 pb-8">
+          <div className="p-4">
             <div className="relative -mt-16 flex flex-col md:flex-row md:items-end justify-between gap-6">
-              <div className="flex flex-col md:flex-row items-center md:items-end gap-6 text-center md:text-left">
+              <div className="flex flex-col md:flex-row items-center md:items-end gap-6 text-center md:text-left space-y-4">
                 {/* Avatar Section */}
                 <div className="relative group overflow-hidden rounded-full">
                   <div className="w-32 h-32 rounded-full bg-white p-1 shadow-xl">
@@ -154,22 +164,6 @@ export default function PersonalPage() {
                     </div>
                   </div>
                 </div>
-
-                <div className="mb-2">
-                  <h1 className="text-3xl font-bold text-zinc-900 tracking-tight">
-                    {tenant?.first_name} {tenant?.last_name}
-                  </h1>
-                  <p className="text-zinc-500 flex items-center gap-2 justify-center md:justify-start">
-                    {tenant?.email}
-                    <CheckCircle2 className="w-4 h-4 text-blue-500" />
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3 self-center md:self-auto pb-2">
-                <button className="px-6 py-2.5 bg-zinc-900 text-white rounded-xl text-sm font-semibold hover:bg-black transition-all shadow-lg shadow-zinc-200">
-                  Edit Profile
-                </button>
               </div>
             </div>
 
@@ -181,7 +175,7 @@ export default function PersonalPage() {
               className="hidden"
             />
 
-            <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {[
                 {
                   label: "Birthday",
@@ -195,11 +189,6 @@ export default function PersonalPage() {
                   icon: Calendar,
                 },
                 { label: "Phone", value: tenant?.phone || "---", icon: Phone },
-                {
-                  label: "Account ID",
-                  value: tenant?._id.slice(-8).toUpperCase() || "---",
-                  icon: Shield,
-                },
                 { label: "Role", value: tenant?.role || "OWNER", icon: User },
               ].map((item, idx) => (
                 <div
@@ -226,7 +215,7 @@ export default function PersonalPage() {
         {/* Security & Settings Section */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="md:col-span-2 space-y-6">
-            <div className="bg-white p-8 rounded-lg border border-zinc-200 shadow-sm">
+            <div className="bg-white p-4 rounded-lg border border-zinc-200 shadow-sm">
               <h2 className="text-xl font-bold text-zinc-900 mb-6 flex items-center gap-3">
                 <Mail className="w-5 h-5 text-brand-red" />
                 Linked Services
@@ -255,7 +244,7 @@ export default function PersonalPage() {
           </div>
 
           <div className="space-y-6">
-            <div className="bg-zinc-900 p-8 rounded-lg text-white shadow-xl relative overflow-hidden group">
+            <div className="bg-zinc-900 p-4 rounded-lg text-white shadow-xl relative overflow-hidden group">
               <h3 className="text-lg font-bold mb-2">Need Help?</h3>
               <p className="text-sm text-zinc-400 mb-6 leading-relaxed font-medium">
                 Our support team is available 24/7 to help you with any account
