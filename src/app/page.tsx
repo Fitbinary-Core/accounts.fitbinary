@@ -63,7 +63,7 @@ export default function Home() {
                   {tenant?.email}
                 </p>
               </div>
-              <div className="size-12 rounded-2xl bg-white border border-zinc-200 shadow-sm flex items-center justify-center overflow-hidden">
+              <div className="size-12 rounded-full bg-white border border-zinc-200 shadow-sm flex items-center justify-center overflow-hidden">
                 {tenant?.avatar ? (
                   <img
                     src={tenant.avatar}
