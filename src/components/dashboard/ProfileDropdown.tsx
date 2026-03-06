@@ -90,19 +90,12 @@ export function ProfileDropdown({ tenant }: TenantProps) {
             <p className="text-sm text-gray-500 line-clamp-1">
               {tenant?.email || "No email provided"}
             </p>
-            <button className="mt-4 px-6 py-2 border border-gray-300 rounded-full text-sm font-medium hover:bg-gray-50 transition-colors">
-              Manage your Fitbinary Account
-            </button>
           </div>
 
           <div className="py-2">
             <button className="w-full flex items-center gap-3 px-6 py-3 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
               <User className="w-5 h-5 text-gray-500" />
               Your Profile
-            </button>
-            <button className="w-full flex items-center gap-3 px-6 py-3 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
-              <Settings className="w-5 h-5 text-gray-500" />
-              Settings
             </button>
             <button
               onClick={() => {
@@ -117,12 +110,8 @@ export function ProfileDropdown({ tenant }: TenantProps) {
           </div>
 
           <div className="px-4 py-3 bg-gray-50 text-[11px] text-gray-500 flex justify-center gap-4">
-            <a href="#" className="hover:underline">
+            <a href="/privacy" className="hover:underline">
               Privacy Policy
-            </a>
-            <span>•</span>
-            <a href="#" className="hover:underline">
-              Terms of Service
             </a>
           </div>
         </div>

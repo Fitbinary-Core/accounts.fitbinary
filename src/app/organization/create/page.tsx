@@ -45,11 +45,12 @@ export default function OrganizationCreatePage() {
     queryFn: () => get_all_apps(),
   });
 
-  const { data: onboardingData, isLoading: isLoadingOnboarding } = useQuery<OnboardingDataRes>({
-    queryKey: ["onboarding-data", selectedApp?._id || ""],
-    queryFn: () => get_onboarding_data(selectedApp?._id),
-    enabled: !!selectedApp,
-  });
+  const { data: onboardingData, isLoading: isLoadingOnboarding } =
+    useQuery<OnboardingDataRes>({
+      queryKey: ["onboarding-data", selectedApp?._id || ""],
+      queryFn: () => get_onboarding_data(selectedApp?._id),
+      enabled: !!selectedApp,
+    });
 
   useEffect(() => {
     if (onboardingData?.active_step_path) {
@@ -169,7 +170,8 @@ export default function OrganizationCreatePage() {
                     key={step.id}
                     className={cn(
                       "flex items-center gap-3 flex-1 min-w-max",
-                      idx !== steps.length - 1 && "after:content-[''] after:hidden lg:after:block after:h-px after:flex-1 after:bg-zinc-100 after:mx-4",
+                      idx !== steps.length - 1 &&
+                        "after:content-[''] after:hidden lg:after:block after:h-px after:flex-1 after:bg-zinc-100 after:mx-4",
                     )}
                   >
                     <div className="flex flex-col items-center">

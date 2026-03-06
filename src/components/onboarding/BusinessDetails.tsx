@@ -42,7 +42,8 @@ const BusinessDetails = ({
   selectedApp?: any;
   onStepComplete?: () => void;
 }) => {
-  const { business_details: bd, onboarding_fields_data } = business_details;
+  const { business_details: bd, onboarding_fields_data } =
+    business_details || [];
   const { business } = bd;
 
   const [files, setFiles] = useState<File[]>([]);
