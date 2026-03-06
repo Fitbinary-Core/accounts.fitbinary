@@ -1,11 +1,14 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { User, LogOut, Settings, X, AlertCircle } from "lucide-react";
+import { User, LogOut, X, AlertCircle, Camera, Loader2 } from "lucide-react";
 import { logoutUser } from "@/services/auth/auth.service";
 import { useRouter } from "next/navigation";
 import { createPortal } from "react-dom";
 import { Tenant } from "@/types/auth";
+import { COMMON_URLS, TENANT_AUTH_URLS } from "@/lib/urls";
+import { apiClient } from "@/lib/apiClient";
+import { useQueryClient } from "@tanstack/react-query";
 
 export interface TenantProps {
   tenant?: Tenant;
@@ -15,8 +18,11 @@ export function ProfileDropdown({ tenant }: TenantProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const getInitials = () => {
     if (!tenant?.first_name) return "U";
@@ -53,6 +59,61 @@ export function ProfileDropdown({ tenant }: TenantProps) {
     }
   };
 
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const MAX_FILE_SIZE = 5 * 1024 * 1024;
+    if (file.size > MAX_FILE_SIZE) {
+      alert("Image size must be less than 5MB");
+      return;
+    }
+
+    try {
+      setIsUploading(true);
+
+      // 1. Get presigned URL
+      const presignedRes = await apiClient(
+        `${COMMON_URLS.get_tenant_avatar_presigned_url}?key=${file.name}`,
+        {
+          method: "POST",
+        },
+      );
+      const { url, key } = await presignedRes.json();
+
+      // 2. Upload to S3
+      const uploadRes = await fetch(url, {
+        method: "PUT",
+        body: file,
+        headers: {
+          "Content-Type": file.type,
+        },
+      });
+
+      if (!uploadRes.ok) throw new Error("Failed to upload image to S3");
+
+      const imageUrl = `https://fitbinary.com.s3.eu-north-1.amazonaws.com/${key}`;
+
+      // 3. Update tenant profile
+      const updateRes = await apiClient(TENANT_AUTH_URLS.profile_update, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ avatar: imageUrl }),
+      });
+
+      if (!updateRes.ok) throw new Error("Failed to update profile");
+
+      queryClient.invalidateQueries({ queryKey: ["profile"] });
+    } catch (error) {
+      console.error("Upload failed:", error);
+      alert("Failed to upload avatar. Please try again.");
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
   return (
     <div className="relative" ref={dropdownRef}>
       <button
@@ -70,19 +131,41 @@ export function ProfileDropdown({ tenant }: TenantProps) {
         )}
       </button>
 
+      <input
+        type="file"
+        ref={fileInputRef}
+        onChange={handleImageUpload}
+        accept="image/*"
+        className="hidden"
+      />
+
       {isOpen && (
         <div className="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden z-50 animate-in fade-in zoom-in duration-200">
           <div className="p-6 text-center border-b border-gray-100">
-            <div className="w-16 h-16 bg-brand-red text-white text-2xl font-bold flex items-center justify-center rounded-full mx-auto mb-3 overflow-hidden">
-              {tenant?.avatar ? (
-                <img
-                  src={tenant.avatar}
-                  alt={tenant.first_name}
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                initials
-              )}
+            <div className="relative w-16 h-16 mx-auto mb-3 group/avatar">
+              <div className="w-16 h-16 bg-brand-red text-white text-2xl font-bold flex items-center justify-center rounded-full overflow-hidden border-2 border-white shadow-sm">
+                {tenant?.avatar ? (
+                  <img
+                    src={tenant.avatar}
+                    alt={tenant.first_name}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  initials
+                )}
+                {isUploading && (
+                  <div className="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center">
+                    <Loader2 className="w-6 h-6 text-white animate-spin" />
+                  </div>
+                )}
+              </div>
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                disabled={isUploading}
+                className="absolute -bottom-1 -right-1 w-6 h-6 bg-red-600 rounded-full shadow-lg hover:cursor-pointer flex items-center justify-center text-gray-600 hover:text-brand-red transition-colors opacity-0 group-hover/avatar:opacity-100"
+              >
+                <Camera className="w-3.5 h-3.5 text-white" />
+              </button>
             </div>
             <h3 className="text-lg font-semibold text-gray-900 line-clamp-1">
               {tenant ? `${tenant.first_name} ${tenant.last_name}` : "User"}

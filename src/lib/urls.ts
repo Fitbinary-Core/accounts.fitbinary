@@ -1,24 +1,6 @@
 const BASE_URL =
   process.env.NEXT_PUBLIC_BASE_URL || "https://admin.fitbinary.com/api/v1";
 
-const getUrlWithBranches = (url: string) => {
-  if (typeof window === "undefined") return url;
-  try {
-    const savedBranches = localStorage.getItem("selected_branches");
-    if (savedBranches) {
-      const branches = JSON.parse(savedBranches);
-      if (Array.isArray(branches) && branches.length > 0) {
-        const urlObj = new URL(url, window.location.origin);
-        urlObj.searchParams.set("branches", branches.join(","));
-        return urlObj.toString();
-      }
-    }
-  } catch (error) {
-    console.error("Error reading branches from localStorage:", error);
-  }
-  return url;
-};
-
 export const AUTH_URLS = {
   login: `${BASE_URL}/auth/login`,
   logout: `${BASE_URL}/auth/logout`,
@@ -32,6 +14,7 @@ export const TENANT_AUTH_URLS = {
   logout: `${BASE_URL}/auth/tenants/logout`,
   refresh: `${BASE_URL}/auth/tenants/refresh`,
   profile: `${BASE_URL}/auth/tenants/profile`,
+  profile_update: `${BASE_URL}/auth/tenants/profile`,
   subscription_details: `${BASE_URL}/auth/tenants/subscription/details`,
 };
 
@@ -65,6 +48,7 @@ export const ROLES_URLS = {
 export const COMMON_URLS = {
   get_presigned_url: `${BASE_URL}/get-presigned-url`,
   get_logo_presigned_url: `${BASE_URL}/get-logo-presigned-url`,
+  get_tenant_avatar_presigned_url: `${BASE_URL}/get-tenant-avatar-presigned-url`,
 };
 
 export const ONBOARDING_URLS = {
