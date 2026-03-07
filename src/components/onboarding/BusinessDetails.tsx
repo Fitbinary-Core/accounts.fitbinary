@@ -44,7 +44,7 @@ const BusinessDetails = ({
 }) => {
   const { business_details: bd, onboarding_fields_data } =
     business_details || [];
-  const { business } = bd;
+  const { business } = bd || [];
 
   const [files, setFiles] = useState<File[]>([]);
   const [uploadStatus, setUploadStatus] = useState<string>("");
