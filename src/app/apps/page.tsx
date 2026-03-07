@@ -35,6 +35,7 @@ export default function AppsPage() {
   const { data, isLoading } = useQuery({
     queryKey: ["apps-list"],
     queryFn: () => get_all_apps(),
+    staleTime: 1000 * 60 * 60 * 4,
   });
 
   const applications = data?.applications || [];

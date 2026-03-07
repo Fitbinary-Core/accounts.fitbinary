@@ -25,6 +25,7 @@ export default function AddBranchPage() {
   const { data: appsData, isLoading: isLoadingApps } = useQuery({
     queryKey: ["apps-list"],
     queryFn: () => get_all_apps(),
+    staleTime: 1000 * 60 * 60 * 4,
   });
 
   const {

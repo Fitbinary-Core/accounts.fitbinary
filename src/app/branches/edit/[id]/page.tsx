@@ -51,6 +51,7 @@ export default function EditBranchPage() {
   const { data: appsData, isLoading: isLoadingApps } = useQuery({
     queryKey: ["apps-list"],
     queryFn: () => get_all_apps(),
+    staleTime: 1000 * 60 * 60 * 10,
   });
 
   const [selectedApp, setSelectedApp] = useState<IApplication | null>(null);

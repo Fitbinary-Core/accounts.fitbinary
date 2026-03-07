@@ -26,6 +26,7 @@ export default function PersonalPage() {
   const { data, isLoading } = useQuery({
     queryKey: ["profile"],
     queryFn: () => userProfile(),
+    staleTime: 1000 * 60 * 60 * 4,
   });
 
   const tenant = data?.tenant;

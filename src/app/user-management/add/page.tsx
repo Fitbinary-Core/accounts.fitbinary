@@ -61,6 +61,7 @@ export default function AddUserPage() {
   const { data: appsData, isLoading: isLoadingApps } = useQuery({
     queryKey: ["apps-list"],
     queryFn: () => get_all_apps(),
+    staleTime: 1000 * 60 * 60 * 10,
   });
 
   const { data: roles } = useQuery({

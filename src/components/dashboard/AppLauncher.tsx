@@ -24,6 +24,7 @@ export function AppLauncher() {
   const { data } = useQuery({
     queryKey: ["apps-list"],
     queryFn: () => get_all_apps(),
+    staleTime: 1000 * 60 * 60 * 10,
   });
 
   const applications = data?.applications || [];

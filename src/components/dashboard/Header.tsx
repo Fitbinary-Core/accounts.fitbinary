@@ -2,7 +2,14 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { userProfile } from "@/services/auth/auth.service";
-import { Search, HelpCircle, Bell, Menu, PanelLeftClose, PanelLeftOpen } from "lucide-react";
+import {
+  Search,
+  HelpCircle,
+  Bell,
+  Menu,
+  PanelLeftClose,
+  PanelLeftOpen,
+} from "lucide-react";
 import { ProfileDropdown } from "./ProfileDropdown";
 import { AppLauncher } from "./AppLauncher";
 
@@ -12,10 +19,15 @@ interface HeaderProps {
   setIsCollapsed: (isCollapsed: boolean) => void;
 }
 
-export function Header({ toggleSidebar, isCollapsed, setIsCollapsed }: HeaderProps) {
+export function Header({
+  toggleSidebar,
+  isCollapsed,
+  setIsCollapsed,
+}: HeaderProps) {
   const { data } = useQuery({
     queryKey: ["profile"],
     queryFn: () => userProfile(),
+    staleTime: 1000 * 60 * 60 * 4,
   });
 
   return (
@@ -33,7 +45,11 @@ export function Header({ toggleSidebar, isCollapsed, setIsCollapsed }: HeaderPro
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
           className="p-2 hover:bg-zinc-100 rounded-lg transition-colors text-zinc-600"
-          title={isCollapsed ? "Expand Sidebar (Ctrl+B)" : "Collapse Sidebar (Ctrl+B)"}
+          title={
+            isCollapsed
+              ? "Expand Sidebar (Ctrl+B)"
+              : "Collapse Sidebar (Ctrl+B)"
+          }
         >
           {isCollapsed ? (
             <PanelLeftOpen className="w-5 h-5 text-brand-red" />

@@ -3,14 +3,7 @@
 import { DashboardLayout } from "@/components/dashboard/Layout";
 import { get_organization_list } from "@/services/organization/organization.service";
 import { useQuery } from "@tanstack/react-query";
-import {
-  Building2,
-  Search,
-  User,
-  Globe,
-  Calendar,
-  MapPin,
-} from "lucide-react";
+import { Building2, Search, User, Globe, Calendar, MapPin } from "lucide-react";
 import Link from "next/link";
 import { IOrganization } from "@/types/organization";
 
@@ -147,7 +140,7 @@ export default function OrganizationListPage() {
                               {org.business_name}
                             </span>
                             <div className="flex items-center gap-1.5 mt-0.5">
-                              <span className="text-[10px] text-zinc-500 font-semibold truncate max-w-[120px]">
+                              <span className="text-[10px] text-zinc-700 font-semibold truncate max-w-30">
                                 {org.business_email}
                               </span>
                             </div>
@@ -176,10 +169,10 @@ export default function OrganizationListPage() {
                             )}
                           </div>
                           <div className="flex flex-col">
-                            <span className="text-[11px] font-bold text-zinc-800 leading-tight">
+                            <span className="text-xs font-bold text-zinc-800 leading-tight">
                               {org.tenant?.first_name} {org.tenant?.last_name}
                             </span>
-                            <span className="text-[9px] text-zinc-400 font-medium">
+                            <span className="text-xs text-zinc-700 font-medium">
                               {org.tenant?.phone}
                             </span>
                           </div>
@@ -190,14 +183,14 @@ export default function OrganizationListPage() {
                       <td className="px-5 py-3 font-medium">
                         <div className="flex flex-col gap-0.5">
                           <div className="flex items-center gap-1 text-zinc-600">
-                            <Globe className="size-3 text-zinc-400" />
-                            <span className="text-[11px]">
+                            <Globe className="size-3 text-zinc-600" />
+                            <span className="text-xs">
                               {org.country || "N/A"}
                             </span>
                           </div>
-                          <div className="flex items-center gap-1 text-zinc-400">
+                          <div className="flex items-center gap-1 text-zinc-600">
                             <MapPin className="size-3" />
-                            <span className="text-[9px] truncate max-w-[100px]">
+                            <span className="text-xs truncate max-w-25">
                               {org.district || org.municipality || "N/A"}
                             </span>
                           </div>
@@ -219,7 +212,7 @@ export default function OrganizationListPage() {
 
                       {/* Created Date */}
                       <td className="px-5 py-3">
-                        <div className="flex items-center gap-1.5 text-zinc-500">
+                        <div className="flex items-center gap-1.5 text-zinc-700">
                           <Calendar className="size-3" />
                           <span className="text-[10px] font-bold">
                             {formatDate(org.createdAt)}

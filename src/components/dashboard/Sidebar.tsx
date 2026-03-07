@@ -125,11 +125,13 @@ export function Sidebar({
   const { data: profileData } = useQuery({
     queryKey: ["profile"],
     queryFn: () => userProfile(),
+    staleTime: 1000 * 60 * 60 * 4,
   });
 
   const { data: appsData } = useQuery({
     queryKey: ["apps-list"],
     queryFn: () => get_all_apps(),
+    staleTime: 1000 * 60 * 60 * 10,
   });
 
   const applications = appsData?.applications || [];

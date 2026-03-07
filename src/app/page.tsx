@@ -21,6 +21,7 @@ export default function Home() {
   const { data } = useQuery({
     queryKey: ["profile"],
     queryFn: () => userProfile(),
+    staleTime: 1000 * 60 * 60 * 4,
   });
 
   const tenant = data?.tenant;
@@ -80,7 +81,9 @@ export default function Home() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div
-            onClick={() => window.open('/quick-setup', '_blank', 'noopener,noreferrer')}
+            onClick={() =>
+              window.open("/quick-setup", "_blank", "noopener,noreferrer")
+            }
             className="bg-zinc-900 rounded-2xl p-6 text-white group cursor-pointer hover:bg-zinc-800 transition-all border border-zinc-800"
           >
             <div className="size-10 bg-zinc-800 rounded-xl flex items-center justify-center mb-4 group-hover:bg-brand-red transition-colors">
@@ -128,28 +131,28 @@ export default function Home() {
             description="Manage your data lifecycle, export your information, and control how your activity is processed."
             icon={Database}
             linkText="Configure Privacy"
-            path='/privacy'
+            path="/privacy"
           />
           <AccountCard
             title="Security & Access"
             description="Update your credentials, monitor active sessions, and configure multi-factor authentication."
             icon={ShieldCheck}
             linkText="Manage Security"
-            path='/security'
+            path="/security"
           />
           <AccountCard
             title="Organization & Users"
             description="Manage your team members, define granular roles, and oversee organizational policies."
             icon={User}
             linkText="Team Settings"
-            path='/user-management/users'
+            path="/user-management/users"
           />
           <AccountCard
             title="Billing & Infrastructure"
             description="Monitor credit usage, manage payment methods, and oversee global subscription plans."
             icon={Settings}
             linkText="Financial Hub"
-            path='/payments'
+            path="/payments"
           />
         </div>
 

@@ -1,12 +1,55 @@
 "use client";
 
 import { DashboardLayout } from "@/components/dashboard/Layout";
-import { CreditCard, Receipt, Building2, Calendar, ShieldCheck, Clock, Zap } from "lucide-react";
+import { CreditCard, Receipt, Building2, Calendar, ShieldCheck, Clock, Zap, GitBranch, Users, BarChart3, Package, Box, LineChart, Headphones, Check } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { getOrganizationSubscriptions } from "@/services/billing/billing.service";
 import DashboardBreadcrumb from "@/components/common/DashboardBreadcrumb";
 import { Loader2 } from "lucide-react";
 import { formatDateTime } from "@/utils/utils";
+
+const FEATURE_CONFIG: Record<string, { label: string; icon: any; format: (val: any) => string }> = {
+  MULTI_BRANCH_SUPPORT: {
+    label: "Multi-Branch Support",
+    icon: GitBranch,
+    format: () => "Included",
+  },
+  MAX_BRANCHES: {
+    label: "Max Branches",
+    icon: Building2,
+    format: (val) => `${val} ${val === 1 ? 'Branch' : 'Branches'}`,
+  },
+  MAX_USERS: {
+    label: "Max Users",
+    icon: Users,
+    format: (val) => `${val} ${val === 1 ? 'User' : 'Users'}`,
+  },
+  SALES_REPORTS: {
+    label: "Sales Reports",
+    icon: BarChart3,
+    format: () => "Included",
+  },
+  INVENTORY_REPORTS: {
+    label: "Inventory Reports",
+    icon: Package,
+    format: () => "Included",
+  },
+  MAX_PRODUCTS: {
+    label: "Max Products",
+    icon: Box,
+    format: (val) => `${val} ${val === 1 ? 'Product' : 'Products'}`,
+  },
+  ADVANCE_ANALYSIS: {
+    label: "Advanced Analysis",
+    icon: LineChart,
+    format: () => "Included",
+  },
+  ONLINE_SUPPORT: {
+    label: "Online Support",
+    icon: Headphones,
+    format: () => "Included",
+  },
+};
 
 export default function PaymentsPage() {
   const { data, isLoading } = useQuery({
@@ -132,20 +175,34 @@ export default function PaymentsPage() {
 
                       {/* Features */}
                       {sub.plan.features && sub.plan.features.length > 0 && (
-                        <div className="space-y-2">
+                        <div className="space-y-3">
                           <span className="text-[8px] text-zinc-400 font-bold uppercase tracking-[0.2em]">What's Included</span>
-                          <div className="flex flex-wrap gap-1.5">
-                            {sub.plan.features.map((feature) => (
-                              <div
-                                key={feature._id}
-                                className="px-2 py-0.5 bg-zinc-50 border border-zinc-100 rounded-sm flex items-center gap-1"
-                              >
-                                <div className="size-1 bg-zinc-900 rounded-full" />
-                                <span className="text-[9px] text-zinc-600 font-bold uppercase tracking-widest">
-                                  {feature.code}
-                                </span>
-                              </div>
-                            ))}
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            {sub.plan.features.map((feature) => {
+                              const config = FEATURE_CONFIG[feature.code];
+                              const Icon = config?.icon || Check;
+                              const label = config?.label || feature.code;
+                              const value = config?.format ? config.format(feature.value) : String(feature.value);
+
+                              return (
+                                <div
+                                  key={feature._id}
+                                  className="flex items-center gap-3 p-2 border border-zinc-100 rounded-sm bg-zinc-50/30 group/feature transition-colors hover:bg-zinc-50"
+                                >
+                                  <div className="size-6 bg-white border border-zinc-200 rounded-sm flex items-center justify-center text-zinc-900 shadow-sm group-hover/feature:bg-zinc-900 group-hover/feature:text-white transition-colors">
+                                    <Icon size={12} />
+                                  </div>
+                                  <div className="flex flex-col">
+                                    <span className="text-[10px] text-zinc-900 font-bold uppercase tracking-wider">
+                                      {label}
+                                    </span>
+                                    <span className="text-[8px] text-zinc-500 font-bold uppercase tracking-widest">
+                                      {value}
+                                    </span>
+                                  </div>
+                                </div>
+                              );
+                            })}
                           </div>
                         </div>
                       )}
