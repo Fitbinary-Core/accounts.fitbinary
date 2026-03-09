@@ -156,7 +156,7 @@ const AllUsersPage = () => {
     null,
   );
 
-  const users = data?.data || [];
+const users = Array.isArray(data?.data) ? data.data : [];
 
   const handleCopyId = (id: string) => {
     navigator.clipboard.writeText(id);
