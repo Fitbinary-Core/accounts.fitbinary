@@ -16,6 +16,9 @@ export const TENANT_AUTH_URLS = {
   profile: `${BASE_URL}/auth/tenants/profile`,
   profile_update: `${BASE_URL}/auth/tenants/profile`,
   subscription_details: `${BASE_URL}/auth/tenants/subscription/details`,
+  forget_password_pin: `${BASE_URL}/tenants/forget-password-pin`,
+  verify_forget_password_pin: `${BASE_URL}/tenants/verify-forget-password-pin`,
+  reset_password: `${BASE_URL}/tenants/reset-password`,
 };
 
 export const ACCOUNTS_APPS_URLS = {

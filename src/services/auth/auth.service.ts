@@ -132,3 +132,69 @@ export async function logoutUser() {
     throw error;
   }
 }
+
+export const sendForgetPasswordPin = async (email: string) => {
+  try {
+    const url = TENANT_AUTH_URLS.forget_password_pin;
+    const response = await apiClient(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email }),
+    });
+
+    const body = await response.json();
+    if (!response.ok) {
+      throw new Error(body.message || "Failed to send reset PIN");
+    }
+    return body;
+  } catch (error) {
+    console.log("Error: ", error);
+    throw error;
+  }
+};
+
+export const verifyForgetPasswordPin = async (email: string, otp: string) => {
+  try {
+    const url = `${TENANT_AUTH_URLS.verify_forget_password_pin}?email=${encodeURIComponent(email)}&OTP=${encodeURIComponent(otp)}`;
+    const response = await apiClient(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const body = await response.json();
+    if (!response.ok) {
+      throw new Error(body.message || "Failed to verify PIN");
+    }
+    return body;
+  } catch (error) {
+    console.log("Error: ", error);
+    throw error;
+  }
+};
+
+export const resetPassword = async (data: { email: string; otp: string; newPassword: string }) => {
+  try {
+    const url = TENANT_AUTH_URLS.reset_password;
+    const response = await apiClient(url, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    const body = await response.json();
+    if (!response.ok) {
+      throw new Error(body.message || "Failed to reset password");
+    }
+    return body;
+  } catch (error) {
+    console.log("Error: ", error);
+    throw error;
+  }
+};
+

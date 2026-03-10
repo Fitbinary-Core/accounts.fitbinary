@@ -92,7 +92,7 @@ export default function SigninForm() {
                 <label htmlFor="password" className="text-sm font-medium text-zinc-900">
                   Password
                 </label>
-                <a href="#" className="text-sm font-medium text-zinc-500 hover:text-zinc-900 transition-colors">
+                <a href="/forget-password" className="text-sm font-medium text-zinc-500 hover:text-zinc-900 transition-colors">
                   Forgot password?
                 </a>
               </div>

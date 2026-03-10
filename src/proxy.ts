@@ -9,6 +9,7 @@ export function proxy(request: NextRequest) {
   const publicRoutes = [
     "/signin",
     "/signup",
+    "/forget-password",
     "/api",
     "/_next",
     "/favicon.ico",
