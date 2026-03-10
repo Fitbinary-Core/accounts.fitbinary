@@ -16,15 +16,15 @@ interface ModalProps {
   footer?: React.ReactNode;
   className?: string;
   maxWidth?:
-    | "sm"
-    | "md"
-    | "lg"
-    | "xl"
-    | "2xl"
-    | "3xl"
-    | "4xl"
-    | "5xl"
-    | "screen";
+  | "sm"
+  | "md"
+  | "lg"
+  | "xl"
+  | "2xl"
+  | "3xl"
+  | "4xl"
+  | "5xl"
+  | "screen";
 }
 
 const maxWidthClasses = {
@@ -56,14 +56,17 @@ export const Modal: React.FC<ModalProps> = ({
           "p-0 overflow-hidden border-none shadow-2xl bg-white",
           className,
         )}
+        aria-describedby={undefined}
       >
-        {title && (
+        {title ? (
           <DialogHeader className="px-6 py-5 border-b border-gray-100 bg-white">
             <DialogTitle className="text-xl font-bold text-gray-900 flex items-center gap-3">
               <div className="w-1.5 h-6 bg-red-600 rounded-full shadow-[0_0_8px_rgba(220,38,38,0.3)]" />
               <div className="flex-1">{title}</div>
             </DialogTitle>
           </DialogHeader>
+        ) : (
+          <DialogTitle className="sr-only">Dialog</DialogTitle>
         )}
         <div className="px-6 max-h-[75vh] overflow-y-auto custom-scrollbar bg-white text-gray-800">
           {children}

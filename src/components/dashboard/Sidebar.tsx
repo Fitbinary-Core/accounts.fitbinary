@@ -20,7 +20,9 @@ import {
   GitBranch,
   List,
   PlusCircle,
+  AlertCircle,
 } from "lucide-react";
+import Modal from "@/components/common/modal";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { logoutUser, userProfile } from "@/services/auth/auth.service";
@@ -98,11 +100,12 @@ export function Sidebar({
   isOpen,
   setIsOpen,
   isCollapsed,
-  setIsCollapsed,
 }: SidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
   const [expandedMenus, setExpandedMenus] = useState<string[]>([]);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   useEffect(() => {
     if (isCollapsed) return;
@@ -138,11 +141,15 @@ export function Sidebar({
 
   const handleLogout = async () => {
     try {
+      setIsLoggingOut(true);
       await logoutUser();
       toast.success("Logged out successfully");
       router.push("/signin");
     } catch (error) {
       toast.error("Failed to logout");
+    } finally {
+      setIsLoggingOut(false);
+      setShowLogoutModal(false);
     }
   };
 
@@ -408,7 +415,7 @@ export function Sidebar({
                   </p>
                 </div>
                 <button
-                  onClick={handleLogout}
+                  onClick={() => setShowLogoutModal(true)}
                   className="p-2 hover:bg-zinc-800 rounded-lg text-zinc-500 hover:text-brand-red transition-all"
                   title="Sign out"
                 >
@@ -419,7 +426,7 @@ export function Sidebar({
           </div>
           {isCollapsed && (
             <button
-              onClick={handleLogout}
+              onClick={() => setShowLogoutModal(true)}
               className="mt-2 w-full flex justify-center p-2 hover:bg-zinc-800 rounded-lg text-zinc-500 hover:text-brand-red transition-all"
               title="Sign out"
             >
@@ -428,6 +435,60 @@ export function Sidebar({
           )}
         </div>
       </aside>
+
+      {/* Logout Confirmation Modal */}
+      <Modal
+        isOpen={showLogoutModal}
+        onClose={() => !isLoggingOut && setShowLogoutModal(false)}
+        maxWidth="md"
+      >
+        <div className="py-6">
+          <div className="flex justify-between items-start mb-6">
+            <div className="w-12 h-12 bg-red-50 rounded-md flex items-center justify-center text-brand-red shrink-0">
+              <AlertCircle className="w-6 h-6" />
+            </div>
+            <button
+              onClick={() => setShowLogoutModal(false)}
+              disabled={isLoggingOut}
+              className="p-2 hover:bg-gray-100 rounded-full transition-colors disabled:opacity-50"
+            >
+              <X className="w-5 h-5 text-gray-400" />
+            </button>
+          </div>
+
+          <h3 className="text-2xl font-semibold text-gray-900 mb-2">
+            Sign out?
+          </h3>
+          <p className="text-gray-600 mb-8 leading-relaxed">
+            Are you sure you want to sign out? You'll need to sign back in
+            to access your account and manage your data.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-3">
+            <button
+              onClick={() => setShowLogoutModal(false)}
+              disabled={isLoggingOut}
+              className="flex-1 px-6 py-3 text-sm font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleLogout}
+              disabled={isLoggingOut}
+              className="flex-1 px-6 py-3 text-sm font-semibold text-white bg-brand-red hover:bg-red-700 rounded-lg transition-all shadow-lg shadow-red-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            >
+              {isLoggingOut ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  Signing out...
+                </>
+              ) : (
+                "Sign out"
+              )}
+            </button>
+          </div>
+        </div>
+      </Modal>
     </>
   );
 }
