@@ -54,9 +54,13 @@ export default function SigninForm() {
         <div className="w-full max-w-100 mx-auto">
           <Link href="/" className="inline-flex items-center gap-3 mb-16">
             <div className="size-8 bg-black rounded flex items-center justify-center">
-              <span className="text-white font-bold text-lg leading-none">F</span>
+              <span className="text-white font-bold text-lg leading-none">
+                F
+              </span>
             </div>
-            <span className="font-semibold text-lg tracking-tight text-zinc-900">Fitbinary</span>
+            <span className="font-semibold text-lg tracking-tight text-zinc-900">
+              Fitbinary
+            </span>
           </Link>
 
           <div className="mb-10">
@@ -70,7 +74,10 @@ export default function SigninForm() {
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div className="space-y-2">
-              <label htmlFor="email" className="text-sm font-medium text-zinc-900">
+              <label
+                htmlFor="email"
+                className="text-sm font-medium text-zinc-900"
+              >
                 Email
               </label>
               <Input
@@ -89,10 +96,16 @@ export default function SigninForm() {
 
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <label htmlFor="password" className="text-sm font-medium text-zinc-900">
+                <label
+                  htmlFor="password"
+                  className="text-sm font-medium text-zinc-900"
+                >
                   Password
                 </label>
-                <a href="/forget-password" className="text-sm font-medium text-zinc-500 hover:text-zinc-900 transition-colors">
+                <a
+                  href="/forget-password"
+                  className="text-sm font-medium text-zinc-500 hover:text-zinc-900 transition-colors"
+                >
                   Forgot password?
                 </a>
               </div>
@@ -109,7 +122,11 @@ export default function SigninForm() {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-900 transition-colors p-1"
                 >
-                  {showPassword ? <EyeOff className="size-4.5" /> : <Eye className="size-4.5" />}
+                  {showPassword ? (
+                    <EyeOff className="size-4.5" />
+                  ) : (
+                    <Eye className="size-4.5" />
+                  )}
                 </button>
               </div>
               {errors.password && (
@@ -125,13 +142,18 @@ export default function SigninForm() {
               className="w-full bg-zinc-900 hover:bg-zinc-800 text-white font-medium h-11 rounded-lg transition-colors disabled:opacity-50 flex items-center justify-center gap-2 group"
             >
               {isPending ? "Logging in..." : "Log in"}
-              {!isPending && <ArrowRight className="size-4 opacity-70 group-hover:translate-x-1 transition-transform" />}
+              {!isPending && (
+                <ArrowRight className="size-4 opacity-70 group-hover:translate-x-1 transition-transform" />
+              )}
             </Button>
           </form>
 
           <div className="mt-8 text-center text-sm text-zinc-500">
             Don't have an account?{" "}
-            <Link href="/signup" className="font-semibold text-zinc-900 hover:underline">
+            <Link
+              href="/signup"
+              className="font-semibold text-zinc-900 hover:underline"
+            >
               Sign up
             </Link>
           </div>
@@ -147,8 +169,10 @@ export default function SigninForm() {
 
         <div className="relative z-10">
           <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight text-white leading-[1.1] mb-8">
-            Manage your apps.<br />
-            Scale your business.<br />
+            Manage your apps.
+            <br />
+            Scale your business.
+            <br />
             Zero friction.
           </h2>
 
@@ -160,7 +184,8 @@ export default function SigninForm() {
 
         <div className="relative z-10 border-t border-zinc-800 pt-8 mt-16 max-w-lg">
           <p className="text-lg text-zinc-400 leading-relaxed">
-            "We migrated our entire toolchain to Fitbinary in an afternoon. The centralized control panel is completely unmatched in the industry."
+            "We migrated our entire toolchain to Fitbinary in an afternoon. The
+            centralized control panel is completely unmatched in the industry."
           </p>
           <div className="mt-6 flex items-center gap-4">
             <div className="size-10 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-white font-bold">
@@ -168,7 +193,9 @@ export default function SigninForm() {
             </div>
             <div>
               <div className="text-white font-medium">John Doe</div>
-              <div className="text-zinc-500 text-sm">Director of Operations, AcxCorp</div>
+              <div className="text-zinc-500 text-sm">
+                Director of Operations, AcxCorp
+              </div>
             </div>
           </div>
         </div>

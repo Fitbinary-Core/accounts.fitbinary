@@ -47,7 +47,9 @@ export default function UserDetailPage() {
     return (
       <DashboardLayout>
         <div className="p-8 text-center bg-white rounded-sm border border-zinc-200 m-4 shadow-none">
-          <h2 className="text-sm font-black text-zinc-900 uppercase tracking-tight">User Not Found</h2>
+          <h2 className="text-sm font-black text-zinc-900 uppercase tracking-tight">
+            User Not Found
+          </h2>
           <p className="text-zinc-500 mt-2 text-xs">
             The user you are looking for does not exist or has been deleted.
           </p>
@@ -101,7 +103,9 @@ export default function UserDetailPage() {
               </h2>
               <div className="inline-flex items-center gap-1.5 px-3 py-1 mt-3 rounded-sm bg-zinc-900 text-white text-[9px] font-bold uppercase tracking-widest">
                 <Shield size={10} strokeWidth={3} />
-                {typeof user.role === "object" ? user.role.role_name : user.role}
+                {typeof user.role === "object"
+                  ? user.role.role_name
+                  : user.role}
               </div>
 
               <div className="mt-8 pt-8 border-t border-zinc-100 space-y-5">
@@ -174,7 +178,10 @@ export default function UserDetailPage() {
                   <div className="space-y-3">
                     {user.branches && user.branches.length > 0 ? (
                       user.branches.map((branch: any) => (
-                        <div key={branch._id} className="pb-3 last:pb-0 border-b last:border-0 border-zinc-100">
+                        <div
+                          key={branch._id}
+                          className="pb-3 last:pb-0 border-b last:border-0 border-zinc-100"
+                        >
                           <p className="text-sm font-black text-zinc-900 tracking-tight uppercase">
                             {branch.branch_name}
                           </p>
@@ -201,8 +208,8 @@ export default function UserDetailPage() {
               </h3>
 
               {typeof user.role === "object" &&
-                user.role.permissions &&
-                user.role.permissions.length > 0 ? (
+              user.role.permissions &&
+              user.role.permissions.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                   {user.role.permissions.map((perm: any) => (
                     <div

@@ -101,9 +101,13 @@ export default function SignupForm({
         <div className="w-full max-w-100 mx-auto py-8">
           <Link href="/" className="inline-flex items-center gap-3 mb-12">
             <div className="size-8 bg-black rounded flex items-center justify-center">
-              <span className="text-white font-bold text-lg leading-none">F</span>
+              <span className="text-white font-bold text-lg leading-none">
+                F
+              </span>
             </div>
-            <span className="font-semibold text-lg tracking-tight text-zinc-900">Fitbinary</span>
+            <span className="font-semibold text-lg tracking-tight text-zinc-900">
+              Fitbinary
+            </span>
           </Link>
 
           <div className="mb-10">
@@ -127,7 +131,10 @@ export default function SignupForm({
               <div className="space-y-5 animate-in fade-in slide-in-from-right-4 duration-500">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label htmlFor="first_name" className="text-sm font-medium text-zinc-900">
+                    <label
+                      htmlFor="first_name"
+                      className="text-sm font-medium text-zinc-900"
+                    >
                       First Name
                     </label>
                     <Input
@@ -143,7 +150,10 @@ export default function SignupForm({
                     )}
                   </div>
                   <div className="space-y-2">
-                    <label htmlFor="last_name" className="text-sm font-medium text-zinc-900">
+                    <label
+                      htmlFor="last_name"
+                      className="text-sm font-medium text-zinc-900"
+                    >
                       Last Name
                     </label>
                     <Input
@@ -161,7 +171,10 @@ export default function SignupForm({
                 </div>
 
                 <div className="space-y-2">
-                  <label htmlFor="dob" className="text-sm font-medium text-zinc-900">
+                  <label
+                    htmlFor="dob"
+                    className="text-sm font-medium text-zinc-900"
+                  >
                     Date of Birth
                   </label>
                   <Input
@@ -182,7 +195,10 @@ export default function SignupForm({
             {step === 2 && (
               <div className="space-y-5 animate-in fade-in slide-in-from-right-4 duration-500">
                 <div className="space-y-2">
-                  <label htmlFor="email" className="text-sm font-medium text-zinc-900">
+                  <label
+                    htmlFor="email"
+                    className="text-sm font-medium text-zinc-900"
+                  >
                     Email address
                   </label>
                   <Input
@@ -200,7 +216,10 @@ export default function SignupForm({
                 </div>
 
                 <div className="space-y-2">
-                  <label htmlFor="phone" className="text-sm font-medium text-zinc-900">
+                  <label
+                    htmlFor="phone"
+                    className="text-sm font-medium text-zinc-900"
+                  >
                     Phone number
                   </label>
                   <Input
@@ -221,7 +240,10 @@ export default function SignupForm({
             {step === 3 && (
               <div className="space-y-5 animate-in fade-in slide-in-from-right-4 duration-500">
                 <div className="space-y-2">
-                  <label htmlFor="password" className="text-sm font-medium text-zinc-900">
+                  <label
+                    htmlFor="password"
+                    className="text-sm font-medium text-zinc-900"
+                  >
                     Password
                   </label>
                   <div className="relative">
@@ -237,7 +259,11 @@ export default function SignupForm({
                       onClick={() => setShowPassword(!showPassword)}
                       className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-900 transition-colors p-1"
                     >
-                      {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                      {showPassword ? (
+                        <EyeOff className="size-4" />
+                      ) : (
+                        <Eye className="size-4" />
+                      )}
                     </button>
                   </div>
                   {errors.password && (
@@ -248,7 +274,10 @@ export default function SignupForm({
                 </div>
 
                 <div className="space-y-2">
-                  <label htmlFor="confirm_password" className="text-sm font-medium text-zinc-900">
+                  <label
+                    htmlFor="confirm_password"
+                    className="text-sm font-medium text-zinc-900"
+                  >
                     Confirm password
                   </label>
                   <div className="relative">
@@ -261,10 +290,16 @@ export default function SignupForm({
                     />
                     <button
                       type="button"
-                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      onClick={() =>
+                        setShowConfirmPassword(!showConfirmPassword)
+                      }
                       className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-900 transition-colors p-1"
                     >
-                      {showConfirmPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                      {showConfirmPassword ? (
+                        <EyeOff className="size-4" />
+                      ) : (
+                        <Eye className="size-4" />
+                      )}
                     </button>
                   </div>
                   {errors.confirm_password && (
@@ -312,7 +347,10 @@ export default function SignupForm({
           {step === 1 && (
             <div className="mt-8 text-sm text-zinc-500">
               Already have an account?{" "}
-              <Link href="/signin" className="font-semibold text-zinc-900 hover:underline">
+              <Link
+                href="/signin"
+                className="font-semibold text-zinc-900 hover:underline"
+              >
                 Log in
               </Link>
             </div>
@@ -329,19 +367,35 @@ export default function SignupForm({
 
         <div className="relative z-10">
           <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight text-white leading-[1.1] mb-8">
-            Access elite tools.<br />
-            Empower your team.<br />
+            Access elite tools.
+            <br />
+            Empower your team.
+            <br />
             Move faster.
           </h2>
 
           <div className="flex flex-col gap-4 mt-6">
             {[
-              { title: "Unified Dashboard", desc: "Instantly control every aspect of your app ecosystem." },
-              { title: "Team Collaboration", desc: "Granular access controls and activity logs." },
-              { title: "Enterprise Grade", desc: "Built for scale, security, and reliability." }
+              {
+                title: "Unified Dashboard",
+                desc: "Instantly control every aspect of your app ecosystem.",
+              },
+              {
+                title: "Team Collaboration",
+                desc: "Granular access controls and activity logs.",
+              },
+              {
+                title: "Enterprise Grade",
+                desc: "Built for scale, security, and reliability.",
+              },
             ].map((feature, i) => (
-              <div key={i} className="flex flex-col border-l-2 border-zinc-800 pl-4 py-1">
-                <span className="text-white font-semibold text-sm mb-1">{feature.title}</span>
+              <div
+                key={i}
+                className="flex flex-col border-l-2 border-zinc-800 pl-4 py-1"
+              >
+                <span className="text-white font-semibold text-sm mb-1">
+                  {feature.title}
+                </span>
                 <span className="text-zinc-500 text-sm">{feature.desc}</span>
               </div>
             ))}
@@ -351,8 +405,18 @@ export default function SignupForm({
         <div className="relative z-10 border-t border-zinc-800 pt-8 mt-8 max-w-lg">
           <div className="flex -space-x-3 mb-4">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className={`size-10 rounded-full border-2 border-[#18181b] flex items-center justify-center text-xs font-bold text-white ${i === 1 ? 'bg-zinc-700' : i === 2 ? 'bg-zinc-600' : i === 3 ? 'bg-zinc-800' : 'bg-zinc-900'
-                }`}>
+              <div
+                key={i}
+                className={`size-10 rounded-full border-2 border-[#18181b] flex items-center justify-center text-xs font-bold text-white ${
+                  i === 1
+                    ? "bg-zinc-700"
+                    : i === 2
+                      ? "bg-zinc-600"
+                      : i === 3
+                        ? "bg-zinc-800"
+                        : "bg-zinc-900"
+                }`}
+              >
                 {String.fromCharCode(64 + i)}
               </div>
             ))}

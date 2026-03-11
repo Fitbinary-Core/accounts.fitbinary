@@ -2,14 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { userProfile } from "@/services/auth/auth.service";
-import {
-  Search,
-  HelpCircle,
-  Bell,
-  Menu,
-  PanelLeftClose,
-  PanelLeftOpen,
-} from "lucide-react";
+import { Search, Menu, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import { ProfileDropdown } from "./ProfileDropdown";
 import { AppLauncher } from "./AppLauncher";
 
@@ -27,7 +20,7 @@ export function Header({
   const { data } = useQuery({
     queryKey: ["profile"],
     queryFn: () => userProfile(),
-    staleTime: 1000 * 60 * 60 * 4,
+    staleTime: 1000 * 60 * 60 * 1,
   });
 
   return (
@@ -74,13 +67,6 @@ export function Header({
 
       <div className="flex items-center gap-2 sm:gap-4">
         <div className="items-center gap-1 border-r border-zinc-200 pr-4 mr-2 hidden sm:flex">
-          <button className="p-2 hover:bg-zinc-100 rounded-lg text-zinc-600 transition-colors relative">
-            <Bell className="w-5 h-5" />
-            <span className="absolute top-2 right-2.5 size-2 bg-brand-red rounded-full border-2 border-white" />
-          </button>
-          <button className="p-2 hover:bg-zinc-100 rounded-lg text-zinc-600 transition-colors">
-            <HelpCircle className="w-5 h-5" />
-          </button>
           <AppLauncher />
         </div>
         <ProfileDropdown tenant={data?.tenant} />

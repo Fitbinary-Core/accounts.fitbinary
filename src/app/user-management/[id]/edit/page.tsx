@@ -64,7 +64,10 @@ export default function EditUserPage() {
     queryFn: () => getUserOneService(id),
   });
 
-  const currentAppId = typeof userResponse?.data?.app === "object" ? userResponse?.data?.app?._id : userResponse?.data?.app;
+  const currentAppId =
+    typeof userResponse?.data?.app === "object"
+      ? userResponse?.data?.app?._id
+      : userResponse?.data?.app;
 
   const { data: roles } = useQuery({
     queryKey: ["user-roles", currentAppId],
@@ -181,7 +184,7 @@ export default function EditUserPage() {
           title="Update User Credentials"
           description={
             selectedApp
-              ? `Modifying user profile within ${typeof selectedApp === 'object' ? selectedApp.name : 'Organization'}.`
+              ? `Modifying user profile within ${typeof selectedApp === "object" ? selectedApp.name : "Organization"}.`
               : "Updating user information and access permissions."
           }
           actions={
@@ -200,7 +203,9 @@ export default function EditUserPage() {
             <div className="border-b border-zinc-100 bg-zinc-50/30 px-6 py-4">
               <div className="flex items-center gap-2">
                 <span className="px-2 py-0.5 bg-zinc-900 text-white text-[9px] font-bold uppercase tracking-widest rounded-sm">
-                  {typeof selectedApp === 'object' ? selectedApp.app_slug : 'EDIT'}
+                  {typeof selectedApp === "object"
+                    ? selectedApp.app_slug
+                    : "EDIT"}
                 </span>
                 <h2 className="text-sm font-black text-zinc-900 uppercase tracking-tight">
                   User Information for {userResponse?.data?.first_name}{" "}
@@ -440,8 +445,8 @@ export default function EditUserPage() {
                         <span className="font-black uppercase tracking-widest mr-2">
                           Organization Auth:
                         </span>
-                        This member will be granted administrative access
-                        across all organizational branches.
+                        This member will be granted administrative access across
+                        all organizational branches.
                       </p>
                     </div>
                   )}

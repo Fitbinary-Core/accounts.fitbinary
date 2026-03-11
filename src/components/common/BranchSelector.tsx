@@ -27,17 +27,17 @@ type BranchSelectorProps = {
   disabled?: boolean;
   placeholder?: string;
 } & (
-    | {
+  | {
       multi: true;
       value: string[] | undefined;
       onChange: (ids: string[]) => void;
     }
-    | {
+  | {
       multi: false;
       value: string | undefined | null;
       onChange: (id: string | null) => void;
     }
-  );
+);
 
 const BranchSelector: React.FC<BranchSelectorProps> = (props) => {
   const {

@@ -24,7 +24,7 @@ import {
 } from "lucide-react";
 import Modal from "@/components/common/modal";
 import { cn } from "@/lib/utils";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { logoutUser, userProfile } from "@/services/auth/auth.service";
 import { get_all_apps } from "@/services/apps/apps.service";
 import toast from "react-hot-toast";
@@ -41,7 +41,6 @@ interface SidebarProps {
 const navItems = [
   { name: "Home", icon: Home, href: "/" },
   { name: "Personal info", icon: User, href: "/personal-info" },
-  { name: "Security", icon: ShieldCheck, href: "/security" },
   { name: "Payments & subscriptions", icon: CreditCard, href: "/payments" },
   { name: "App management", icon: LayoutDashboard, href: "/apps" },
   {
@@ -96,16 +95,13 @@ const getBrandStyle = (name: string) => {
   return "bg-zinc-800 text-white border-zinc-700";
 };
 
-export function Sidebar({
-  isOpen,
-  setIsOpen,
-  isCollapsed,
-}: SidebarProps) {
+export function Sidebar({ isOpen, setIsOpen, isCollapsed }: SidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
   const [expandedMenus, setExpandedMenus] = useState<string[]>([]);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (isCollapsed) return;
@@ -128,7 +124,7 @@ export function Sidebar({
   const { data: profileData } = useQuery({
     queryKey: ["profile"],
     queryFn: () => userProfile(),
-    staleTime: 1000 * 60 * 60 * 4,
+    staleTime: 1000 * 60 * 60 * 1,
   });
 
   const { data: appsData } = useQuery({
@@ -460,8 +456,8 @@ export function Sidebar({
             Sign out?
           </h3>
           <p className="text-gray-600 mb-8 leading-relaxed">
-            Are you sure you want to sign out? You'll need to sign back in
-            to access your account and manage your data.
+            Are you sure you want to sign out? You'll need to sign back in to
+            access your account and manage your data.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3">

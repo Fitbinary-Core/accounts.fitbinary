@@ -176,7 +176,11 @@ export const verifyForgetPasswordPin = async (email: string, otp: string) => {
   }
 };
 
-export const resetPassword = async (data: { email: string; otp: string; newPassword: string }) => {
+export const resetPassword = async (data: {
+  email: string;
+  otp: string;
+  newPassword: string;
+}) => {
   try {
     const url = TENANT_AUTH_URLS.reset_password;
     const response = await apiClient(url, {
@@ -197,4 +201,3 @@ export const resetPassword = async (data: { email: string; otp: string; newPassw
     throw error;
   }
 };
-

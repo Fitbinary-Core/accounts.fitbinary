@@ -1,14 +1,33 @@
 "use client";
 
 import { DashboardLayout } from "@/components/dashboard/Layout";
-import { CreditCard, Receipt, Building2, Calendar, ShieldCheck, Clock, Zap, GitBranch, Users, BarChart3, Package, Box, LineChart, Headphones, Check } from "lucide-react";
+import {
+  CreditCard,
+  Receipt,
+  Building2,
+  Calendar,
+  ShieldCheck,
+  Clock,
+  Zap,
+  GitBranch,
+  Users,
+  BarChart3,
+  Package,
+  Box,
+  LineChart,
+  Headphones,
+  Check,
+} from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { getOrganizationSubscriptions } from "@/services/billing/billing.service";
 import DashboardBreadcrumb from "@/components/common/DashboardBreadcrumb";
 import { Loader2 } from "lucide-react";
 import { formatDateTime } from "@/utils/utils";
 
-const FEATURE_CONFIG: Record<string, { label: string; icon: any; format: (val: any) => string }> = {
+const FEATURE_CONFIG: Record<
+  string,
+  { label: string; icon: any; format: (val: any) => string }
+> = {
   MULTI_BRANCH_SUPPORT: {
     label: "Multi-Branch Support",
     icon: GitBranch,
@@ -17,12 +36,12 @@ const FEATURE_CONFIG: Record<string, { label: string; icon: any; format: (val: a
   MAX_BRANCHES: {
     label: "Max Branches",
     icon: Building2,
-    format: (val) => `${val} ${val === 1 ? 'Branch' : 'Branches'}`,
+    format: (val) => `${val} ${val === 1 ? "Branch" : "Branches"}`,
   },
   MAX_USERS: {
     label: "Max Users",
     icon: Users,
-    format: (val) => `${val} ${val === 1 ? 'User' : 'Users'}`,
+    format: (val) => `${val} ${val === 1 ? "User" : "Users"}`,
   },
   SALES_REPORTS: {
     label: "Sales Reports",
@@ -37,7 +56,7 @@ const FEATURE_CONFIG: Record<string, { label: string; icon: any; format: (val: a
   MAX_PRODUCTS: {
     label: "Max Products",
     icon: Box,
-    format: (val) => `${val} ${val === 1 ? 'Product' : 'Products'}`,
+    format: (val) => `${val} ${val === 1 ? "Product" : "Products"}`,
   },
   ADVANCE_ANALYSIS: {
     label: "Advanced Analysis",
@@ -95,7 +114,9 @@ export default function PaymentsPage() {
                 <div className="size-12 rounded-sm bg-white border border-zinc-200 flex items-center justify-center mb-4 shadow-sm">
                   <Zap className="text-zinc-300" size={24} />
                 </div>
-                <h3 className="text-sm font-bold text-zinc-900 uppercase tracking-wider">No Active Plans</h3>
+                <h3 className="text-sm font-bold text-zinc-900 uppercase tracking-wider">
+                  No Active Plans
+                </h3>
                 <p className="text-[10px] text-zinc-500 mt-1 max-w-xs font-bold uppercase tracking-widest">
                   You don't have any active subscriptions yet.
                 </p>
@@ -122,10 +143,13 @@ export default function PaymentsPage() {
                           </p>
                         </div>
                       </div>
-                      <span className={`px-2 py-0.5 rounded-sm text-[8px] font-black uppercase tracking-[0.15em] border ${sub.status === 'TRIAL'
-                        ? 'bg-zinc-100 text-zinc-900 border-zinc-200'
-                        : 'bg-zinc-900 text-white border-zinc-900'
-                        }`}>
+                      <span
+                        className={`px-2 py-0.5 rounded-sm text-[8px] font-black uppercase tracking-[0.15em] border ${
+                          sub.status === "TRIAL"
+                            ? "bg-zinc-100 text-zinc-900 border-zinc-200"
+                            : "bg-zinc-900 text-white border-zinc-900"
+                        }`}
+                      >
                         {sub.status}
                       </span>
                     </div>
@@ -156,19 +180,27 @@ export default function PaymentsPage() {
                         <div className="space-y-1">
                           <div className="flex items-center gap-1.5 text-zinc-400">
                             <Clock size={12} />
-                            <span className="text-[8px] font-bold uppercase tracking-widest">Started On</span>
+                            <span className="text-[8px] font-bold uppercase tracking-widest">
+                              Started On
+                            </span>
                           </div>
                           <span className="text-[10px] text-zinc-900 font-mono font-bold">
-                            {new Date(sub.currentPeriodStart).toLocaleDateString()}
+                            {new Date(
+                              sub.currentPeriodStart,
+                            ).toLocaleDateString()}
                           </span>
                         </div>
                         <div className="space-y-1 text-right">
                           <div className="flex items-center gap-1.5 text-zinc-400 justify-end">
                             <Calendar size={12} />
-                            <span className="text-[8px] font-bold uppercase tracking-widest">Expires On</span>
+                            <span className="text-[8px] font-bold uppercase tracking-widest">
+                              Expires On
+                            </span>
                           </div>
                           <span className="text-[10px] text-zinc-900 font-mono font-bold">
-                            {new Date(sub.currentPeriodEnd).toLocaleDateString()}
+                            {new Date(
+                              sub.currentPeriodEnd,
+                            ).toLocaleDateString()}
                           </span>
                         </div>
                       </div>
@@ -176,13 +208,17 @@ export default function PaymentsPage() {
                       {/* Features */}
                       {sub.plan.features && sub.plan.features.length > 0 && (
                         <div className="space-y-3">
-                          <span className="text-[8px] text-zinc-400 font-bold uppercase tracking-[0.2em]">What's Included</span>
+                          <span className="text-[8px] text-zinc-400 font-bold uppercase tracking-[0.2em]">
+                            What's Included
+                          </span>
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                             {sub.plan.features.map((feature) => {
                               const config = FEATURE_CONFIG[feature.code];
                               const Icon = config?.icon || Check;
                               const label = config?.label || feature.code;
-                              const value = config?.format ? config.format(feature.value) : String(feature.value);
+                              const value = config?.format
+                                ? config.format(feature.value)
+                                : String(feature.value);
 
                               return (
                                 <div
@@ -210,7 +246,9 @@ export default function PaymentsPage() {
                       {/* Financials */}
                       <div className="flex items-center justify-between pt-2">
                         <div className="flex flex-col">
-                          <span className="text-[9px] text-zinc-400 font-bold uppercase tracking-widest">Amount</span>
+                          <span className="text-[9px] text-zinc-400 font-bold uppercase tracking-widest">
+                            Amount
+                          </span>
                           <span className="text-sm font-black text-zinc-900">
                             {sub.currency} {sub.unitAmount.toFixed(2)}
                           </span>

@@ -20,7 +20,7 @@ export function AccountCard({
   icon: Icon,
   linkText,
   className,
-  path
+  path,
 }: AccountCardProps) {
   const router = useRouter();
 
