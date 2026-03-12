@@ -405,29 +405,31 @@ const CategorySelector = ({
           </div>
         )}
 
-        <div className="flex items-center justify-end gap-3 pt-2">
-          <Button
-            type="button"
-            variant="ghost"
-            onClick={() => {
-              setSelectedCategories(backupCategories);
-              setSelectedIds?.(backupCategories.map((c) => c._id));
-              onClose?.();
-            }}
-            className="text-gray-600 hover:text-gray-900 hover:bg-gray-100 font-bold px-6"
-          >
-            <X className="size-4 mr-2" />
-            Cancel
-          </Button>
-          <Button
-            type="button"
-            onClick={onClose}
-            className="bg-red-600 hover:bg-red-700 text-white font-bold px-8 shadow-lg shadow-red-200 rounded-sm"
-          >
-            <Check className="size-4 mr-2" />
-            Confirm
-          </Button>
-        </div>
+        {!hideSelectedBottom && (
+          <div className="flex items-center justify-end gap-3 pt-2">
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={() => {
+                setSelectedCategories(backupCategories);
+                setSelectedIds?.(backupCategories.map((c) => c._id));
+                onClose?.();
+              }}
+              className="text-gray-600 hover:text-gray-900 hover:bg-gray-100 font-bold px-6"
+            >
+              <X className="size-4 mr-2" />
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              onClick={onClose}
+              className="bg-red-600 hover:bg-red-700 text-white font-bold px-8 shadow-lg shadow-red-200 rounded-sm"
+            >
+              <Check className="size-4 mr-2" />
+              Confirm
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );

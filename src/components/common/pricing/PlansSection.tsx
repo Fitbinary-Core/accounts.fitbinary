@@ -60,7 +60,7 @@ export const PlansSection = ({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full p-4 space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full space-y-4">
         {subscriptions.map((plan) => (
           <PlanCard
             key={plan._id}

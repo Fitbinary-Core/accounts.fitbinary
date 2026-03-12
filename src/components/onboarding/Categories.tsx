@@ -109,9 +109,11 @@ const Categories = ({
           setSelectedIds={setSelectedIds}
           asDialog={false}
           onlyTopLevelSelectable
+          hideSelectedBottom={true}
         />
       </div>
 
+      {/* 
       {selectedCategories.length > 0 && (
         <div className="space-y-3 p-4 bg-white border border-gray-200 rounded-md shadow-sm">
           <div className="flex items-center justify-between border-b border-gray-100 pb-2">
@@ -147,7 +149,7 @@ const Categories = ({
             ))}
           </div>
         </div>
-      )}
+      )} */}
 
       <Button
         onClick={handleSaveCategories}
