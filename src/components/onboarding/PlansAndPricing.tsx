@@ -151,7 +151,6 @@ const PlansAndPricing = ({
         onStepComplete();
       }
     } catch (error: any) {
-      console.log("Error starting free trial: ", error);
       toast.error(
         error.message || "Failed to start free trial. Please try again.",
       );

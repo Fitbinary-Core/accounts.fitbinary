@@ -119,8 +119,18 @@ const BusinessDetails = ({
       }
 
       setUploadStatus("Saving details...");
+
+      const businessTypeMapping: Record<string, string> = {
+        FITNESS_GYM: "FITNESS",
+        SUPPLEMENT_STORE: "SUPPLEMENT STORE",
+      };
+
+      const finalBusinessType =
+        businessTypeMapping[data.business_type || ""] || data.business_type;
+
       const response = await update_business_details({
         ...data,
+        business_type: finalBusinessType || "",
         business_logo: logoUrl || "",
         app_id: selectedApp?._id,
       } as any);

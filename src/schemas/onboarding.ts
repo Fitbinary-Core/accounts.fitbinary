@@ -6,10 +6,7 @@ export enum BusinessSize {
 
 export enum BusinessTypes {
   FITNESS = "FITNESS",
-  PHARMACY = "PHARMACY",
-  SHOES = "SHOES",
-  JEWELRY = "JEWELRY",
-  ELECTRONICS = "ELECTRONICS",
+  SUPPLEMENT_STORE = "SUPPLEMENT STORE",
 }
 
 export interface Tenant {
@@ -177,6 +174,7 @@ export interface BusinessDetailPayload {
 // Location & Metadata Details Props
 
 export interface LocationAndMetadataDetailsPayload {
+  app_id: string;
   country: string;
   state: string;
   district: string;

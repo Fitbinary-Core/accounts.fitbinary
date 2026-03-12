@@ -12,11 +12,14 @@ import {
   CreditCard,
   Rocket,
   CheckCircle2,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { IApplication } from "@/types/apps";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import BusinessDetails from "@/components/onboarding/BusinessDetails";
 import LocationAndMetadata from "@/components/onboarding/LocationAndMetadata";
 import BranchSetup from "@/components/onboarding/BranchSetup";
@@ -38,6 +41,7 @@ export default function OrganizationCreatePage() {
   const [currentStep, setCurrentStep] = useState<CreateStep>(
     CreateStep.APP_SELECTION,
   );
+
   const [selectedApp, setSelectedApp] = useState<IApplication | null>(null);
 
   const { data: appsData, isLoading: isLoadingApps } = useQuery({
@@ -116,6 +120,13 @@ export default function OrganizationCreatePage() {
     const nextIdx = currentIndex + 1;
     if (nextIdx < steps.length) {
       setCurrentStep(steps[nextIdx].id);
+    }
+  };
+
+  const prevStep = () => {
+    const prevIdx = currentIndex - 1;
+    if (prevIdx >= 0) {
+      setCurrentStep(steps[prevIdx].id);
     }
   };
 
@@ -276,6 +287,7 @@ export default function OrganizationCreatePage() {
                 !!onboardingData && (
                   <LocationAndMetadata
                     location_and_metadata={onboardingData}
+                    app_id={selectedApp?._id}
                     onStepComplete={nextStep}
                   />
                 )}
@@ -289,7 +301,10 @@ export default function OrganizationCreatePage() {
               )}
 
               {currentStep === CreateStep.CATEGORIES && (
-                <Categories onStepComplete={nextStep} />
+                <Categories
+                  onStepComplete={nextStep}
+                  app_id={selectedApp?._id}
+                />
               )}
 
               {currentStep === CreateStep.PLANS && (
@@ -302,6 +317,28 @@ export default function OrganizationCreatePage() {
               )}
             </div>
           </main>
+
+          {/* Navigation Footer */}
+          <div className="flex items-center justify-between bg-white border border-zinc-200 rounded-md p-4 shadow-sm animate-in fade-in slide-in-from-bottom-2 duration-500">
+            <Button
+              variant="outline"
+              onClick={prevStep}
+              disabled={currentIndex === 0}
+              className="gap-2 px-6 h-11 font-bold text-zinc-600 border-zinc-200 hover:bg-zinc-50 hover:text-zinc-900 transition-all active:scale-[0.98] disabled:opacity-40"
+            >
+              <ChevronLeft className="size-4" />
+              Previous
+            </Button>
+
+            <Button
+              onClick={nextStep}
+              disabled={currentIndex === steps.length - 1}
+              className="gap-2 px-8 h-11 bg-zinc-900 hover:bg-zinc-800 text-white font-bold transition-all active:scale-[0.98] disabled:opacity-40"
+            >
+              Next Step
+              <ChevronRight className="size-4" />
+            </Button>
+          </div>
         </div>
       </div>
     </DashboardLayout>

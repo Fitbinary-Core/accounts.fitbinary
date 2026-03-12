@@ -3,9 +3,18 @@
 import { DashboardLayout } from "@/components/dashboard/Layout";
 import { get_organization_list } from "@/services/organization/organization.service";
 import { useQuery } from "@tanstack/react-query";
-import { Building2, Search, User, Globe, Calendar, MapPin } from "lucide-react";
+import {
+  Building2,
+  Search,
+  User,
+  Globe,
+  Calendar,
+  MapPin,
+  Plus,
+} from "lucide-react";
 import Link from "next/link";
 import { IOrganization } from "@/types/organization";
+import { Button } from "@/components/ui/button";
 
 export default function OrganizationListPage() {
   const { data, isLoading } = useQuery({
@@ -41,6 +50,13 @@ export default function OrganizationListPage() {
               ownership details, and localization settings.
             </p>
           </div>
+
+          <Button
+            onClick={() => (window.location.href = "/organization/create")}
+          >
+            <Plus />
+            Create Organization
+          </Button>
         </div>
 
         <div className="bg-white border border-zinc-200 rounded-lg overflow-hidden shadow-sm">

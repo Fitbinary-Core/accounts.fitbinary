@@ -12,7 +12,13 @@ import {
   updateTenantCategories,
 } from "@/services/categories/categories.service";
 
-const Categories = ({ onStepComplete }: { onStepComplete?: () => void }) => {
+const Categories = ({
+  onStepComplete,
+  app_id,
+}: {
+  onStepComplete?: () => void;
+  app_id?: string;
+}) => {
   const [currentCategories, setCurrentCategories] = useState<Category[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
@@ -21,7 +27,7 @@ const Categories = ({ onStepComplete }: { onStepComplete?: () => void }) => {
   useEffect(() => {
     const fetchInitialCategories = async () => {
       try {
-        const data = await getOnboardingCategories();
+        const data = await getOnboardingCategories(app_id);
         setCurrentCategories(data);
         setSelectedCategories(data);
         setSelectedIds(data.map((cat: any) => cat._id));
@@ -40,7 +46,7 @@ const Categories = ({ onStepComplete }: { onStepComplete?: () => void }) => {
 
     try {
       setLoading(true);
-      await updateTenantCategories(selectedIds);
+      await updateTenantCategories(selectedIds, app_id);
       toast.success("Business categories updated successfully");
       if (onStepComplete) {
         onStepComplete();
@@ -55,7 +61,7 @@ const Categories = ({ onStepComplete }: { onStepComplete?: () => void }) => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-4">
       <div className="space-y-2">
         <h3 className="text-lg font-bold text-gray-900 border-b-2 border-red-500 pb-2 inline-block">
           Manage Business Categories

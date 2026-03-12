@@ -117,7 +117,6 @@ export default function AddUserPage() {
     }
 
     setLoading(true);
-    console.log("Submitting user data:", JSON.stringify(data, null, 2));
     try {
       await createUserService(data);
       toast.success("User created successfully!");

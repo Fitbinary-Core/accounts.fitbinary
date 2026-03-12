@@ -15,6 +15,7 @@ import { useMemo } from "react";
 
 // Zod schema
 const businessDetailsSchema = z.object({
+  app_id: z.string().min(1, "App ID is required"),
   country: z.string().min(1, "Country is required"),
   state: z.string().min(1, "State is required"),
   district: z.string().min(1, "District is required"),
@@ -31,7 +32,11 @@ type BusinessDetailsFormData = z.infer<typeof businessDetailsSchema>;
 const LocationAndMetadata = ({
   location_and_metadata,
   onStepComplete,
-}: LocationAndMetaDataProps & { onStepComplete?: () => void }) => {
+  app_id,
+}: LocationAndMetaDataProps & {
+  onStepComplete?: () => void;
+  app_id?: string;
+}) => {
   const { location_and_metadata_details, onboarding_fields_data } =
     location_and_metadata;
   const { location_and_metadata: lam } = location_and_metadata_details;
@@ -45,6 +50,7 @@ const LocationAndMetadata = ({
   } = useForm<BusinessDetailsFormData>({
     resolver: zodResolver(businessDetailsSchema),
     defaultValues: {
+      app_id: app_id || "",
       country: lam?.country || "",
       state: lam?.state || "",
       district: lam?.district || "",
@@ -57,8 +63,6 @@ const LocationAndMetadata = ({
   });
 
   const country = watch("country");
-  const state = watch("state");
-  const district = watch("district");
   const timezone = watch("timezone");
   const currency = watch("currency");
 
@@ -69,24 +73,6 @@ const LocationAndMetadata = ({
         value: c.code,
         label: c.name,
         flag: c.flag,
-      }),
-    );
-  }, [onboarding_fields_data]);
-
-  const stateOptions: SelectOption[] = useMemo(() => {
-    return (onboarding_fields_data?.address_details?.states || []).map(
-      (s: any) => ({
-        value: s.name,
-        label: s.name,
-      }),
-    );
-  }, [onboarding_fields_data]);
-
-  const districtOptions: SelectOption[] = useMemo(() => {
-    return (onboarding_fields_data?.address_details?.districts || []).map(
-      (d: any) => ({
-        value: d.name,
-        label: d.name,
       }),
     );
   }, [onboarding_fields_data]);
@@ -153,29 +139,39 @@ const LocationAndMetadata = ({
               error={errors.country?.message}
             />
 
-            <CustomSelector
-              label="State"
-              required
-              options={stateOptions}
-              value={state}
-              onChange={(value) => setValue("state", value)}
-              placeholder="Select state"
-              searchPlaceholder="Search states..."
-              error={errors.state?.message}
-            />
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                State <span className="text-red-600">*</span>
+              </label>
+              <input
+                {...register("state")}
+                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all outline-none text-gray-800 bg-white"
+                placeholder="Enter state"
+              />
+              {errors.state && (
+                <p className="text-red-600 text-sm mt-1 flex items-center gap-1">
+                  <span className="text-xs">⚠</span> {errors.state.message}
+                </p>
+              )}
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <CustomSelector
-              label="District"
-              required
-              options={districtOptions}
-              value={district}
-              onChange={(value) => setValue("district", value)}
-              placeholder="Select district"
-              searchPlaceholder="Search districts..."
-              error={errors.district?.message}
-            />
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                District <span className="text-red-600">*</span>
+              </label>
+              <input
+                {...register("district")}
+                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all outline-none text-gray-800 bg-white"
+                placeholder="Enter district"
+              />
+              {errors.district && (
+                <p className="text-red-600 text-sm mt-1 flex items-center gap-1">
+                  <span className="text-xs">⚠</span> {errors.district.message}
+                </p>
+              )}
+            </div>
 
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">

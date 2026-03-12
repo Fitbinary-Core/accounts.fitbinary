@@ -82,12 +82,11 @@ const CustomSelector = ({
         <PopoverTrigger asChild>
           <Button
             type="button"
-            variant="default"
             role="combobox"
             aria-expanded={open}
             disabled={disabled}
             className={cn(
-              "w-full justify-between py-7 min-h-12 px-4 border border-gray-400 hover:bg-gray-50 transition-all",
+              "w-full justify-between py-5.5 px-4 border border-gray-300 hover:bg-gray-50 bg-gray-100 transition-all",
               error && "border-red-500 focus:ring-red-500",
               disabled && "opacity-50 cursor-not-allowed",
               !selectedOption && "text-gray-500",
@@ -136,9 +135,9 @@ const CustomSelector = ({
           align="start"
           sideOffset={4}
         >
-          <div className="flex flex-col max-h-100 bg-white">
+          <div className="flex flex-col rounded-md max-h-100 bg-white">
             {/* Search Header */}
-            <div className="p-3 border-b border-gray-200 bg-gray-50">
+            <div className="p-3 border-b rounded-t-md border-gray-200 bg-gray-50">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
                 <Input
@@ -161,7 +160,7 @@ const CustomSelector = ({
             </div>
 
             {/* Options List */}
-            <div className="overflow-y-auto flex-1 p-2 bg-white">
+            <div className="overflow-y-auto flex-1 p-2 bg-white rounded-b-md">
               {filteredOptions.length === 0 ? (
                 <div className="py-8 text-center text-sm text-gray-600">
                   {emptyMessage}

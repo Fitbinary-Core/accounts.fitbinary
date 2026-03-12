@@ -59,7 +59,7 @@ export const ONBOARDING_URLS = {
   create_update_organization: `${BASE_URL}/onboarding/create-update/organization`,
   update_location_and_metadata: `${BASE_URL}/onboarding/update/location-metadata`,
   get_categories: `${BASE_URL}/onboarding/categories`,
-  update_categories: `${BASE_URL}/onboarding/update`,
+  update_categories: `${BASE_URL}/onboarding/update-categories`,
   get_subscriptions: `${BASE_URL}/onboarding/subscriptions`,
   create_update_main_branch: `${BASE_URL}/onboarding/create-update/main-branch`,
 };

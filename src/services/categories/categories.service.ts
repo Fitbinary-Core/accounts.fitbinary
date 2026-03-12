@@ -2,9 +2,11 @@ import { apiClient } from "@/lib/apiClient";
 import { CATEGORIES_URLS, ONBOARDING_URLS } from "@/lib/urls";
 import { Category } from "@/schemas/categories";
 
-export const getOnboardingCategories = async (): Promise<Category[]> => {
+export const getOnboardingCategories = async (
+  app_id: string | undefined,
+): Promise<Category[]> => {
   try {
-    const url = ONBOARDING_URLS.get_categories;
+    const url = `${ONBOARDING_URLS.get_categories}?app_id=${app_id}`;
     const response = await apiClient(url);
     if (!response.ok) {
       throw new Error("Failed to fetch categories");
@@ -49,6 +51,7 @@ export const getCategoryChildrens = async (id: string): Promise<Category[]> => {
 
 export const updateTenantCategories = async (
   ids: string[],
+  app_id?: string,
 ): Promise<{ message: string }> => {
   try {
     const url = ONBOARDING_URLS.update_categories;
@@ -57,7 +60,7 @@ export const updateTenantCategories = async (
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ ids }),
+      body: JSON.stringify({ ids, app_id }),
     });
     const data = await response.json();
 
