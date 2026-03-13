@@ -32,7 +32,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <div className="flex h-screen overflow-hidden bg-zinc-50 text-zinc-900 font-sans selection:bg-brand-red/10 selection:text-brand-red">
+    <div className="fixed inset-0 flex overflow-hidden bg-zinc-50 text-zinc-900 font-sans selection:bg-brand-red/10 selection:text-brand-red">
       <Sidebar
         isOpen={isSidebarOpen}
         setIsOpen={setIsSidebarOpen}
