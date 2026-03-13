@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { userSchema, type UserFormData } from "@/schemas/user";
 import { createUserService } from "@/services/users/user.service";
@@ -31,18 +31,17 @@ import {
   User,
   Loader2,
   ArrowLeft,
-  Shield,
 } from "lucide-react";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { getMyBranches } from "@/services/branch/branch.service";
-import { get_all_apps } from "@/services/apps/apps.service";
+import { getMyBranches as get_my_branches_minimal } from "@/services/branch/branch.service";
+import { get_organization_list } from "@/services/organization/organization.service";
+import OrganizationSelector from "@/components/common/OrganizationSelector";
 import BranchSelector from "@/components/common/BranchSelector";
 import DashboardBreadcrumb from "@/components/common/DashboardBreadcrumb";
 import { DashboardLayout } from "@/components/dashboard/Layout";
-import { useState, useEffect } from "react";
-import { IApplication } from "@/types/apps";
+import { useState, useEffect, useMemo } from "react";
 import {
   get_user_roles_list,
   type Role,
@@ -51,28 +50,21 @@ import {
 export default function AddUserPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [selectedApp, setSelectedApp] = useState<IApplication | null>(null);
   const [selectedRoleScope, setSelectedRoleScope] = useState<
     "ORGANIZATION" | "BRANCH" | null
   >(null);
 
   const queryClient = useQueryClient();
 
-  const { data: appsData, isLoading: isLoadingApps } = useQuery({
-    queryKey: ["apps-list"],
-    queryFn: () => get_all_apps(),
-    staleTime: 1000 * 60 * 60 * 10,
+  const { data: orgsData, isLoading: isLoadingOrgs } = useQuery({
+    queryKey: ["organization-list"],
+    queryFn: () => get_organization_list(),
   });
+  const organizations = orgsData?.organizations || [];
 
-  const { data: roles } = useQuery({
-    queryKey: ["user-roles", selectedApp?._id],
-    queryFn: () => get_user_roles_list(selectedApp?._id),
-    enabled: !!selectedApp,
-  });
-
-  const { data, isLoading, error } = useQuery({
+  const { data: branchesData, isLoading: isLoadingBranches } = useQuery({
     queryKey: ["my-branches"],
-    queryFn: () => getMyBranches(),
+    queryFn: () => get_my_branches_minimal(),
   });
 
   const form = useForm<UserFormData>({
@@ -85,26 +77,44 @@ export default function AddUserPage() {
       phone: "",
       password: "",
       role: "",
+      organization: "",
       app: "",
       branches: [],
     },
   });
 
+  const {
+    watch,
+    setValue,
+    formState: { errors },
+  } = form;
+
+  const selectedOrganizationId = watch("organization");
+  const selectedOrganization = useMemo(() => {
+    return organizations.find((o) => o._id === selectedOrganizationId);
+  }, [organizations, selectedOrganizationId]);
+
+  const { data: roles } = useQuery({
+    queryKey: ["user-roles", selectedOrganizationId],
+    queryFn: () => get_user_roles_list(undefined, selectedOrganizationId),
+    enabled: !!selectedOrganizationId,
+  });
+
   useEffect(() => {
-    if (selectedApp) {
-      form.setValue("app", selectedApp._id);
+    if (selectedOrganization?.application) {
+      setValue("app", selectedOrganization.application);
     }
-  }, [selectedApp, form]);
+  }, [selectedOrganization, setValue]);
 
   const handleRoleChange = (roleId: string) => {
     const selectedRole = roles?.data.find((r: Role) => r._id === roleId);
     if (selectedRole) {
       setSelectedRoleScope(selectedRole.role_scope || "BRANCH");
       if (selectedRole.role_scope === "ORGANIZATION") {
-        form.setValue("branches", []);
+        setValue("branches", []);
       }
     }
-    form.setValue("role", roleId);
+    setValue("role", roleId);
   };
 
   async function onSubmit(data: UserFormData) {
@@ -129,15 +139,13 @@ export default function AddUserPage() {
     }
   }
 
-  const applications = appsData?.applications || [];
-
-  if (isLoadingApps) {
+  if (isLoadingOrgs) {
     return (
       <DashboardLayout>
         <div className="flex flex-col items-center justify-center py-32 space-y-4">
           <Loader2 className="size-10 animate-spin text-zinc-900" />
           <p className="text-zinc-500 font-bold uppercase tracking-widest text-[10px]">
-            Hydrating Application Data...
+            Hydrating Organization Data...
           </p>
         </div>
       </DashboardLayout>
@@ -148,67 +156,77 @@ export default function AddUserPage() {
     <DashboardLayout>
       <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
         <DashboardBreadcrumb
-          title={selectedApp ? "Register New Member" : "Application Context"}
+          title={
+            selectedOrganization
+              ? "Register New User"
+              : "Organization Selection"
+          }
           description={
-            selectedApp
-              ? `Creating a new user profile within ${selectedApp.name}.`
-              : "Select an application environment to begin user onboarding."
+            selectedOrganization
+              ? `Creating a new user profile within ${selectedOrganization.business_name}.`
+              : "Select an organization environment to begin user onboarding."
           }
           actions={
             <Button
               onClick={() =>
-                selectedApp
-                  ? setSelectedApp(null)
+                selectedOrganizationId
+                  ? setValue("organization", "")
                   : router.push("/user-management/users")
               }
-              className="flex items-center gap-2 h-10 px-4 border-zinc-200 text-zinc-900 text-[11px] font-bold uppercase tracking-widest rounded-sm hover:bg-zinc-50 hover:border-zinc-900 transition-all shadow-none"
+              className="flex items-center gap-2 h-10 px-4 border-zinc-200 text-zinc-900 text-[11px] font-bold uppercase tracking-widest rounded-sm hover:bg-zinc-50 hover:border-zinc-900 transition-all shadow-none border"
             >
               <ArrowLeft size={14} />
               <span>
-                {selectedApp ? "Change Environment" : "Back to Registry"}
+                {selectedOrganizationId ? "Change Context" : "Back to Registry"}
               </span>
             </Button>
           }
         />
 
         <div className="w-full">
-          {!selectedApp ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {applications.map((app) => (
-                <button
-                  key={app._id}
-                  onClick={() => setSelectedApp(app)}
-                  className="group relative bg-white border border-zinc-200 rounded-sm p-6 text-left transition-all hover:border-zinc-900 hover:shadow-sm active:scale-[0.98]"
-                >
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="size-12 rounded-sm bg-zinc-900 flex items-center justify-center text-white shadow-sm overflow-hidden group-hover:scale-110 transition-transform">
-                      <Shield size={24} />
-                    </div>
-                    <div>
-                      <h3 className="font-black text-zinc-900 text-base tracking-tight">
-                        {app.name}
-                      </h3>
-                      <span className="text-[9px] text-zinc-400 font-bold uppercase tracking-widest border border-zinc-100 px-1.5 py-0.5 rounded-sm">
-                        {app.app_slug}
-                      </span>
-                    </div>
-                  </div>
-                  <p className="text-[11px] text-zinc-500 font-medium leading-relaxed line-clamp-2">
-                    {app.description ||
-                      "Deploy new user credentials to this application node."}
-                  </p>
-                  <div className="mt-4 flex items-center text-zinc-900 text-[10px] font-black uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
-                    Initialize Setup →
-                  </div>
-                </button>
-              ))}
+          <div className="rounded-sm border border-zinc-200 bg-white overflow-hidden shadow-none w-full mx-auto">
+            <div className="border-b border-zinc-100 bg-zinc-50/30 px-6 py-4">
+              <div className="flex items-center gap-2">
+                <h2 className="text-sm font-black text-zinc-900 uppercase tracking-tight">
+                  Target Context
+                </h2>
+              </div>
             </div>
-          ) : (
-            <div className="rounded-sm border border-zinc-200 bg-white overflow-hidden shadow-none w-full mx-auto">
+
+            <div className="p-6 md:p-8 space-y-8">
+              <div className="space-y-3">
+                <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
+                  Organization Environment
+                </label>
+                <Controller
+                  name="organization"
+                  control={form.control}
+                  render={({ field }) => (
+                    <OrganizationSelector
+                      organizations={organizations}
+                      multi={false}
+                      value={field.value}
+                      onChange={field.onChange}
+                      disabled={loading}
+                      placeholder="Select organization context..."
+                    />
+                  )}
+                />
+                {errors.organization && (
+                  <p className="text-red-900 text-[10px] font-bold">
+                    {errors.organization.message}
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {selectedOrganizationId && (
+            <div className="mt-8 rounded-sm border border-zinc-200 bg-white overflow-hidden shadow-none w-full mx-auto animate-in fade-in slide-in-from-top-4 duration-500">
               <div className="border-b border-zinc-100 bg-zinc-50/30 px-6 py-4">
                 <div className="flex items-center gap-2">
                   <span className="px-2 py-0.5 bg-zinc-900 text-white text-[9px] font-bold uppercase tracking-widest rounded-sm">
-                    {selectedApp.app_slug}
+                    {selectedOrganization?.business_name}
                   </span>
                   <h2 className="text-sm font-black text-zinc-900 uppercase tracking-tight">
                     User Credentials
@@ -226,7 +244,7 @@ export default function AddUserPage() {
                       <FormField
                         control={form.control}
                         name="first_name"
-                        render={({ field }: any) => (
+                        render={({ field }) => (
                           <FormItem>
                             <FormLabel className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
                               First Name
@@ -250,7 +268,7 @@ export default function AddUserPage() {
                       <FormField
                         control={form.control}
                         name="middle_name"
-                        render={({ field }: any) => (
+                        render={({ field }) => (
                           <FormItem>
                             <FormLabel className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
                               Middle Name
@@ -269,7 +287,7 @@ export default function AddUserPage() {
                       <FormField
                         control={form.control}
                         name="last_name"
-                        render={({ field }: any) => (
+                        render={({ field }) => (
                           <FormItem>
                             <FormLabel className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
                               Last Name
@@ -291,7 +309,7 @@ export default function AddUserPage() {
                       <FormField
                         control={form.control}
                         name="email"
-                        render={({ field }: any) => (
+                        render={({ field }) => (
                           <FormItem>
                             <FormLabel className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
                               Email Address
@@ -316,7 +334,7 @@ export default function AddUserPage() {
                       <FormField
                         control={form.control}
                         name="phone"
-                        render={({ field }: any) => (
+                        render={({ field }) => (
                           <FormItem>
                             <FormLabel className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
                               Phone Identifier
@@ -343,7 +361,7 @@ export default function AddUserPage() {
                       <FormField
                         control={form.control}
                         name="password"
-                        render={({ field }: any) => (
+                        render={({ field }) => (
                           <FormItem>
                             <FormLabel className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
                               Access Secret
@@ -368,7 +386,7 @@ export default function AddUserPage() {
                       <FormField
                         control={form.control}
                         name="role"
-                        render={({ field }: any) => (
+                        render={({ field }) => (
                           <FormItem>
                             <FormLabel className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
                               Privilege Level
@@ -415,7 +433,7 @@ export default function AddUserPage() {
                       <FormField
                         control={form.control}
                         name="branches"
-                        render={({ field }: any) => (
+                        render={({ field }) => (
                           <FormItem>
                             <FormLabel className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
                               Resource Access Tags (Branches)
@@ -424,14 +442,15 @@ export default function AddUserPage() {
                               <BranchSelector
                                 multi={true}
                                 branches={
-                                  data?.data.filter(
+                                  branchesData?.data.filter(
                                     (b: any) =>
-                                      b.application === selectedApp?._id,
+                                      b.application ===
+                                      selectedOrganization?.application,
                                   ) || []
                                 }
                                 value={field.value}
                                 onChange={field.onChange}
-                                disabled={isLoading}
+                                disabled={isLoadingBranches}
                                 placeholder="Bind user to specific branches"
                               />
                             </FormControl>

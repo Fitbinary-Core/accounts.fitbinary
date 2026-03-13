@@ -53,7 +53,7 @@ export default function BranchesListingPage() {
     }
   };
 
-  const branches = data?.data || [];
+  const branches = Array.isArray(data?.data) ? data.data : [];
 
   if (isLoading) {
     return (

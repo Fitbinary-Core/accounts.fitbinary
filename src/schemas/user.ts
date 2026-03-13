@@ -72,8 +72,8 @@ export const userSchema = z.object({
       message: "Password must be at least 6 characters",
     }),
   role: z.string().optional(),
-  organization: z.string().optional(),
-  app: z.string().min(1, "Application is required"),
+  organization: z.string().min(1, "Organization is required"),
+  app: z.string().optional(),
   branches: z.array(z.string()),
 });
 

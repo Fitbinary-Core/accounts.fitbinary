@@ -25,14 +25,18 @@ export interface GetRolesResponse {
 
 export const get_user_roles_list = async (
   appId?: string,
+  orgId?: string,
 ): Promise<GetRolesResponse> => {
   try {
     let url = ROLES_URLS.get_roles_list;
+    const urlObj = new URL(url, window.location.origin);
     if (appId) {
-      const urlObj = new URL(url, window.location.origin);
       urlObj.searchParams.set("appId", appId);
-      url = urlObj.toString();
     }
+    if (orgId) {
+      urlObj.searchParams.set("orgId", orgId);
+    }
+    url = urlObj.toString();
     const response = await apiClient(url);
 
     const data = await response.json();

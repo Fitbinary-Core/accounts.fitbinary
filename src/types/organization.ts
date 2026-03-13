@@ -18,6 +18,7 @@ export interface IOrganization {
   business_phone: string;
   business_logo?: string;
   business_description?: string;
+  application?: string;
   country?: string;
   state?: string;
   district?: string;

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
   Select,
   SelectContent,
@@ -10,8 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { userSchema, type UserFormData } from "@/schemas/user";
 import {
@@ -36,12 +35,13 @@ import {
   Loader2,
   ArrowLeft,
   Save,
-  Shield,
 } from "lucide-react";
 import { toast } from "react-hot-toast";
 import { useRouter, useParams } from "next/navigation";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getMyBranches } from "@/services/branch/branch.service";
+import { getMyBranches as get_my_branches_minimal } from "@/services/branch/branch.service";
+import { get_organization_list } from "@/services/organization/organization.service";
+import OrganizationSelector from "@/components/common/OrganizationSelector";
 
 import DashboardBreadcrumb from "@/components/common/DashboardBreadcrumb";
 import {
@@ -59,25 +59,20 @@ export default function EditUserPage() {
     "ORGANIZATION" | "BRANCH" | null
   >(null);
 
+  const { data: orgsData, isLoading: isLoadingOrgs } = useQuery({
+    queryKey: ["organization-list"],
+    queryFn: () => get_organization_list(),
+  });
+  const organizations = orgsData?.organizations || [];
+
   const { data: userResponse, isLoading: isLoadingUser } = useQuery({
     queryKey: ["user", id],
     queryFn: () => getUserOneService(id),
   });
 
-  const currentAppId =
-    typeof userResponse?.data?.app === "object"
-      ? userResponse?.data?.app?._id
-      : userResponse?.data?.app;
-
-  const { data: roles } = useQuery({
-    queryKey: ["user-roles", currentAppId],
-    queryFn: () => get_user_roles_list(currentAppId),
-    enabled: !!currentAppId,
-  });
-
-  const { data: branches, isLoading: isLoadingBranches } = useQuery({
+  const { data: branchesData, isLoading: isLoadingBranches } = useQuery({
     queryKey: ["my-branches"],
-    queryFn: () => getMyBranches(),
+    queryFn: () => get_my_branches_minimal(),
   });
 
   const form = useForm<UserFormData>({
@@ -90,9 +85,22 @@ export default function EditUserPage() {
       phone: "",
       password: "",
       role: "",
+      organization: "",
       app: "",
       branches: [],
     },
+  });
+
+  const { watch, setValue, reset } = form;
+  const selectedOrganizationId = watch("organization");
+  const selectedOrganization = useMemo(() => {
+    return organizations.find((o) => o._id === selectedOrganizationId);
+  }, [organizations, selectedOrganizationId]);
+
+  const { data: roles } = useQuery({
+    queryKey: ["user-roles", selectedOrganizationId],
+    queryFn: () => get_user_roles_list(undefined, selectedOrganizationId),
+    enabled: !!selectedOrganizationId,
   });
 
   useEffect(() => {
@@ -105,7 +113,12 @@ export default function EditUserPage() {
         setSelectedRoleScope(userRole.role_scope || "BRANCH");
       }
 
-      form.reset({
+      const orgId =
+        typeof user.organization === "object"
+          ? user.organization._id
+          : user.organization;
+
+      reset({
         first_name: user.first_name,
         middle_name: user.middle_name || "",
         last_name: user.last_name,
@@ -113,23 +126,30 @@ export default function EditUserPage() {
         phone: user.phone,
         password: "",
         role: typeof user.role === "object" ? user.role._id : user.role,
+        organization: orgId || "",
         app: typeof user.app === "object" ? user.app._id : user.app,
         branches: Array.isArray(user.branches)
           ? user.branches.map((b: any) => (typeof b === "object" ? b._id : b))
           : [],
       });
     }
-  }, [userResponse, form]);
+  }, [userResponse, reset]);
+
+  useEffect(() => {
+    if (selectedOrganization?.application) {
+      setValue("app", selectedOrganization.application);
+    }
+  }, [selectedOrganization, setValue]);
 
   const handleRoleChange = (roleId: string) => {
     const selectedRole = roles?.data.find((r: Role) => r._id === roleId);
     if (selectedRole) {
       setSelectedRoleScope(selectedRole.role_scope || "BRANCH");
       if (selectedRole.role_scope === "ORGANIZATION") {
-        form.setValue("branches", []);
+        setValue("branches", []);
       }
     }
-    form.setValue("role", roleId);
+    setValue("role", roleId);
   };
 
   const updateMutation = useMutation({
@@ -162,7 +182,7 @@ export default function EditUserPage() {
     updateMutation.mutate(data);
   }
 
-  if (isLoadingUser) {
+  if (isLoadingUser || isLoadingOrgs) {
     return (
       <DashboardLayout>
         <div className="flex flex-col items-center justify-center py-32 space-y-4">
@@ -175,16 +195,14 @@ export default function EditUserPage() {
     );
   }
 
-  const selectedApp = userResponse?.data?.app;
-
   return (
     <DashboardLayout>
       <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
         <DashboardBreadcrumb
           title="Update User Credentials"
           description={
-            selectedApp
-              ? `Modifying user profile within ${typeof selectedApp === "object" ? selectedApp.name : "Organization"}.`
+            selectedOrganization
+              ? `Modifying user profile within ${selectedOrganization.business_name}.`
               : "Updating user information and access permissions."
           }
           actions={
@@ -202,10 +220,45 @@ export default function EditUserPage() {
           <div className="rounded-sm border border-zinc-200 bg-white overflow-hidden shadow-none w-full mx-auto">
             <div className="border-b border-zinc-100 bg-zinc-50/30 px-6 py-4">
               <div className="flex items-center gap-2">
+                <h2 className="text-sm font-black text-zinc-900 uppercase tracking-tight">
+                  Target Context
+                </h2>
+              </div>
+            </div>
+
+            <div className="p-6 md:p-8 space-y-8">
+              <div className="space-y-3">
+                <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
+                  Organization Environment
+                </label>
+                <Controller
+                  name="organization"
+                  control={form.control}
+                  render={({ field }) => (
+                    <OrganizationSelector
+                      organizations={organizations}
+                      multi={false}
+                      value={field.value}
+                      onChange={field.onChange}
+                      disabled={updateMutation.isPending}
+                      placeholder="Select organization context..."
+                    />
+                  )}
+                />
+                {form.formState.errors.organization && (
+                  <p className="text-red-900 text-[10px] font-bold">
+                    {form.formState.errors.organization.message}
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-8 rounded-sm border border-zinc-200 bg-white overflow-hidden shadow-none w-full mx-auto animate-in fade-in slide-in-from-top-4 duration-500">
+            <div className="border-b border-zinc-100 bg-zinc-50/30 px-6 py-4">
+              <div className="flex items-center gap-2">
                 <span className="px-2 py-0.5 bg-zinc-900 text-white text-[9px] font-bold uppercase tracking-widest rounded-sm">
-                  {typeof selectedApp === "object"
-                    ? selectedApp.app_slug
-                    : "EDIT"}
+                  {selectedOrganization?.business_name || "EDIT"}
                 </span>
                 <h2 className="text-sm font-black text-zinc-900 uppercase tracking-tight">
                   User Information for {userResponse?.data?.first_name}{" "}
@@ -224,7 +277,7 @@ export default function EditUserPage() {
                     <FormField
                       control={form.control}
                       name="first_name"
-                      render={({ field }: any) => (
+                      render={({ field }) => (
                         <FormItem>
                           <FormLabel className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
                             First Name
@@ -248,7 +301,7 @@ export default function EditUserPage() {
                     <FormField
                       control={form.control}
                       name="middle_name"
-                      render={({ field }: any) => (
+                      render={({ field }) => (
                         <FormItem>
                           <FormLabel className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
                             Middle Name
@@ -267,7 +320,7 @@ export default function EditUserPage() {
                     <FormField
                       control={form.control}
                       name="last_name"
-                      render={({ field }: any) => (
+                      render={({ field }) => (
                         <FormItem>
                           <FormLabel className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
                             Last Name
@@ -289,7 +342,7 @@ export default function EditUserPage() {
                     <FormField
                       control={form.control}
                       name="email"
-                      render={({ field }: any) => (
+                      render={({ field }) => (
                         <FormItem>
                           <FormLabel className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
                             Email Address
@@ -314,7 +367,7 @@ export default function EditUserPage() {
                     <FormField
                       control={form.control}
                       name="phone"
-                      render={({ field }: any) => (
+                      render={({ field }) => (
                         <FormItem>
                           <FormLabel className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
                             Phone Identifier
@@ -341,7 +394,7 @@ export default function EditUserPage() {
                     <FormField
                       control={form.control}
                       name="password"
-                      render={({ field }: any) => (
+                      render={({ field }) => (
                         <FormItem>
                           <FormLabel className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
                             Access Secret (leave blank to keep current)
@@ -366,7 +419,7 @@ export default function EditUserPage() {
                     <FormField
                       control={form.control}
                       name="role"
-                      render={({ field }: any) => (
+                      render={({ field }) => (
                         <FormItem>
                           <FormLabel className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
                             Privilege Level
@@ -413,7 +466,7 @@ export default function EditUserPage() {
                     <FormField
                       control={form.control}
                       name="branches"
-                      render={({ field }: any) => (
+                      render={({ field }) => (
                         <FormItem>
                           <FormLabel className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
                             Resource Access Tags (Branches)
@@ -422,8 +475,10 @@ export default function EditUserPage() {
                             <BranchSelector
                               multi={true}
                               branches={
-                                branches?.data.filter(
-                                  (b: any) => b.application === currentAppId,
+                                branchesData?.data.filter(
+                                  (b: any) =>
+                                    b.application ===
+                                    selectedOrganization?.application,
                                 ) || []
                               }
                               value={field.value}
