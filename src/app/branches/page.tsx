@@ -99,7 +99,7 @@ export default function BranchesListingPage() {
               </p>
               <Link href="/branches/create" className="mt-6">
                 <Button className="h-10 px-6 bg-zinc-900 text-white text-[11px] font-bold uppercase tracking-widest rounded-sm hover:bg-black transition-all shadow-sm">
-                  Create First Node
+                  Create First Branch
                 </Button>
               </Link>
             </div>

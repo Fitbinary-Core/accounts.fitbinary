@@ -32,6 +32,7 @@ export const BRANCH_URLS = {
   user_branches: `${BASE_URL}/branch/user_branch_list`,
   source_branch: `${BASE_URL}/branch/source-branch`,
   destination_branches: `${BASE_URL}/branch/destination-branches`,
+  branches_by_org: `${BASE_URL}/branch/branches-by-org`,
   one: `${BASE_URL}/branch/:id`,
 };
 

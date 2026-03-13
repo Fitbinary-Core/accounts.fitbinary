@@ -158,3 +158,23 @@ export const getDestinationBranches = async (): Promise<
     throw error;
   }
 };
+
+export const getBranchesByOrg = async (
+  orgId: string,
+  page: number = 1,
+  limit: number = 10,
+): Promise<ApiResponse<Branch[]>> => {
+  try {
+    const response = await apiClient(
+      `${BRANCH_URLS.branches_by_org}?orgId=${orgId}&page=${page}&limit=${limit}`,
+    );
+    const result = await response.json();
+    if (!response.ok) {
+      throw new Error(result.message || "Failed to fetch branches by org");
+    }
+    return result;
+  } catch (error) {
+    console.error("Error fetching branches by org:", error);
+    throw error;
+  }
+};

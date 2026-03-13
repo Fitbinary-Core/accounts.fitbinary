@@ -35,7 +35,7 @@ import {
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { getMyBranches as get_my_branches_minimal } from "@/services/branch/branch.service";
+import { getBranchesByOrg } from "@/services/branch/branch.service";
 import { get_organization_list } from "@/services/organization/organization.service";
 import OrganizationSelector from "@/components/common/OrganizationSelector";
 import BranchSelector from "@/components/common/BranchSelector";
@@ -62,11 +62,6 @@ export default function AddUserPage() {
   });
   const organizations = orgsData?.organizations || [];
 
-  const { data: branchesData, isLoading: isLoadingBranches } = useQuery({
-    queryKey: ["my-branches"],
-    queryFn: () => get_my_branches_minimal(),
-  });
-
   const form = useForm<UserFormData>({
     resolver: zodResolver(userSchema),
     defaultValues: {
@@ -90,6 +85,13 @@ export default function AddUserPage() {
   } = form;
 
   const selectedOrganizationId = watch("organization");
+
+  const { data: branchesByOrg, isLoading: isLoadingBranches } = useQuery({
+    queryKey: ["branches-by-org", selectedOrganizationId],
+    queryFn: () => getBranchesByOrg(selectedOrganizationId as string),
+    enabled: !!selectedOrganizationId,
+  });
+
   const selectedOrganization = useMemo(() => {
     return organizations.find((o) => o._id === selectedOrganizationId);
   }, [organizations, selectedOrganizationId]);
@@ -441,13 +443,7 @@ export default function AddUserPage() {
                             <FormControl>
                               <BranchSelector
                                 multi={true}
-                                branches={
-                                  branchesData?.data.filter(
-                                    (b: any) =>
-                                      b.application ===
-                                      selectedOrganization?.application,
-                                  ) || []
-                                }
+                                branches={branchesByOrg?.data || []}
                                 value={field.value}
                                 onChange={field.onChange}
                                 disabled={isLoadingBranches}
