@@ -79,9 +79,9 @@ const AllUsersPage = () => {
   const branchOptions =
     branchesData?.data && Array.isArray(branchesData.data)
       ? branchesData.data.map((b: any) => ({
-          label: b.branch_name,
-          value: b._id,
-        }))
+        label: b.branch_name,
+        value: b._id,
+      }))
       : [];
 
   const roleOptions =
@@ -322,9 +322,6 @@ const AllUsersPage = () => {
                               <div className="flex flex-col min-w-0">
                                 <span className="text-[11px] font-black text-zinc-900 uppercase tracking-tight truncate">
                                   {user?.organization?.business_name || "N/A"}
-                                </span>
-                                <span className="text-[9px] text-zinc-400 font-bold uppercase tracking-widest truncate">
-                                  {user?.app?.name || "N/A"}
                                 </span>
                               </div>
                             </div>

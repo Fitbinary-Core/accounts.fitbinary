@@ -41,7 +41,7 @@ import OrganizationSelector from "@/components/common/OrganizationSelector";
 import BranchSelector from "@/components/common/BranchSelector";
 import DashboardBreadcrumb from "@/components/common/DashboardBreadcrumb";
 import { DashboardLayout } from "@/components/dashboard/Layout";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 import {
   get_user_roles_list,
   type Role,
@@ -73,7 +73,6 @@ export default function AddUserPage() {
       password: "",
       role: "",
       organization: "",
-      app: "",
       branches: [],
     },
   });
@@ -101,12 +100,6 @@ export default function AddUserPage() {
     queryFn: () => get_user_roles_list(undefined, selectedOrganizationId),
     enabled: !!selectedOrganizationId,
   });
-
-  useEffect(() => {
-    if (selectedOrganization?.application) {
-      setValue("app", selectedOrganization.application);
-    }
-  }, [selectedOrganization, setValue]);
 
   const handleRoleChange = (roleId: string) => {
     const selectedRole = roles?.data.find((r: Role) => r._id === roleId);

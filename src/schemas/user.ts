@@ -73,7 +73,6 @@ export const userSchema = z.object({
     }),
   role: z.string().optional(),
   organization: z.string().min(1, "Organization is required"),
-  app: z.string().optional(),
   branches: z.array(z.string()),
 });
 
