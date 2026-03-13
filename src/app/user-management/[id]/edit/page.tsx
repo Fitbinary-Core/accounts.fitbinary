@@ -81,7 +81,6 @@ export default function EditUserPage() {
       password: "",
       role: "",
       organization: "",
-      app: "",
       branches: [],
     },
   });
@@ -128,19 +127,12 @@ export default function EditUserPage() {
         password: "",
         role: typeof user.role === "object" ? user.role._id : user.role,
         organization: orgId || "",
-        app: typeof user.app === "object" ? user.app._id : user.app,
         branches: Array.isArray(user.branches)
           ? user.branches.map((b: any) => (typeof b === "object" ? b._id : b))
           : [],
       });
     }
   }, [userResponse, reset]);
-
-  useEffect(() => {
-    if (selectedOrganization?.application) {
-      setValue("app", selectedOrganization.application);
-    }
-  }, [selectedOrganization, setValue]);
 
   const handleRoleChange = (roleId: string) => {
     const selectedRole = roles?.data.find((r: Role) => r._id === roleId);
