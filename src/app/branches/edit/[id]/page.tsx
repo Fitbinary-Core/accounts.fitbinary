@@ -1,15 +1,12 @@
 "use client";
 
 import { useEffect } from "react";
+import { z } from "zod";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { branchSchema, BranchInput } from "@/schemas/branch";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  updateBranch,
-  getBranchById,
-  createUpdateMainBranch,
-} from "@/services/branch/branch.service";
+import { updateBranch, getBranchById } from "@/services/branch/branch.service";
 import { useRouter, useParams } from "next/navigation";
 import {
   ArrowLeft,
@@ -40,7 +37,9 @@ export default function EditBranchPage() {
     control,
     formState: { errors, isSubmitting },
   } = useForm<BranchInput>({
-    resolver: zodResolver(branchSchema),
+    resolver: zodResolver(
+      branchSchema.extend({ organization: z.string().optional() }),
+    ) as any,
     defaultValues: {
       branch_name: "",
       branch_location: "",
@@ -60,16 +59,13 @@ export default function EditBranchPage() {
       const branch = branchData.data;
       setValue("branch_name", branch.branch_name);
       setValue("branch_location", branch.branch_location);
-      setValue("branch_type", branch.branch_type || "Branch Office"); // Ensure a default if branch_type is null/undefined
+      setValue("branch_type", branch.branch_type || "Branch Office");
       setValue("is_main", branch.is_main || false);
     }
   }, [branchData, setValue]);
 
   const mutation = useMutation({
     mutationFn: (data: BranchInput) => {
-      if (branchData?.data?.is_main) {
-        return createUpdateMainBranch(data);
-      }
       return updateBranch(branchId, data);
     },
     onSuccess: (res) => {
@@ -83,7 +79,13 @@ export default function EditBranchPage() {
   });
 
   const onSubmit = (data: BranchInput) => {
-    mutation.mutate(data);
+    const { organization, ...updateData } = data;
+    mutation.mutate(updateData as any);
+  };
+
+  const onFormError = (err: any) => {
+    console.error("Form Validation Errors:", err);
+    toast.error("Please fill in all required fields correctly.");
   };
 
   if (isLoadingBranch) {
@@ -103,7 +105,7 @@ export default function EditBranchPage() {
     <DashboardLayout>
       <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
         <DashboardBreadcrumb
-          title="Reconfigure Node"
+          title="Edit Branch Details"
           description="Updating infrastructure specifications for this branch."
           actions={
             <Button
@@ -132,7 +134,7 @@ export default function EditBranchPage() {
             </div>
 
             <form
-              onSubmit={handleSubmit(onSubmit)}
+              onSubmit={handleSubmit(onSubmit, onFormError)}
               className="p-6 md:p-8 space-y-6"
             >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -252,7 +254,7 @@ export default function EditBranchPage() {
                   ) : (
                     <span className="flex items-center gap-2">
                       <Save size={18} />
-                      Overwrite Configuration
+                      Update Branch
                     </span>
                   )}
                 </Button>

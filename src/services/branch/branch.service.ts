@@ -129,29 +129,6 @@ export const deleteBranch = async (
   }
 };
 
-export const createUpdateMainBranch = async (
-  data: BranchInput,
-): Promise<ApiResponse<Branch>> => {
-  try {
-    const response = await apiClient(BRANCH_URLS.create_main_branch, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-
-    const result = await response.json();
-    if (!response.ok) {
-      throw new Error(result.message || "Failed to process main branch");
-    }
-    return result;
-  } catch (error) {
-    console.error("Error in createUpdateMainBranch:", error);
-    throw error;
-  }
-};
-
 export const getSourceBranches = async (): Promise<ApiResponse<Branch[]>> => {
   try {
     const response = await apiClient(BRANCH_URLS.source_branch);

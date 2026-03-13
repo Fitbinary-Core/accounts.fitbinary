@@ -4,7 +4,6 @@ import {
   OnboardingDataRes,
   BusinessDetailPayload,
   LocationAndMetadataDetailsPayload,
-  BranchInput,
   OrganizationType,
 } from "@/schemas/onboarding";
 
@@ -84,28 +83,6 @@ export const update_location_and_metadata = async (
     }
 
     return body;
-  } catch (error) {
-    console.log("Error: ", error);
-    throw error;
-  }
-};
-
-export const create_update_main_branch = async (data: BranchInput) => {
-  try {
-    const url = ONBOARDING_URLS.create_update_main_branch;
-    const response = await apiClient(url, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-
-    if (!response.ok) {
-      throw new Error("Failed to create or update main branch");
-    }
-
-    return await response.json();
   } catch (error) {
     console.log("Error: ", error);
     throw error;

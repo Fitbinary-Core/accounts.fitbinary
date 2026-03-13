@@ -12,7 +12,6 @@ import { ConfirmationModal } from "@/components/common/modals/ConfirmationModal"
 import { useState } from "react";
 import Pagination from "@/components/common/Pagination";
 import { DashboardLayout } from "@/components/dashboard/Layout";
-import { formatDateTime } from "@/utils/utils";
 
 export default function BranchesListingPage() {
   const queryClient = useQueryClient();
@@ -106,7 +105,7 @@ export default function BranchesListingPage() {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {branches.map((branch) => (
+              {branches?.map((branch) => (
                 <div
                   key={branch._id}
                   className="bg-white border border-zinc-200 rounded-sm overflow-hidden flex flex-col hover:border-zinc-400 transition-all shadow-none group"

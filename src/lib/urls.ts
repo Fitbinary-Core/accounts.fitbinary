@@ -28,7 +28,6 @@ export const ACCOUNTS_APPS_URLS = {
 
 export const BRANCH_URLS = {
   base: `${BASE_URL}/branch`,
-  create_main_branch: `${BASE_URL}/branch/create-update/main-branch`,
   my_branches: `${BASE_URL}/branch/my-branches`,
   user_branches: `${BASE_URL}/branch/user_branch_list`,
   source_branch: `${BASE_URL}/branch/source-branch`,
@@ -61,7 +60,6 @@ export const ONBOARDING_URLS = {
   get_categories: `${BASE_URL}/onboarding/categories`,
   update_categories: `${BASE_URL}/onboarding/update-categories`,
   get_subscriptions: `${BASE_URL}/onboarding/subscriptions`,
-  create_update_main_branch: `${BASE_URL}/onboarding/create-update/main-branch`,
 };
 
 export const CATEGORIES_URLS = {
