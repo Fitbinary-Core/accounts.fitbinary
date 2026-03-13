@@ -1,20 +1,21 @@
 import { z } from "zod";
 
 export const BRANCH_TYPES = [
-  "Retail Store",
+  "Head Office",
+  "Branch Office",
+  "Retail Outlet",
   "Warehouse",
   "Distribution Center",
-  "Head Office",
-  "Online / E-commerce Branch",
-  "Franchise Outlet",
-  "Manufacturing Unit",
-  "Showroom",
+  "Operations Center",
   "Service Center",
-  "Dark Store",
-  "Pickup Point",
   "Fulfillment Center",
+  "Pickup Point",
+  "Showroom",
+  "Franchise Location",
+  "Production Unit",
   "Regional Office",
-  "Wholesale Outlet",
+  "Storage Facility",
+  "Other",
 ] as const;
 
 export const branchSchema = z.object({
@@ -25,7 +26,7 @@ export const branchSchema = z.object({
   branch_type: z.enum(BRANCH_TYPES, {
     message: "Please select a branch type",
   }),
-  application: z.string().min(1, "Please select an application"),
+  organization: z.string().min(1, "Please select an organization"),
   is_main: z.boolean().optional(),
   latitude: z.number().optional(),
   longitude: z.number().optional(),
@@ -35,7 +36,7 @@ export type BranchInput = z.infer<typeof branchSchema>;
 
 export interface Branch {
   _id: string;
-  application: string;
+  organization: string;
   branch_name: string;
   branch_location: string;
   branch_type: (typeof BRANCH_TYPES)[number];

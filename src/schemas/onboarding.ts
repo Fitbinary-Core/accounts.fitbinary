@@ -130,11 +130,6 @@ export interface LocationAndMetadataDetails {
   is_completed: boolean;
 }
 
-export interface BranchDetails {
-  main_branch: any;
-  is_completed: boolean;
-}
-
 export interface StepDetails {
   is_completed: boolean;
 }
@@ -143,7 +138,7 @@ export interface OnboardingDataRes {
   business_details: OrganizationDetails;
   onboarding_fields_data: OnboardingFields;
   location_and_metadata_details: LocationAndMetadataDetails;
-  branch_details: BranchDetails;
+
   categories_details: StepDetails;
   subscription_details: StepDetails;
   organizatin_subscription?: OrganizationSubscription;
@@ -196,11 +191,6 @@ export interface Feature {
   type?: string;
   createdAt?: string;
   updatedAt?: string;
-}
-
-export interface BranchDetailsProps {
-  branch_details: BranchDetails;
-  selectedApp?: any;
 }
 
 export interface BranchInput {

@@ -14,7 +14,6 @@ import {
   ShoppingBag,
   Package,
   Map,
-  ShoppingBasket,
   Briefcase,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -30,20 +29,21 @@ interface BranchTypeSelectorProps {
 }
 
 const typeIcons: Record<BranchType, any> = {
-  "Retail Store": Store,
+  "Head Office": Building2,
+  "Branch Office": Building2,
+  "Retail Outlet": Store,
   Warehouse: Warehouse,
   "Distribution Center": Truck,
-  "Head Office": Building2,
-  "Online / E-commerce Branch": Monitor,
-  "Franchise Outlet": ShoppingBag,
-  "Manufacturing Unit": Factory,
-  Showroom: Store,
+  "Operations Center": Monitor,
   "Service Center": Wrench,
-  "Dark Store": Package,
-  "Pickup Point": Map,
   "Fulfillment Center": Package,
+  "Pickup Point": Map,
+  Showroom: Store,
+  "Franchise Location": ShoppingBag,
+  "Production Unit": Factory,
   "Regional Office": Briefcase,
-  "Wholesale Outlet": ShoppingBasket,
+  "Storage Facility": Package,
+  Other: Building2,
 };
 
 const BranchTypeSelector: React.FC<BranchTypeSelectorProps> = ({

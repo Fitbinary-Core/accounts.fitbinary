@@ -10,7 +10,6 @@ import {
   MapPin,
   Tag,
   CreditCard,
-  Rocket,
   CheckCircle2,
   ChevronLeft,
   ChevronRight,
@@ -22,7 +21,6 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import BusinessDetails from "@/components/onboarding/BusinessDetails";
 import LocationAndMetadata from "@/components/onboarding/LocationAndMetadata";
-import BranchSetup from "@/components/onboarding/BranchSetup";
 import Categories from "@/components/onboarding/Categories";
 import PlansAndPricing from "@/components/onboarding/PlansAndPricing";
 import { get_onboarding_data } from "@/services/onboarding/onboarding.service";
@@ -32,7 +30,6 @@ enum CreateStep {
   APP_SELECTION = "APP_SELECTION",
   BUSINESS_DETAILS = "BUSINESS_DETAILS",
   LOCATION_METADATA = "LOCATION_METADATA",
-  BRANCH_SETUP = "BRANCH_SETUP",
   CATEGORIES = "CATEGORIES",
   PLANS = "PLANS",
 }
@@ -62,7 +59,6 @@ export default function OrganizationCreatePage() {
       const stepMap: Record<string, CreateStep> = {
         business_details: CreateStep.BUSINESS_DETAILS,
         location_and_metadata: CreateStep.LOCATION_METADATA,
-        branch_details: CreateStep.BRANCH_SETUP,
         categories_details: CreateStep.CATEGORIES,
         subscription_and_billing: CreateStep.PLANS,
       };
@@ -90,11 +86,6 @@ export default function OrganizationCreatePage() {
         id: CreateStep.LOCATION_METADATA,
         label: "Localization",
         icon: MapPin,
-      },
-      {
-        id: CreateStep.BRANCH_SETUP,
-        label: "Initial Branch",
-        icon: Rocket,
       },
       {
         id: CreateStep.CATEGORIES,
@@ -291,14 +282,6 @@ export default function OrganizationCreatePage() {
                     onStepComplete={nextStep}
                   />
                 )}
-
-              {currentStep === CreateStep.BRANCH_SETUP && !!onboardingData && (
-                <BranchSetup
-                  branch_details={onboardingData.branch_details}
-                  selectedApp={selectedApp}
-                  onStepComplete={nextStep}
-                />
-              )}
 
               {currentStep === CreateStep.CATEGORIES && (
                 <Categories
