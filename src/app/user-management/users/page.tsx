@@ -79,9 +79,9 @@ const AllUsersPage = () => {
   const branchOptions =
     branchesData?.data && Array.isArray(branchesData.data)
       ? branchesData.data.map((b: any) => ({
-        label: b.branch_name,
-        value: b._id,
-      }))
+          label: b.branch_name,
+          value: b._id,
+        }))
       : [];
 
   const roleOptions =

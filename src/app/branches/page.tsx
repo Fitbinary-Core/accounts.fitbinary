@@ -108,71 +108,101 @@ export default function BranchesListingPage() {
               {branches?.map((branch) => (
                 <div
                   key={branch._id}
-                  className="bg-white border border-zinc-200 rounded-sm overflow-hidden flex flex-col hover:border-zinc-400 transition-all shadow-none group"
+                  className="bg-white border border-zinc-200 rounded-sm overflow-hidden flex flex-col hover:border-zinc-900 transition-all duration-300 shadow-sm hover:shadow-md group relative"
                 >
-                  <div className="p-4 border-b border-zinc-100 flex items-center justify-between bg-zinc-50/20">
-                    <div className="flex items-center gap-3">
-                      <div className="size-8 rounded-sm bg-zinc-900 flex items-center justify-center text-white shadow-sm">
-                        <Building2 size={16} />
+                  <div className="absolute top-0 right-0 p-2 opacity-0 group-hover:opacity-100 transition-opacity z-10 flex gap-1">
+                    <Link href={`/branches/edit/${branch._id}`}>
+                      <button className="p-1.5 bg-white/90 backdrop-blur-sm text-zinc-600 hover:text-zinc-900 border border-zinc-200 rounded-sm shadow-sm transition-all hover:scale-105">
+                        <Edit2 size={14} />
+                      </button>
+                    </Link>
+                    <button
+                      onClick={() => handleDelete(branch._id)}
+                      className="p-1.5 bg-white/90 backdrop-blur-sm text-zinc-400 hover:text-red-600 border border-zinc-200 rounded-sm shadow-sm transition-all hover:scale-105"
+                      disabled={deleteMutation.isPending}
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  </div>
+
+                  <div className="p-5 border-b border-zinc-100 bg-zinc-50/10">
+                    <div className="flex items-start gap-4">
+                      <div className="relative shrink-0">
+                        <div className="size-12 rounded-sm bg-zinc-900 flex items-center justify-center text-white shadow-lg overflow-hidden border border-zinc-800">
+                          {branch.branch_organization &&
+                          typeof branch.branch_organization !== "string" &&
+                          branch.branch_organization.business_logo ? (
+                            <img
+                              src={branch.branch_organization.business_logo}
+                              alt=""
+                              className="size-full object-cover"
+                            />
+                          ) : (
+                            <Building2 size={24} className="opacity-80" />
+                          )}
+                        </div>
+                        {branch.is_main && (
+                          <div className="absolute -bottom-1 -right-1 size-4 bg-zinc-900 border-2 border-white rounded-full flex items-center justify-center shadow-sm">
+                            <span className="text-[6px] text-white font-black uppercase">
+                              M
+                            </span>
+                          </div>
+                        )}
                       </div>
-                      <div>
-                        <h3 className="text-sm font-bold text-zinc-900 tracking-tight truncate max-w-37.5">
+
+                      <div className="min-w-0 flex-1 pt-0.5">
+                        <h3 className="text-sm font-bold text-zinc-900 tracking-tight truncate">
                           {branch.branch_name}
                         </h3>
-                        <div className="flex items-center gap-1.5 mt-0.5">
-                          {branch.is_main && (
-                            <span className="text-[8px] bg-zinc-900 text-white px-1.5 py-0.5 rounded-sm font-black uppercase tracking-widest">
-                              Main Branch
-                            </span>
+
+                        {branch.branch_organization &&
+                          typeof branch.branch_organization !== "string" && (
+                            <p className="text-[10px] text-zinc-500 font-semibold uppercase tracking-wider truncate mt-0.5">
+                              {branch.branch_organization.business_name}
+                            </p>
                           )}
-                          <span className="text-[8px] bg-zinc-100 text-zinc-500 border border-zinc-200 px-1.5 py-0.5 rounded-sm font-black uppercase tracking-widest">
+
+                        <div className="flex items-center gap-1.5 mt-2">
+                          <span className="text-[8px] bg-zinc-100 text-zinc-600 border border-zinc-200 px-2 py-0.5 rounded-sm font-black uppercase tracking-widest">
                             {branch.branch_type}
                           </span>
                         </div>
                       </div>
                     </div>
-                    <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <Link href={`/branches/edit/${branch._id}`}>
-                        <button className="p-1.5 text-zinc-400 hover:text-zinc-900 hover:bg-zinc-50 rounded-sm transition-all">
-                          <Edit2 size={14} />
-                        </button>
-                      </Link>
-                      <button
-                        onClick={() => handleDelete(branch._id)}
-                        className="p-1.5 text-zinc-400 hover:text-red-600 hover:bg-red-50 rounded-sm transition-all"
-                        disabled={deleteMutation.isPending}
-                      >
-                        <Trash2 size={14} />
-                      </button>
-                    </div>
                   </div>
 
-                  <div className="p-4 flex-1">
-                    <div className="flex items-start gap-2 text-zinc-500 mb-4">
-                      <MapPin
-                        size={14}
-                        className="mt-0.5 shrink-0 text-zinc-400"
-                      />
-                      <span className="text-[11px] font-medium leading-relaxed line-clamp-2">
+                  <div className="p-5 flex-1 flex flex-col justify-between">
+                    <div className="flex items-start gap-3 group/loc">
+                      <div className="mt-1 size-5 rounded-full bg-zinc-100 flex items-center justify-center shrink-0 group-hover/loc:bg-zinc-900 group-hover/loc:text-white transition-colors">
+                        <MapPin size={10} />
+                      </div>
+                      <span className="text-[11px] font-medium text-zinc-500 leading-relaxed line-clamp-2">
                         {branch.branch_location}
                       </span>
                     </div>
 
-                    <div className="flex items-center justify-between pt-4 border-t border-zinc-50">
-                      <div className="flex flex-col gap-0.5">
-                        <span className="text-[9px] text-zinc-400 font-bold uppercase tracking-widest">
-                          Registry ID
+                    <div className="flex items-center justify-between pt-5 mt-5 border-t border-zinc-100/50">
+                      <div className="space-y-1">
+                        <span className="text-[8px] text-zinc-400 font-black uppercase tracking-[0.2em] block">
+                          Registry
                         </span>
-                        <code className="text-[10px] text-zinc-900 font-mono">
+                        <code className="text-[10px] text-zinc-900 font-mono font-bold bg-zinc-50 px-1.5 py-0.5 rounded-sm border border-zinc-100">
                           #{branch._id.slice(-6).toUpperCase()}
                         </code>
                       </div>
-                      <div className="flex flex-col items-end gap-0.5">
-                        <span className="text-[9px] text-zinc-400 font-bold uppercase tracking-widest">
+                      <div className="text-right space-y-1">
+                        <span className="text-[8px] text-zinc-400 font-black uppercase tracking-[0.2em] block">
                           Provisioned
                         </span>
-                        <span className="text-[10px] text-zinc-900 font-mono">
-                          {new Date(branch.createdAt).toLocaleDateString()}
+                        <span className="text-[10px] text-zinc-600 font-mono font-medium">
+                          {new Date(branch.createdAt).toLocaleDateString(
+                            "en-US",
+                            {
+                              month: "short",
+                              day: "numeric",
+                              year: "numeric",
+                            },
+                          )}
                         </span>
                       </div>
                     </div>

@@ -34,13 +34,20 @@ export const branchSchema = z.object({
 
 export type BranchInput = z.infer<typeof branchSchema>;
 
+export interface PopulatedOrganization {
+  _id: string;
+  business_name: string;
+  business_logo?: string;
+  location?: string;
+}
+
 export interface Branch {
   _id: string;
   organization: string;
   branch_name: string;
   branch_location: string;
   branch_type: (typeof BRANCH_TYPES)[number];
-  branch_organization: string;
+  branch_organization: string | PopulatedOrganization;
   branch_tenant: string;
   is_main: boolean;
   latitude?: number;
