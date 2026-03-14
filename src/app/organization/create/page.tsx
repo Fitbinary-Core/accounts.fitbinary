@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { IApplication } from "@/types/apps";
+import { IApplication, IAppsResponse } from "@/types/apps";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import BusinessDetails from "@/components/onboarding/BusinessDetails";
@@ -41,7 +41,7 @@ export default function OrganizationCreatePage() {
 
   const [selectedApp, setSelectedApp] = useState<IApplication | null>(null);
 
-  const { data: appsData, isLoading: isLoadingApps } = useQuery({
+  const { data: appsData, isLoading: isLoadingApps } = useQuery<IAppsResponse>({
     queryKey: ["apps-list"],
     queryFn: () => get_all_apps(),
     staleTime: 1000 * 60 * 60 * 10,

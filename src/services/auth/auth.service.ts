@@ -73,7 +73,7 @@ export const loginUser = async (data: SigninValues) => {
 
     const body: any = await response.json();
 
-    if (!response.json) {
+    if (!response.ok) {
       throw new Error(body.message);
     }
 

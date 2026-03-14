@@ -51,6 +51,7 @@ export const ROLES_URLS = {
 export const COMMON_URLS = {
   get_presigned_url: `${BASE_URL}/get-presigned-url`,
   get_logo_presigned_url: `${BASE_URL}/get-logo-presigned-url`,
+  get_business_documents_presigned_url: `${BASE_URL}/get-business-documents-presigned-url`,
   get_tenant_avatar_presigned_url: `${BASE_URL}/get-tenant-avatar-presigned-url`,
 };
 
@@ -88,4 +89,10 @@ export const ORGANIZATION_URLS = {
   list: `${BASE_URL}/organizations/list`,
   update: (org_id: string) => `${BASE_URL}/organizations/update/${org_id}`,
   detail: (org_id: string) => `${BASE_URL}/organizations/detail/${org_id}`,
+};
+
+export const BUSINESS_DOCUMENTS_URLS = {
+  base: `${BASE_URL}/business-documents`,
+  by_org: (org_id: string) =>
+    `${BASE_URL}/business-documents/organization/${org_id}`,
 };

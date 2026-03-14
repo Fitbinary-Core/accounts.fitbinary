@@ -64,7 +64,7 @@ export default function SigninForm() {
           </Link>
 
           <div className="mb-10">
-            <h1 className="text-3xl font-bold tracking-tight text-zinc-900 mb-2">
+            <h1 className="te,xt-3xl font-bold tracking-tight text-zinc-900 mb-2">
               Log in to your account
             </h1>
             <p className="text-zinc-500">

@@ -1,5 +1,10 @@
 import { apiClient } from "@/lib/apiClient";
-import { BILLING_URLS, COMMON_URLS, ONBOARDING_URLS } from "@/lib/urls";
+import {
+  BILLING_URLS,
+  COMMON_URLS,
+  ONBOARDING_URLS,
+  BUSINESS_DOCUMENTS_URLS,
+} from "@/lib/urls";
 import {
   OnboardingDataRes,
   BusinessDetailPayload,
@@ -39,6 +44,9 @@ export const update_business_details = async (
 ): Promise<{ message: string; organization: OrganizationType }> => {
   try {
     const url = ONBOARDING_URLS.create_update_organization;
+
+    console.log("Data: ", data);
+
     const response = await apiClient(url, {
       method: "PATCH",
       headers: {
@@ -103,6 +111,48 @@ export const getLogoPresignedUrl = async (key: string) => {
     return body;
   } catch (error) {
     console.log(error);
+    throw error;
+  }
+};
+
+export const getBusinessDocumentsPresignedUrl = async (key: string) => {
+  try {
+    const url = `${COMMON_URLS.get_business_documents_presigned_url}?key=${key}`;
+    const response = await apiClient(url, {
+      method: "POST",
+    });
+    const body = await response.json();
+
+    if (!response.ok) {
+      throw new Error(body.message || "Failed to get presigned url");
+    }
+    return body;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const save_business_document = async (data: any) => {
+  try {
+    const url = BUSINESS_DOCUMENTS_URLS.base;
+    const response = await apiClient(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    const body = await response.json();
+
+    if (!response.ok) {
+      throw new Error(body.message || "Failed to save business document");
+    }
+
+    return body;
+  } catch (error) {
+    console.log("Error: ", error);
     throw error;
   }
 };

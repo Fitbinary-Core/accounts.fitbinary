@@ -9,6 +9,17 @@ export enum BusinessTypes {
   SUPPLEMENT_STORE = "SUPPLEMENT STORE",
 }
 
+export enum RegistrationStatus {
+  REGISTERED = "REGISTERED",
+  UNDER_REGISTRATION = "UNDER_REGISTRATION",
+}
+
+export interface VerificationDocument {
+  document_type: string;
+  document_number: string;
+  document_photo?: string;
+}
+
 export interface Tenant {
   first_name: string;
   middle_name?: string;
@@ -45,12 +56,17 @@ export interface OrganizationType {
   // Metadata
   timezone: string;
   currency: string;
+
+  // Registration & Documents
+  is_registered?: boolean;
+  has_pan?: boolean;
+  is_vat_registered?: boolean;
+  verification_documents?: VerificationDocument[];
 }
 
 export interface OrganizationDetails {
   business: OrganizationType;
   is_completed: boolean;
-  is_business_details_completed: boolean;
   path: string;
 }
 
@@ -141,7 +157,7 @@ export interface OnboardingDataRes {
 
   categories_details: StepDetails;
   subscription_details: StepDetails;
-  organizatin_subscription?: OrganizationSubscription;
+  organization_subscription?: OrganizationSubscription;
   active_step_path: string;
 }
 
@@ -164,10 +180,11 @@ export interface BusinessDetailPayload {
   business_size: string;
   business_type: string;
   app_id?: string;
+  is_registered?: boolean;
+  verification_documents?: VerificationDocument[];
 }
 
 // Location & Metadata Details Props
-
 export interface LocationAndMetadataDetailsPayload {
   app_id: string;
   country: string;
