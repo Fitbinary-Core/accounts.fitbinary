@@ -2,6 +2,7 @@
 
 import { Upload } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { toast } from "react-hot-toast";
 
 interface DocumentUploaderProps {
   label: string;
@@ -12,6 +13,7 @@ interface DocumentUploaderProps {
   };
   onChange: (doc: any) => void;
   className?: string;
+  maxSizeMB?: number;
 }
 
 const DocumentUploader = ({
@@ -20,6 +22,7 @@ const DocumentUploader = ({
   value,
   onChange,
   className,
+  maxSizeMB = 3,
 }: DocumentUploaderProps) => {
   return (
     <div className={cn("space-y-3", className)}>
@@ -44,6 +47,11 @@ const DocumentUploader = ({
           onChange={(e) => {
             const file = e.target.files?.[0];
             if (file) {
+              if (file.size > maxSizeMB * 1024 * 1024) {
+                toast.error(`File size exceeds ${maxSizeMB}MB limit`);
+                return;
+              }
+
               const reader = new FileReader();
               reader.onloadend = () => {
                 onChange({
