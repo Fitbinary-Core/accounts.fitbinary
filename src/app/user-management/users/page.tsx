@@ -269,7 +269,7 @@ const AllUsersPage = () => {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-zinc-100 bg-white">
-                      {data.data.map((user) => (
+                      {data?.data?.map((user) => (
                         <tr
                           key={user?._id}
                           className="hover:bg-zinc-50/50 transition-colors group"
