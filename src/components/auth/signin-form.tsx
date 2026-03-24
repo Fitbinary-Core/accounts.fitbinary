@@ -36,7 +36,7 @@ export default function SigninForm() {
     mutationFn: loginUser,
     onSuccess: (response) => {
       toast.success(response.message);
-      router.push("/");
+      router.push('/');
     },
     onError: (error: any) => {
       toast.error(error.message || "Failed to sign in");

@@ -1,4 +1,4 @@
-export interface Tenant {
+export interface User {
   _id: string;
   first_name: string;
   middle_name?: string;
@@ -16,7 +16,7 @@ export interface Tenant {
 
 export interface UserProfileResponse {
   message: string;
-  tenant: Tenant;
+  user: User;
 }
 
 export interface SignUpUserProps {

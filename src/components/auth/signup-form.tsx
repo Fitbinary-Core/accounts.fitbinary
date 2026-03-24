@@ -64,15 +64,17 @@ export default function SignupForm({
 
       if (redirectUri) {
         toast.loading("Redirecting to your app...", { duration: 2000 });
+        setTimeout(() => {
+          if (redirectUri) {
+            window.location.href = redirectUri;
+          }
+        }, 2000);
       }
 
       setTimeout(() => {
-        if (redirectUri) {
-          window.location.href = redirectUri;
-        } else {
-          router.push("/signin");
-        }
-      }, 2000);
+        router.push("/signin");
+      }, 0);
+
     },
     onError: (error: any) => {
       toast.error(error.message || "Failed to create account");
@@ -407,15 +409,14 @@ export default function SignupForm({
             {[1, 2, 3, 4].map((i) => (
               <div
                 key={i}
-                className={`size-10 rounded-full border-2 border-[#18181b] flex items-center justify-center text-xs font-bold text-white ${
-                  i === 1
-                    ? "bg-zinc-700"
-                    : i === 2
-                      ? "bg-zinc-600"
-                      : i === 3
-                        ? "bg-zinc-800"
-                        : "bg-zinc-900"
-                }`}
+                className={`size-10 rounded-full border-2 border-[#18181b] flex items-center justify-center text-xs font-bold text-white ${i === 1
+                  ? "bg-zinc-700"
+                  : i === 2
+                    ? "bg-zinc-600"
+                    : i === 3
+                      ? "bg-zinc-800"
+                      : "bg-zinc-900"
+                  }`}
               >
                 {String.fromCharCode(64 + i)}
               </div>
