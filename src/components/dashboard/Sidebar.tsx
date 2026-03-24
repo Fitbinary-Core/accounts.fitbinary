@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 import {
   Home,
   User,
-  ShieldCheck,
   CreditCard,
   LayoutDashboard,
   X,
@@ -15,7 +14,6 @@ import {
   ChevronDown,
   ChevronUp,
   Shield,
-  Key,
   Building2,
   GitBranch,
   List,
@@ -149,7 +147,7 @@ export function Sidebar({ isOpen, setIsOpen, isCollapsed }: SidebarProps) {
     }
   };
 
-  const tenant = profileData?.tenant;
+  const user = profileData?.user;
 
   return (
     <>
@@ -383,20 +381,20 @@ export function Sidebar({ isOpen, setIsOpen, isCollapsed }: SidebarProps) {
               isCollapsed ? "justify-center px-2" : "gap-3",
             )}
             title={
-              isCollapsed ? `${tenant?.first_name} ${tenant?.last_name}` : ""
+              isCollapsed ? `${user?.first_name} ${user?.last_name}` : ""
             }
           >
             <div className="size-10 rounded-lg bg-zinc-800 flex items-center justify-center overflow-hidden border border-zinc-700/50 shrink-0">
-              {tenant?.avatar ? (
+              {user?.avatar ? (
                 <img
-                  src={tenant.avatar}
-                  alt={tenant.first_name}
+                  src={user.avatar}
+                  alt={user.first_name}
                   className="size-full object-cover"
                 />
               ) : (
                 <div className="text-zinc-400 font-bold uppercase">
-                  {tenant?.first_name?.charAt(0)}
-                  {tenant?.last_name?.charAt(0)}
+                  {user?.first_name?.charAt(0)}
+                  {user?.last_name?.charAt(0)}
                 </div>
               )}
             </div>
@@ -404,10 +402,10 @@ export function Sidebar({ isOpen, setIsOpen, isCollapsed }: SidebarProps) {
               <>
                 <div className="flex-1 min-w-0">
                   <p className="text-[13px] font-bold text-zinc-100 truncate">
-                    {tenant?.first_name} {tenant?.last_name}
+                    {user?.first_name} {user?.last_name}
                   </p>
                   <p className="text-[11px] text-zinc-500 truncate lowercase">
-                    {tenant?.email}
+                    {user?.email}
                   </p>
                 </div>
                 <button

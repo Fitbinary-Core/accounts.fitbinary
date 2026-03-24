@@ -5,16 +5,16 @@ import { User, LogOut, X, AlertCircle, Camera, Loader2 } from "lucide-react";
 import { logoutUser } from "@/services/auth/auth.service";
 import { useRouter } from "next/navigation";
 import { createPortal } from "react-dom";
-import { Tenant } from "@/types/auth";
+import { User as UserType } from "@/types/auth";
 import { COMMON_URLS, TENANT_AUTH_URLS } from "@/lib/urls";
 import { apiClient } from "@/lib/apiClient";
 import { useQueryClient } from "@tanstack/react-query";
 
-export interface TenantProps {
-  tenant?: Tenant;
+export interface UserProps {
+  user?: UserType;
 }
 
-export function ProfileDropdown({ tenant }: TenantProps) {
+export function ProfileDropdown({ user }: UserProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -25,9 +25,9 @@ export function ProfileDropdown({ tenant }: TenantProps) {
   const queryClient = useQueryClient();
 
   const getInitials = () => {
-    if (!tenant?.first_name) return "U";
-    const first = tenant.first_name.charAt(0).toUpperCase();
-    const last = tenant.last_name?.charAt(0).toUpperCase() || "";
+    if (!user?.first_name) return "U";
+    const first = user?.first_name.charAt(0).toUpperCase();
+    const last = user?.last_name?.charAt(0).toUpperCase() || "";
     return `${first}${last}`;
   };
 
@@ -120,10 +120,10 @@ export function ProfileDropdown({ tenant }: TenantProps) {
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center justify-center w-10 h-10 rounded-full bg-brand-red text-white font-medium hover:ring-4 hover:ring-red-100 transition-all overflow-hidden"
       >
-        {tenant?.avatar ? (
+        {user?.avatar ? (
           <img
-            src={tenant.avatar}
-            alt={tenant.first_name}
+            src={user?.avatar}
+            alt={user?.first_name}
             className="w-full h-full object-cover"
           />
         ) : (
@@ -144,10 +144,10 @@ export function ProfileDropdown({ tenant }: TenantProps) {
           <div className="p-6 text-center border-b border-gray-100">
             <div className="relative w-16 h-16 mx-auto mb-3 group/avatar">
               <div className="w-16 h-16 bg-brand-red text-white text-2xl font-bold flex items-center justify-center rounded-full overflow-hidden border-2 border-white shadow-sm">
-                {tenant?.avatar ? (
+                {user?.avatar ? (
                   <img
-                    src={tenant.avatar}
-                    alt={tenant.first_name}
+                    src={user?.avatar}
+                    alt={user?.first_name}
                     className="w-full h-full object-cover"
                   />
                 ) : (
@@ -168,10 +168,10 @@ export function ProfileDropdown({ tenant }: TenantProps) {
               </button>
             </div>
             <h3 className="text-lg font-semibold text-gray-900 line-clamp-1">
-              {tenant ? `${tenant.first_name} ${tenant.last_name}` : "User"}
+              {user ? `${user?.first_name} ${user?.last_name}` : "User"}
             </h3>
             <p className="text-sm text-gray-500 line-clamp-1">
-              {tenant?.email || "No email provided"}
+              {user?.email || "No email provided"}
             </p>
           </div>
 

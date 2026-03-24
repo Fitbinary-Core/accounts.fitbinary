@@ -69,7 +69,7 @@ export function Header({
         <div className="items-center gap-1 border-r border-zinc-200 pr-4 mr-2 hidden sm:flex">
           <AppLauncher />
         </div>
-        <ProfileDropdown tenant={data?.tenant} />
+        <ProfileDropdown user={data?.user} />
       </div>
     </header>
   );
