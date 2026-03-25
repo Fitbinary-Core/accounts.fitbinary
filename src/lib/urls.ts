@@ -7,6 +7,7 @@ export const AUTH_URLS = {
   logout: `${BASE_URL}/auth/logout`,
   refresh: `${BASE_URL}/auth/refresh`,
   profile: `${BASE_URL}/user/profile`,
+  avatar: `${BASE_URL}/user/avatar`,
 };
 
 export const TENANT_AUTH_URLS = {
@@ -53,7 +54,7 @@ export const COMMON_URLS = {
   get_presigned_url: `${BASE_URL}/get-presigned-url`,
   get_logo_presigned_url: `${BASE_URL}/get-logo-presigned-url`,
   get_business_documents_presigned_url: `${BASE_URL}/get-business-documents-presigned-url`,
-  get_tenant_avatar_presigned_url: `${BASE_URL}/get-tenant-avatar-presigned-url`,
+  get_user_avatar_presigned_url: `${BASE_URL}/get-user-avatar-presigned-url`,
 };
 
 export const ONBOARDING_URLS = {

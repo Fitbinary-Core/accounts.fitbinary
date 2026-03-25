@@ -45,7 +45,7 @@ export default function PersonalPage() {
       setIsUploading(true);
 
       const presignedRes = await apiClient(
-        `${COMMON_URLS.get_tenant_avatar_presigned_url}?key=${file.name}`,
+        `${COMMON_URLS.get_user_avatar_presigned_url}?key=${file.name}`,
         { method: "POST" },
       );
       const { url, key } = await presignedRes.json();
@@ -60,7 +60,7 @@ export default function PersonalPage() {
 
       const imageUrl = `https://fitbinary.com.s3.eu-north-1.amazonaws.com/${key}`;
 
-      const updateRes = await apiClient(AUTH_URLS.profile, {
+      const updateRes = await apiClient(AUTH_URLS.avatar, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ avatar: imageUrl }),

@@ -23,12 +23,7 @@ export const userProfile = async (): Promise<UserProfileResponse> => {
 export async function getUserProfile(): Promise<ProfileResponse> {
   try {
     const url = AUTH_URLS.profile;
-    const response = await apiClient(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await apiClient(url);
 
     const body = await response.json();
 
