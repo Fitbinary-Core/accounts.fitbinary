@@ -1,4 +1,4 @@
-export interface ITenantMinimal {
+export interface IUserMinimal {
   _id: string;
   first_name: string;
   last_name: string;
@@ -12,7 +12,7 @@ export interface IOrganization {
   business_name: string;
   business_type: string;
   business_size: string;
-  tenant: ITenantMinimal;
+  user: IUserMinimal;
   onboarding_completed: boolean;
   business_email: string;
   business_phone: string;

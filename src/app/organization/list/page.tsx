@@ -118,7 +118,7 @@ export default function OrganizationListPage() {
                       Business Size
                     </th>
                     <th className="px-5 py-3 text-[10px] text-center font-bold text-zinc-500 uppercase tracking-wider">
-                      Owner
+                      User
                     </th>
                     <th className="px-5 py-3 text-[10px] font-bold text-zinc-500 uppercase tracking-wider">
                       Localization
@@ -171,13 +171,13 @@ export default function OrganizationListPage() {
                         </span>
                       </td>
 
-                      {/* Owner Info */}
+                      {/* User Info */}
                       <td className="px-5 py-3">
                         <div className="flex items-center gap-2.5">
                           <div className="size-7 rounded-sm bg-zinc-50 border border-zinc-100 flex items-center justify-center overflow-hidden">
-                            {org.tenant?.avatar ? (
+                            {org.user?.avatar ? (
                               <img
-                                src={org.tenant.avatar}
+                                src={org.user.avatar}
                                 className="size-full object-cover"
                               />
                             ) : (
@@ -186,10 +186,10 @@ export default function OrganizationListPage() {
                           </div>
                           <div className="flex flex-col">
                             <span className="text-xs font-bold text-zinc-800 leading-tight">
-                              {org.tenant?.first_name} {org.tenant?.last_name}
+                              {org.user?.first_name} {org.user?.last_name}
                             </span>
                             <span className="text-xs text-zinc-700 font-medium">
-                              {org.tenant?.phone}
+                              {org.user?.phone}
                             </span>
                           </div>
                         </div>
