@@ -16,7 +16,7 @@ import DashboardBreadcrumb from "@/components/common/DashboardBreadcrumb";
 import { DashboardLayout } from "@/components/dashboard/Layout";
 import { useState, useRef } from "react";
 import { apiClient } from "@/lib/apiClient";
-import { COMMON_URLS, TENANT_AUTH_URLS } from "@/lib/urls";
+import { AUTH_URLS, COMMON_URLS, TENANT_AUTH_URLS } from "@/lib/urls";
 
 export default function PersonalPage() {
   const [isUploading, setIsUploading] = useState(false);
@@ -60,7 +60,7 @@ export default function PersonalPage() {
 
       const imageUrl = `https://fitbinary.com.s3.eu-north-1.amazonaws.com/${key}`;
 
-      const updateRes = await apiClient(TENANT_AUTH_URLS.profile_update, {
+      const updateRes = await apiClient(AUTH_URLS.profile, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ avatar: imageUrl }),

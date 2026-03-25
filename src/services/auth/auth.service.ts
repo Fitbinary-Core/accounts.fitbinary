@@ -22,7 +22,7 @@ export const userProfile = async (): Promise<UserProfileResponse> => {
 
 export async function getUserProfile(): Promise<ProfileResponse> {
   try {
-    const url = TENANT_AUTH_URLS.profile;
+    const url = AUTH_URLS.profile;
     const response = await apiClient(url, {
       method: "GET",
       headers: {
@@ -114,7 +114,7 @@ export const signUpUser = async (
 
 export async function logoutUser() {
   try {
-    const url = TENANT_AUTH_URLS.logout;
+    const url = AUTH_URLS.logout;
     const response = await apiClient(url, {
       method: "POST",
       headers: {
