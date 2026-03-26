@@ -12,6 +12,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import Link from "next/link";
 import { Eye, EyeOff, ArrowRight } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 
 const signinSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -23,6 +24,10 @@ export type SigninValues = z.infer<typeof signinSchema>;
 export default function SigninForm() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+
+  const searchParams = useSearchParams();
+  const redirectUrl = searchParams.get("redirect_url");
+  const slug = searchParams.get("slug") || "accounts";
 
   const {
     register,
@@ -37,11 +42,10 @@ export default function SigninForm() {
     onSuccess: (response) => {
       toast.success(response.message);
 
-      const params = new URLSearchParams(window.location.search);
-      const redirectUrl = params.get("redirect_url");
-
       if (redirectUrl) {
         window.location.href = redirectUrl;
+      } else if (slug) {
+        router.push(`/${slug}/dashboard`);
       } else {
         router.push("/");
       }
@@ -52,12 +56,11 @@ export default function SigninForm() {
   });
 
   const onSubmit = (data: SigninValues) => {
-    login(data);
+    login({ ...data, ...(slug && { slug }) });
   };
 
   return (
     <div className="min-h-screen w-full flex bg-white font-sans selection:bg-zinc-900 selection:text-white">
-      {/* Left Panel - Auth Form */}
       <div className="w-full md:w-[50%] flex flex-col justify-center px-8 md:px-16 lg:px-24 py-12 border-r border-zinc-100">
         <div className="w-full max-w-100 mx-auto">
           <Link href="/" className="inline-flex items-center gap-3 mb-16">
@@ -72,7 +75,7 @@ export default function SigninForm() {
           </Link>
 
           <div className="mb-10">
-            <h1 className="te,xt-3xl font-bold tracking-tight text-zinc-900 mb-2">
+            <h1 className="text-3xl font-bold tracking-tight text-zinc-900 mb-2">
               Log in to your account
             </h1>
             <p className="text-zinc-500">

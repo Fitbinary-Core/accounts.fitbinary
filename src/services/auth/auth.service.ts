@@ -55,7 +55,9 @@ export async function getSubscriptionDetails(): Promise<SubscriptionDetails> {
   }
 }
 
-export const loginUser = async (data: SigninValues) => {
+type LoginPayload = SigninValues & { slug?: string };
+
+export const loginUser = async (data: LoginPayload) => {
   try {
     const url = AUTH_URLS.login;
     const response = await apiClient(url, {
@@ -63,7 +65,7 @@ export const loginUser = async (data: SigninValues) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ ...data, app_slug: 'accounts.fitbinary' }),
+      body: JSON.stringify({ ...data }),
     });
 
     const body: any = await response.json();
