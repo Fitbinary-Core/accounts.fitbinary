@@ -44,8 +44,6 @@ export default function SigninForm() {
 
       if (redirectUrl) {
         window.location.href = redirectUrl;
-      } else if (slug) {
-        router.push(`/${slug}/dashboard`);
       } else {
         router.push("/");
       }
