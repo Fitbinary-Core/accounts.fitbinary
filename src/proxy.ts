@@ -15,6 +15,7 @@ export function proxy(request: NextRequest) {
     "/favicon.ico",
     "/images",
   ];
+
   const isPublicRoute = publicRoutes.some((route) =>
     pathname.startsWith(route),
   );

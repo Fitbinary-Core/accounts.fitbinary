@@ -36,7 +36,15 @@ export default function SigninForm() {
     mutationFn: loginUser,
     onSuccess: (response) => {
       toast.success(response.message);
-      router.push('/');
+
+      const params = new URLSearchParams(window.location.search);
+      const redirectUrl = params.get("redirect_url");
+
+      if (redirectUrl) {
+        window.location.href = redirectUrl;
+      } else {
+        router.push("/");
+      }
     },
     onError: (error: any) => {
       toast.error(error.message || "Failed to sign in");
@@ -68,7 +76,7 @@ export default function SigninForm() {
               Log in to your account
             </h1>
             <p className="text-zinc-500">
-              Welcome back! Please enter your details.
+              Welcome back! Please enter your credentials to login.
             </p>
           </div>
 
