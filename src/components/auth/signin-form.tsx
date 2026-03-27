@@ -169,44 +169,20 @@ export default function SigninForm() {
         </div>
       </div>
 
-      <div className="hidden md:flex flex-1 bg-zinc-950 relative overflow-hidden flex-col justify-between p-6 md:p-12">
+      <div className="hidden md:flex flex-1 bg-zinc-950 relative overflow-hidden flex-col items-center justify-center p-6 md:p-12">
         <div className="absolute inset-0 bg-[#18181b] bg-[linear-gradient(to_right,#27272a_1px,transparent_1px),linear-gradient(to_bottom,#27272a_1px,transparent_1px)] bg-size-[4rem_4rem] mask-[radial-gradient(ellipse_80%_80%_at_50%_50%,#000_70%,transparent_100%)]" />
 
-        <div className="relative z-10 text-zinc-400 font-medium tracking-wide text-sm uppercase">
-          Fitbinary Enterprise
-        </div>
+        <div className="relative z-10 flex flex-col items-center text-center max-w-md">
+          <div className="size-16 bg-white rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-white/5">
+            <span className="text-zinc-900 font-bold text-3xl leading-none">
+              F
+            </span>
+          </div>
 
-        <div className="relative z-10">
-          <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight text-white leading-[1.1] mb-8">
-            Manage your apps.
+          <h2 className="text-3xl lg:text-4xl font-bold tracking-tight text-white leading-[1.2] mb-4">
+            Sign in to your {"Fitbinary Accounts"}
             <br />
-            Scale your business.
-            <br />
-            Zero friction.
           </h2>
-
-          <div className="inline-flex items-center gap-3 px-4 py-2 bg-zinc-900 border border-zinc-800 rounded-full text-zinc-300 text-sm font-medium">
-            <span className="flex h-2 w-2 rounded-full bg-white animate-pulse"></span>
-            Operational Dashboard Active
-          </div>
-        </div>
-
-        <div className="relative z-10 border-t border-zinc-800 pt-8 mt-16 max-w-lg">
-          <p className="text-lg text-zinc-400 leading-relaxed">
-            "We migrated our entire toolchain to Fitbinary in an afternoon. The
-            centralized control panel is completely unmatched in the industry."
-          </p>
-          <div className="mt-6 flex items-center gap-4">
-            <div className="size-10 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-white font-bold">
-              JD
-            </div>
-            <div>
-              <div className="text-white font-medium">John Doe</div>
-              <div className="text-zinc-500 text-sm">
-                Director of Operations, AcxCorp
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
