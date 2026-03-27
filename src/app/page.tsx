@@ -15,7 +15,6 @@ import {
 } from "lucide-react";
 
 export default function Home() {
-
   const { data } = useQuery({
     queryKey: ["profile"],
     queryFn: () => userProfile(),

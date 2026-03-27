@@ -74,7 +74,6 @@ export default function SignupForm({
       setTimeout(() => {
         router.push("/signin");
       }, 0);
-
     },
     onError: (error: any) => {
       toast.error(error.message || "Failed to create account");

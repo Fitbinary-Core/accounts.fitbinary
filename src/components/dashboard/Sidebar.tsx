@@ -380,9 +380,7 @@ export function Sidebar({ isOpen, setIsOpen, isCollapsed }: SidebarProps) {
               "flex items-center p-2 rounded-xl bg-zinc-900/40 border border-zinc-800/50 transition-all",
               isCollapsed ? "justify-center px-2" : "gap-3",
             )}
-            title={
-              isCollapsed ? `${user?.first_name} ${user?.last_name}` : ""
-            }
+            title={isCollapsed ? `${user?.first_name} ${user?.last_name}` : ""}
           >
             <div className="size-10 rounded-lg bg-zinc-800 flex items-center justify-center overflow-hidden border border-zinc-700/50 shrink-0">
               {user?.avatar ? (

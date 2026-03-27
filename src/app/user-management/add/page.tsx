@@ -39,9 +39,11 @@ import { getBranchesByOrg } from "@/services/branch/branch.service";
 import { get_organization_list } from "@/services/organization/organization.service";
 import OrganizationSelector from "@/components/common/OrganizationSelector";
 import BranchSelector from "@/components/common/BranchSelector";
+import InviteUserSelector from "@/components/common/InviteUserSelector";
 import DashboardBreadcrumb from "@/components/common/DashboardBreadcrumb";
 import { DashboardLayout } from "@/components/dashboard/Layout";
 import { useState, useMemo } from "react";
+import type { InviteUser } from "@/types/invite-user";
 import {
   get_user_roles_list,
   type Role,
@@ -230,6 +232,17 @@ export default function AddUserPage() {
               </div>
 
               <div className="p-6 md:p-8">
+                <div className="mb-6 md:mb-8">
+                  <InviteUserSelector
+                    onSelect={(user: InviteUser) => {
+                      form.setValue("first_name", user.first_name);
+                      form.setValue("last_name", user.last_name);
+                      form.setValue("email", user.email);
+                      form.setValue("phone", user.phone);
+                    }}
+                  />
+                </div>
+
                 <Form {...form}>
                   <form
                     onSubmit={form.handleSubmit(onSubmit)}

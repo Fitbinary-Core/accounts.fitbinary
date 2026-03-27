@@ -182,10 +182,10 @@ export default function PersonalPage() {
                   label: "Birthday",
                   value: user?.dob
                     ? new Date(user.dob).toLocaleDateString("en-US", {
-                      month: "long",
-                      day: "numeric",
-                      year: "numeric",
-                    })
+                        month: "long",
+                        day: "numeric",
+                        year: "numeric",
+                      })
                     : "---",
                   icon: Calendar,
                 },

@@ -16,15 +16,15 @@ interface ModalProps {
   footer?: React.ReactNode;
   className?: string;
   maxWidth?:
-  | "sm"
-  | "md"
-  | "lg"
-  | "xl"
-  | "2xl"
-  | "3xl"
-  | "4xl"
-  | "5xl"
-  | "screen";
+    | "sm"
+    | "md"
+    | "lg"
+    | "xl"
+    | "2xl"
+    | "3xl"
+    | "4xl"
+    | "5xl"
+    | "screen";
 }
 
 const maxWidthClasses = {
