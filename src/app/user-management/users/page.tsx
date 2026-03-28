@@ -3,10 +3,7 @@
 import DashboardBreadcrumb from "@/components/common/DashboardBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { User } from "@/schemas/user";
-import {
-  deleteUserService,
-  getUsersListService,
-} from "@/services/users/user.service";
+import { deleteUserService } from "@/services/users/user.service";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   Edit2,
@@ -28,9 +25,9 @@ import { useState, useCallback, useMemo } from "react";
 import Pagination from "@/components/common/Pagination";
 import SearchFilter, { FilterConfig } from "@/components/common/SearchFilter";
 import { getMyBranches } from "@/services/branch/branch.service";
-import { get_user_roles_list } from "@/services/roles/roles.services";
 import { DashboardLayout } from "@/components/dashboard/Layout";
 import { getAccessControlList } from "@/services/accesscontrol/accesscontrol.service";
+import { get_organization_list } from "@/services/organization/organization.service";
 
 const AllUsersPage = () => {
   const router = useRouter();
@@ -49,9 +46,10 @@ const AllUsersPage = () => {
     null,
   );
 
-  const [sortField, sortOrder] = sortValue
-    ? sortValue.split("-")
-    : [undefined, undefined];
+  const { data: organizations, isLoading: orgsLoading } = useQuery({
+    queryKey: ["organization-list"],
+    queryFn: () => get_organization_list(),
+  });
 
   const { data, isLoading } = useQuery({
     queryKey: ["access-control", page, limit, search, filters, sortValue],
@@ -105,11 +103,6 @@ const AllUsersPage = () => {
     queryFn: () => getMyBranches(1, 100),
   });
 
-  const { data: rolesData } = useQuery({
-    queryKey: ["roles-list-minimal"],
-    queryFn: () => get_user_roles_list(),
-  });
-
   const branchOptions =
     branchesData?.data && Array.isArray(branchesData.data)
       ? branchesData.data.map((b: any) => ({
@@ -118,30 +111,25 @@ const AllUsersPage = () => {
         }))
       : [];
 
-  const roleOptions =
-    rolesData?.data?.map((r: any) => ({
-      label: r.role_name,
-      value: r._id,
-    })) || [];
+  const orgOptions =
+    organizations?.organizations && Array.isArray(organizations.organizations)
+      ? organizations.organizations.map((org: any) => ({
+          label: org.business_name,
+          value: org._id,
+        }))
+      : [];
 
   const filterConfigs: FilterConfig[] = [
+    {
+      key: "org",
+      label: "Organization",
+      options: orgOptions,
+    },
     {
       key: "branch",
       label: "Branch",
       options: branchOptions,
     },
-    {
-      key: "role",
-      label: "Role",
-      options: roleOptions,
-    },
-  ];
-
-  const sortOptions = [
-    { label: "Newest First", value: "createdAt-desc" },
-    { label: "Oldest First", value: "createdAt-asc" },
-    { label: "Name: A-Z", value: "first_name-asc" },
-    { label: "Name: Z-A", value: "first_name-desc" },
   ];
 
   const handleSearch = useCallback((query: string) => {
@@ -231,7 +219,6 @@ const AllUsersPage = () => {
             onSearch={handleSearch}
             filterConfigs={filterConfigs}
             onFilter={handleFilter}
-            sortOptions={sortOptions}
             onSort={handleSort}
             onReset={handleReset}
             filters={filters}

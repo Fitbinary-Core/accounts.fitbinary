@@ -41,7 +41,7 @@ export const getAccessControlList = async (
       limit: limit.toString(),
       ...(search && { search }),
       ...(filters.branch && { branch: filters.branch }),
-      ...(filters.role && { role: filters.role }),
+      ...(filters.org && { org: filters.org }),
       ...(sort && { sort }),
     }).toString();
 
