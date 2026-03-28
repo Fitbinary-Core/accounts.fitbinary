@@ -74,7 +74,7 @@ export function ProfileDropdown({ user }: UserProps) {
 
       // 1. Get presigned URL
       const presignedRes = await apiClient(
-        `${COMMON_URLS.get_tenant_avatar_presigned_url}?key=${file.name}`,
+        `${COMMON_URLS.get_user_avatar_presigned_url}?key=${file.name}`,
         {
           method: "POST",
         },

@@ -74,6 +74,8 @@ export const userSchema = z.object({
   role: z.string().optional(),
   organization: z.string().min(1, "Organization is required"),
   branches: z.array(z.string()),
+  mode: z.enum(["create", "invite"]),
+  selectedUserId: z.string().nullable(),
 });
 
 export type UserFormData = z.infer<typeof userSchema>;

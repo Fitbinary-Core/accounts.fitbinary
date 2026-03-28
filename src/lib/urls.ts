@@ -99,3 +99,8 @@ export const BUSINESS_DOCUMENTS_URLS = {
   by_org: (org_id: string) =>
     `${BASE_URL}/business-documents/organization/${org_id}`,
 };
+
+export const ACCESS_CONTROL_URLS = {
+  create: `${BASE_URL}/accesscontrol/create`,
+  list: `${BASE_URL}/accesscontrol/list`,
+};
