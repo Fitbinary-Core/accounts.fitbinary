@@ -95,7 +95,7 @@ export function ProfileDropdown({ user }: UserProps) {
       const imageUrl = `https://fitbinary.com.s3.eu-north-1.amazonaws.com/${key}`;
 
       // 3. Update tenant profile
-      const updateRes = await apiClient(AUTH_URLS.profile, {
+      const updateRes = await apiClient(AUTH_URLS.avatar, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
