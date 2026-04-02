@@ -27,51 +27,41 @@ export interface LoginResBody {
   message: string;
 }
 
+export interface IPermission {
+  key: string;
+  label: string;
+}
+
 export interface IRole {
-  _id: string;
   role_name: string;
   role_key: string;
-  permissions: string[];
-  is_active: boolean;
-  application: string;
-  createdAt: string;
-  updatedAt: string;
+  permissions: IPermission[];
 }
 
 export interface IBranch {
-  _id: string;
   branch_name: string;
   branch_location: string;
-  branch_organization: string;
-  branch_tenant: string;
-  is_main: boolean;
-  latitude?: number;
-  longitude?: number;
-  createdAt: string;
-  updatedAt: string;
 }
 
 export interface IOrganization {
-  _id: string;
   business_name: string;
-  location: string;
-  currency: string;
-  business_logo?: string;
+  business_logo: string | null;
 }
 
-export interface ProfileData {
-  _id: string;
+export interface IUser {
   first_name: string;
   middle_name?: string;
   last_name: string;
   email: string;
   phone: string;
-  onboarding_completed: boolean;
-  role: IRole | string;
-  branches: IBranch[];
+  avatar: string | null;
+}
+
+export interface ProfileData {
+  user: IUser;
   organization: IOrganization;
-  updatedAt: string;
-  createdAt: string;
+  branch: IBranch;
+  role: IRole;
 }
 
 export interface ProfileResponse {

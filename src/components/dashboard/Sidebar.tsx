@@ -137,6 +137,7 @@ export function Sidebar({ isOpen, setIsOpen, isCollapsed }: SidebarProps) {
     try {
       setIsLoggingOut(true);
       await logoutUser();
+      queryClient.invalidateQueries();
       toast.success("Logged out successfully");
       router.push("/signin");
     } catch (error) {

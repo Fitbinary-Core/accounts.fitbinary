@@ -50,6 +50,7 @@ export function ProfileDropdown({ user }: UserProps) {
     try {
       setIsLoggingOut(true);
       await logoutUser();
+      queryClient.invalidateQueries();
       router.push("/signin");
     } catch (error) {
       console.error("Logout failed:", error);
