@@ -64,15 +64,16 @@ export default function SignupForm({
 
       if (redirectUri) {
         toast.loading("Redirecting to your app...", { duration: 2000 });
+        setTimeout(() => {
+          if (redirectUri) {
+            window.location.href = redirectUri;
+          }
+        }, 2000);
       }
 
       setTimeout(() => {
-        if (redirectUri) {
-          window.location.href = redirectUri;
-        } else {
-          router.push("/signin");
-        }
-      }, 2000);
+        router.push("/signin");
+      }, 0);
     },
     onError: (error: any) => {
       toast.error(error.message || "Failed to create account");
@@ -358,72 +359,21 @@ export default function SignupForm({
         </div>
       </div>
 
-      <div className="hidden md:flex flex-1 bg-zinc-950 relative overflow-hidden flex-col justify-between p-12">
+      <div className="hidden md:flex flex-1 bg-zinc-950 relative overflow-hidden flex-col items-center justify-center p-12">
         <div className="absolute inset-0 bg-[#18181b] bg-[radial-gradient(#27272a_1px,transparent_1px)] bg-size-[32px_32px] mask-[radial-gradient(ellipse_80%_80%_at_50%_0%,#000_60%,transparent_100%)]" />
 
-        <div className="relative z-10 text-zinc-400 font-medium tracking-wide text-sm uppercase">
-          Join Fitbinary
-        </div>
+        <div className="relative z-10 flex flex-col items-center text-center max-w-md">
+          <div className="size-16 bg-white rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-white/5">
+            <span className="text-zinc-900 font-bold text-3xl leading-none">
+              F
+            </span>
+          </div>
 
-        <div className="relative z-10">
-          <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight text-white leading-[1.1] mb-8">
-            Access elite tools.
+          <h2 className="text-3xl lg:text-4xl font-bold tracking-tight text-white leading-[1.2] mb-4">
+            Less chaos,
             <br />
-            Empower your team.
-            <br />
-            Move faster.
+            more clarity
           </h2>
-
-          <div className="flex flex-col gap-4 mt-6">
-            {[
-              {
-                title: "Unified Dashboard",
-                desc: "Instantly control every aspect of your app ecosystem.",
-              },
-              {
-                title: "Team Collaboration",
-                desc: "Granular access controls and activity logs.",
-              },
-              {
-                title: "Enterprise Grade",
-                desc: "Built for scale, security, and reliability.",
-              },
-            ].map((feature, i) => (
-              <div
-                key={i}
-                className="flex flex-col border-l-2 border-zinc-800 pl-4 py-1"
-              >
-                <span className="text-white font-semibold text-sm mb-1">
-                  {feature.title}
-                </span>
-                <span className="text-zinc-500 text-sm">{feature.desc}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="relative z-10 border-t border-zinc-800 pt-8 mt-8 max-w-lg">
-          <div className="flex -space-x-3 mb-4">
-            {[1, 2, 3, 4].map((i) => (
-              <div
-                key={i}
-                className={`size-10 rounded-full border-2 border-[#18181b] flex items-center justify-center text-xs font-bold text-white ${
-                  i === 1
-                    ? "bg-zinc-700"
-                    : i === 2
-                      ? "bg-zinc-600"
-                      : i === 3
-                        ? "bg-zinc-800"
-                        : "bg-zinc-900"
-                }`}
-              >
-                {String.fromCharCode(64 + i)}
-              </div>
-            ))}
-          </div>
-          <p className="text-sm text-zinc-400">
-            Join thousands of enterprise teams already scaling with Fitbinary.
-          </p>
         </div>
       </div>
     </div>

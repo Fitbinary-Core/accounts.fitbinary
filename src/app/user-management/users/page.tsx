@@ -3,10 +3,7 @@
 import DashboardBreadcrumb from "@/components/common/DashboardBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { User } from "@/schemas/user";
-import {
-  deleteUserService,
-  getUsersListService,
-} from "@/services/users/user.service";
+import { deleteUserService } from "@/services/users/user.service";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   Edit2,
@@ -24,12 +21,13 @@ import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { ConfirmationModal } from "@/components/common/modals/ConfirmationModal";
 import Modal from "@/components/common/modal";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import Pagination from "@/components/common/Pagination";
 import SearchFilter, { FilterConfig } from "@/components/common/SearchFilter";
 import { getMyBranches } from "@/services/branch/branch.service";
-import { get_user_roles_list } from "@/services/roles/roles.services";
 import { DashboardLayout } from "@/components/dashboard/Layout";
+import { getAccessControlList } from "@/services/accesscontrol/accesscontrol.service";
+import { get_organization_list } from "@/services/organization/organization.service";
 
 const AllUsersPage = () => {
   const router = useRouter();
@@ -48,32 +46,61 @@ const AllUsersPage = () => {
     null,
   );
 
-  const [sortField, sortOrder] = sortValue
-    ? sortValue.split("-")
-    : [undefined, undefined];
+  const { data: organizations, isLoading: orgsLoading } = useQuery({
+    queryKey: ["organization-list"],
+    queryFn: () => get_organization_list(),
+  });
 
   const { data, isLoading } = useQuery({
-    queryKey: ["users", page, limit, search, filters, sortValue],
+    queryKey: ["access-control", page, limit, search, filters, sortValue],
     queryFn: () =>
-      getUsersListService({
-        page,
-        limit,
-        search,
-        branch: filters.branch,
-        role: filters.role,
-        sort: sortField,
-        order: sortOrder as "asc" | "desc",
-      }),
+      getAccessControlList(page, limit, search, filters, sortValue),
   });
+
+  const groupedUsers = useMemo(() => {
+    if (!data?.data || !Array.isArray(data.data)) return [];
+
+    const usersMap = new Map();
+
+    data.data.forEach((ac: any) => {
+      if (!ac.user_id) return;
+      const uId = ac.user_id._id;
+      if (!usersMap.has(uId)) {
+        usersMap.set(uId, {
+          _id: uId,
+          first_name: ac.user_id.first_name,
+          last_name: ac.user_id.last_name,
+          email: ac.user_id.email,
+          phone: ac.user_id.phone,
+          avatar: ac.user_id.avatar,
+          organization: ac.org_id,
+          branches: ac.branch_id ? [ac.branch_id] : [],
+          roles: ac.role_id ? [ac.role_id] : [],
+          access_control_id: ac._id,
+        });
+      } else {
+        const existing = usersMap.get(uId);
+        if (
+          ac.branch_id &&
+          !existing.branches.find((b: any) => b?._id === ac.branch_id._id)
+        ) {
+          existing.branches.push(ac.branch_id);
+        }
+        if (
+          ac.role_id &&
+          !existing.roles.find((r: any) => r?._id === ac.role_id._id)
+        ) {
+          existing.roles.push(ac.role_id);
+        }
+      }
+    });
+
+    return Array.from(usersMap.values());
+  }, [data?.data]);
 
   const { data: branchesData } = useQuery({
     queryKey: ["branches-list-minimal"],
     queryFn: () => getMyBranches(1, 100),
-  });
-
-  const { data: rolesData } = useQuery({
-    queryKey: ["roles-list-minimal"],
-    queryFn: () => get_user_roles_list(),
   });
 
   const branchOptions =
@@ -84,30 +111,25 @@ const AllUsersPage = () => {
         }))
       : [];
 
-  const roleOptions =
-    rolesData?.data?.map((r: any) => ({
-      label: r.role_name,
-      value: r._id,
-    })) || [];
+  const orgOptions =
+    organizations?.organizations && Array.isArray(organizations.organizations)
+      ? organizations.organizations.map((org: any) => ({
+          label: org.business_name,
+          value: org._id,
+        }))
+      : [];
 
   const filterConfigs: FilterConfig[] = [
+    {
+      key: "org",
+      label: "Organization",
+      options: orgOptions,
+    },
     {
       key: "branch",
       label: "Branch",
       options: branchOptions,
     },
-    {
-      key: "role",
-      label: "Role",
-      options: roleOptions,
-    },
-  ];
-
-  const sortOptions = [
-    { label: "Newest First", value: "createdAt-desc" },
-    { label: "Oldest First", value: "createdAt-asc" },
-    { label: "Name: A-Z", value: "first_name-asc" },
-    { label: "Name: Z-A", value: "first_name-desc" },
   ];
 
   const handleSearch = useCallback((query: string) => {
@@ -141,8 +163,8 @@ const AllUsersPage = () => {
   const deleteMutation = useMutation({
     mutationFn: (id: string) => deleteUserService(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["users"] });
-      toast.success("User deleted successfully");
+      queryClient.invalidateQueries({ queryKey: ["access-control"] });
+      toast.success("Access control record deleted successfully");
       setIsDeleteModalOpen(false);
       setUserToDelete(null);
     },
@@ -197,7 +219,6 @@ const AllUsersPage = () => {
             onSearch={handleSearch}
             filterConfigs={filterConfigs}
             onFilter={handleFilter}
-            sortOptions={sortOptions}
             onSort={handleSort}
             onReset={handleReset}
             filters={filters}
@@ -213,7 +234,7 @@ const AllUsersPage = () => {
                   Synchronizing Registry...
                 </p>
               </div>
-            ) : !data?.data || data?.data.length === 0 ? (
+            ) : groupedUsers.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-24 space-y-6">
                 <div className="size-16 rounded-sm bg-zinc-50 flex items-center justify-center border border-zinc-100">
                   <Users className="size-8 text-zinc-300" />
@@ -269,7 +290,7 @@ const AllUsersPage = () => {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-zinc-100 bg-white">
-                      {data?.data?.map((user) => (
+                      {groupedUsers.map((user) => (
                         <tr
                           key={user?._id}
                           className="hover:bg-zinc-50/50 transition-colors group"
@@ -277,9 +298,19 @@ const AllUsersPage = () => {
                           {/* Member Profile */}
                           <td className="px-6 py-4">
                             <div className="flex items-center gap-4">
-                              <div className="h-10 w-10 shrink-0 rounded-sm bg-zinc-900 border border-zinc-800 flex items-center justify-center text-white text-xs font-black shadow-sm group-hover:bg-black transition-colors">
-                                {user?.first_name?.[0]}
-                                {user?.last_name?.[0]}
+                              <div className="h-10 w-10 shrink-0 rounded-sm bg-zinc-900 border border-zinc-800 flex items-center justify-center text-white text-xs font-black shadow-sm group-hover:bg-black overflow-hidden transition-colors">
+                                {user?.avatar ? (
+                                  <img
+                                    src={user.avatar}
+                                    alt={user.first_name}
+                                    className="h-full w-full object-cover"
+                                  />
+                                ) : (
+                                  <>
+                                    {user?.first_name?.[0]}
+                                    {user?.last_name?.[0]}
+                                  </>
+                                )}
                               </div>
                               <div className="flex flex-col min-w-0">
                                 <span className="text-sm font-black text-zinc-900 uppercase tracking-tight truncate">
@@ -361,11 +392,22 @@ const AllUsersPage = () => {
 
                           {/* Role Badge */}
                           <td className="px-6 py-4 text-center">
-                            <span className="inline-flex items-center px-2 py-0.5 rounded-sm bg-zinc-900 text-white text-[9px] font-black uppercase tracking-widest">
-                              {typeof user.role === "object"
-                                ? user?.role?.role_name
-                                : user?.role}
-                            </span>
+                            <div className="flex flex-wrap gap-1 justify-center">
+                              {user.roles && user.roles.length > 0 ? (
+                                user.roles.map((r: any) => (
+                                  <span
+                                    key={r._id}
+                                    className="inline-flex items-center px-2 py-0.5 rounded-sm bg-zinc-900 text-white text-[9px] font-black uppercase tracking-widest"
+                                  >
+                                    {r.role_name}
+                                  </span>
+                                ))
+                              ) : (
+                                <span className="text-[10px] text-zinc-400 italic">
+                                  —
+                                </span>
+                              )}
+                            </div>
                           </td>
 
                           {/* Actions */}
@@ -384,7 +426,9 @@ const AllUsersPage = () => {
                                 <Edit2 size={14} />
                               </button>
                               <button
-                                onClick={() => handleDelete(user?._id)}
+                                onClick={() =>
+                                  handleDelete(user?.access_control_id)
+                                }
                                 disabled={deleteMutation.isPending}
                                 className="p-2 text-zinc-400 hover:text-red-600 hover:bg-red-50 rounded-sm border border-transparent hover:border-red-100 transition-all active:scale-95 cursor-pointer disabled:opacity-50"
                               >
@@ -403,7 +447,16 @@ const AllUsersPage = () => {
                 </div>
 
                 {data?.meta && (
-                  <div className="px-6 py-6 bg-zinc-50/50 border-t border-zinc-100 flex items-center justify-center">
+                  <div className="px-6 py-4 bg-zinc-50/50 border-t border-zinc-100 flex items-center justify-between gap-4">
+                    <p className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest">
+                      Showing{" "}
+                      {Math.min(
+                        (page - 1) * limit + 1,
+                        data.meta.totalElements,
+                      )}
+                      –{Math.min(page * limit, data.meta.totalElements)} of{" "}
+                      {data.meta.totalElements} users
+                    </p>
                     {data.meta.totalPages > 1 && (
                       <Pagination
                         page={data.meta.page}

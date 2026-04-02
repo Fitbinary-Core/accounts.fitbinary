@@ -1,12 +1,12 @@
 import { SigninValues } from "@/components/auth/signin-form";
 import { apiClient } from "@/lib/apiClient";
-import { TENANT_AUTH_URLS } from "@/lib/urls";
+import { AUTH_URLS, TENANT_AUTH_URLS } from "@/lib/urls";
 import { SignUpUserProps, UserProfileResponse } from "@/types/auth";
 import { ProfileResponse, SubscriptionDetails } from "./types/auth.types";
 
 export const userProfile = async (): Promise<UserProfileResponse> => {
   try {
-    const url = TENANT_AUTH_URLS.profile;
+    const url = AUTH_URLS.profile;
     const response = await apiClient(url);
     const body = await response.json();
     if (!response.json) {
@@ -22,13 +22,8 @@ export const userProfile = async (): Promise<UserProfileResponse> => {
 
 export async function getUserProfile(): Promise<ProfileResponse> {
   try {
-    const url = TENANT_AUTH_URLS.profile;
-    const response = await apiClient(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const url = AUTH_URLS.profile;
+    const response = await apiClient(url);
 
     const body = await response.json();
 
@@ -60,15 +55,17 @@ export async function getSubscriptionDetails(): Promise<SubscriptionDetails> {
   }
 }
 
-export const loginUser = async (data: SigninValues) => {
+type LoginPayload = SigninValues & { slug?: string };
+
+export const loginUser = async (data: LoginPayload) => {
   try {
-    const url = TENANT_AUTH_URLS.login;
+    const url = AUTH_URLS.login;
     const response = await apiClient(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify({ ...data }),
     });
 
     const body: any = await response.json();
@@ -88,7 +85,7 @@ export const signUpUser = async (
   data: SignUpUserProps,
 ): Promise<{ message: string }> => {
   try {
-    const url = TENANT_AUTH_URLS.tenant_signup;
+    const url = AUTH_URLS.signup;
     const { confirm_password, ...payload } = data;
 
     const response = await apiClient(url, {
@@ -114,7 +111,7 @@ export const signUpUser = async (
 
 export async function logoutUser() {
   try {
-    const url = TENANT_AUTH_URLS.logout;
+    const url = AUTH_URLS.logout;
     const response = await apiClient(url, {
       method: "POST",
       headers: {

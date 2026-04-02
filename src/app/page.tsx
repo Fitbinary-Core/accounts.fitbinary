@@ -13,18 +13,15 @@ import {
   Sparkles,
   Zap,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
 
 export default function Home() {
-  const router = useRouter();
-
   const { data } = useQuery({
     queryKey: ["profile"],
     queryFn: () => userProfile(),
     staleTime: 1000 * 60 * 60 * 4,
   });
 
-  const tenant = data?.tenant;
+  const user = data?.user;
 
   return (
     <DashboardLayout>
@@ -46,7 +43,7 @@ export default function Home() {
                 Welcome back,
                 <br />
                 <span className="text-zinc-400">
-                  {tenant?.first_name || "User"}
+                  {user?.first_name || "User"}
                 </span>
               </h1>
               <p className="text-lg text-zinc-500 max-w-xl leading-relaxed">
@@ -61,13 +58,13 @@ export default function Home() {
                   Authenticated as
                 </p>
                 <p className="text-sm font-semibold text-zinc-900">
-                  {tenant?.email}
+                  {user?.email}
                 </p>
               </div>
               <div className="size-12 rounded-full bg-white border border-zinc-200 shadow-sm flex items-center justify-center overflow-hidden">
-                {tenant?.avatar ? (
+                {user?.avatar ? (
                   <img
-                    src={tenant.avatar}
+                    src={user.avatar}
                     alt=""
                     className="size-full object-cover"
                   />

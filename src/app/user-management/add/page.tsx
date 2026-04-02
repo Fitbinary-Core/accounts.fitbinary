@@ -9,10 +9,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { userSchema, type UserFormData } from "@/schemas/user";
 import { createUserService } from "@/services/users/user.service";
+import { createAccessControlService } from "@/services/accesscontrol/accesscontrol.service";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -31,6 +32,7 @@ import {
   User,
   Loader2,
   ArrowLeft,
+  X,
 } from "lucide-react";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -39,9 +41,11 @@ import { getBranchesByOrg } from "@/services/branch/branch.service";
 import { get_organization_list } from "@/services/organization/organization.service";
 import OrganizationSelector from "@/components/common/OrganizationSelector";
 import BranchSelector from "@/components/common/BranchSelector";
+import InviteUserSelector from "@/components/common/InviteUserSelector";
 import DashboardBreadcrumb from "@/components/common/DashboardBreadcrumb";
 import { DashboardLayout } from "@/components/dashboard/Layout";
 import { useState, useMemo } from "react";
+import type { InviteUser } from "@/types/invite-user";
 import {
   get_user_roles_list,
   type Role,
@@ -74,6 +78,8 @@ export default function AddUserPage() {
       role: "",
       organization: "",
       branches: [],
+      mode: "create",
+      selectedUserId: null,
     },
   });
 
@@ -112,7 +118,7 @@ export default function AddUserPage() {
     setValue("role", roleId);
   };
 
-  async function onSubmit(data: UserFormData) {
+  const onSubmit: SubmitHandler<UserFormData> = async (data) => {
     if (
       selectedRoleScope === "BRANCH" &&
       (!data.branches || data.branches.length === 0)
@@ -123,8 +129,20 @@ export default function AddUserPage() {
 
     setLoading(true);
     try {
-      await createUserService(data);
-      toast.success("User created successfully!");
+      if (data.mode === "invite" && data.selectedUserId) {
+        await createAccessControlService({
+          user_id: data.selectedUserId,
+          org_id: data.organization,
+          role_id: data.role || "",
+          branches: data.branches,
+          app: "fitstock",
+        });
+        toast.success("User access control granted successfully!");
+      } else {
+        await createUserService(data);
+        toast.success("User created successfully!");
+      }
+
       router.push("/user-management/users");
       queryClient.invalidateQueries({ queryKey: ["users"] });
     } catch (error: any) {
@@ -132,7 +150,7 @@ export default function AddUserPage() {
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   if (isLoadingOrgs) {
     return (
@@ -230,6 +248,36 @@ export default function AddUserPage() {
               </div>
 
               <div className="p-6 md:p-8">
+                <div className="mb-6 md:mb-8 flex items-center gap-4">
+                  <InviteUserSelector
+                    onSelect={(user: InviteUser) => {
+                      form.setValue("first_name", user.first_name);
+                      form.setValue("last_name", user.last_name);
+                      form.setValue("email", user.email);
+                      form.setValue("phone", user.phone);
+                      form.setValue("mode", "invite");
+                      form.setValue("selectedUserId", user._id);
+                    }}
+                  />
+                  {form.watch("mode") === "invite" && (
+                    <Button
+                      type="button"
+                      onClick={() => {
+                        form.setValue("mode", "create");
+                        form.setValue("selectedUserId", null);
+                        form.setValue("first_name", "");
+                        form.setValue("last_name", "");
+                        form.setValue("email", "");
+                        form.setValue("phone", "");
+                      }}
+                      className="h-10 px-4 flex items-center gap-2 text-xs font-bold text-zinc-500"
+                    >
+                      <X size={14} />
+                      Clear Selection
+                    </Button>
+                  )}
+                </div>
+
                 <Form {...form}>
                   <form
                     onSubmit={form.handleSubmit(onSubmit)}
@@ -252,6 +300,7 @@ export default function AddUserPage() {
                                 <Input
                                   placeholder="John"
                                   className="w-full h-11 pl-9 border-zinc-200 focus:border-zinc-900 focus:ring-0 text-zinc-900 text-sm placeholder:text-zinc-300 rounded-sm shadow-none"
+                                  disabled={form.watch("mode") === "invite"}
                                   {...field}
                                 />
                               </div>
@@ -272,6 +321,7 @@ export default function AddUserPage() {
                               <Input
                                 placeholder="Ray"
                                 className="w-full h-11 border-zinc-200 focus:border-zinc-900 focus:ring-0 text-zinc-900 text-sm placeholder:text-zinc-300 rounded-sm shadow-none"
+                                disabled={form.watch("mode") === "invite"}
                                 {...field}
                               />
                             </FormControl>
@@ -291,6 +341,7 @@ export default function AddUserPage() {
                               <Input
                                 placeholder="Doe"
                                 className="w-full h-11 border-zinc-200 focus:border-zinc-900 focus:ring-0 text-zinc-900 text-sm placeholder:text-zinc-300 rounded-sm shadow-none"
+                                disabled={form.watch("mode") === "invite"}
                                 {...field}
                               />
                             </FormControl>
@@ -318,6 +369,7 @@ export default function AddUserPage() {
                                   type="email"
                                   placeholder="member@fitbinary.com"
                                   className="w-full h-11 pl-9 border-zinc-200 focus:border-zinc-900 focus:ring-0 text-zinc-900 text-sm placeholder:text-zinc-300 rounded-sm shadow-none"
+                                  disabled={form.watch("mode") === "invite"}
                                   {...field}
                                 />
                               </div>
@@ -342,6 +394,7 @@ export default function AddUserPage() {
                                 <Input
                                   placeholder="+977"
                                   className="w-full h-11 pl-9 border-zinc-200 focus:border-zinc-900 focus:ring-0 text-zinc-900 text-sm placeholder:text-zinc-300 rounded-sm shadow-none"
+                                  disabled={form.watch("mode") === "invite"}
                                   {...field}
                                 />
                               </div>
@@ -370,6 +423,7 @@ export default function AddUserPage() {
                                   type="password"
                                   placeholder="••••••••"
                                   className="w-full h-11 pl-9 border-zinc-200 focus:border-zinc-900 focus:ring-0 text-zinc-900 text-sm placeholder:text-zinc-300 rounded-sm shadow-none"
+                                  disabled={form.watch("mode") === "invite"}
                                   {...field}
                                 />
                               </div>
@@ -476,7 +530,9 @@ export default function AddUserPage() {
                         ) : (
                           <span className="flex items-center gap-2">
                             <UserPlus size={18} />
-                            Create User Account
+                            {form.watch("mode") === "invite"
+                              ? "Grant Access to User"
+                              : "Create User Account"}
                           </span>
                         )}
                       </Button>

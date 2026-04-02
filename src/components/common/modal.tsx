@@ -61,7 +61,7 @@ export const Modal: React.FC<ModalProps> = ({
         {title ? (
           <DialogHeader className="px-6 py-5 border-b border-gray-100 bg-white">
             <DialogTitle className="text-xl font-bold text-gray-900 flex items-center gap-3">
-              <div className="w-1.5 h-6 bg-red-600 rounded-full shadow-[0_0_8px_rgba(220,38,38,0.3)]" />
+              <div className="w-1.5 h-6 bg-red-600 rounded-full back shadow-[0_0_8px_rgba(220,38,38,0.3)]" />
               <div className="flex-1">{title}</div>
             </DialogTitle>
           </DialogHeader>

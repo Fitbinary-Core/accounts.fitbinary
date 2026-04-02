@@ -2,10 +2,12 @@ const BASE_URL =
   process.env.NEXT_PUBLIC_BASE_URL || "https://admin.fitbinary.com/api/v1";
 
 export const AUTH_URLS = {
+  signup: `${BASE_URL}/auth/signup`,
   login: `${BASE_URL}/auth/login`,
   logout: `${BASE_URL}/auth/logout`,
   refresh: `${BASE_URL}/auth/refresh`,
-  profile: `${BASE_URL}/auth/profile`,
+  profile: `${BASE_URL}/user/profile`,
+  avatar: `${BASE_URL}/user/avatar`,
 };
 
 export const TENANT_AUTH_URLS = {
@@ -37,11 +39,12 @@ export const BRANCH_URLS = {
 };
 
 export const USERS_URLS = {
-  create: `${BASE_URL}/org-users/create`,
-  get_all: `${BASE_URL}/org-users/list`,
-  get_one: `${BASE_URL}/org-users/:id`,
-  update: `${BASE_URL}/org-users/:id`,
-  delete: `${BASE_URL}/org-users/:id`,
+  create: `${BASE_URL}/users/create`,
+  get_all: `${BASE_URL}/users/list`,
+  get_one: `${BASE_URL}/users/:id`,
+  update: `${BASE_URL}/users/:id`,
+  delete: `${BASE_URL}/accesscontrol/delete/:id`,
+  invite_users_list: `${BASE_URL}/intive/users/list`,
 };
 
 export const ROLES_URLS = {
@@ -52,7 +55,7 @@ export const COMMON_URLS = {
   get_presigned_url: `${BASE_URL}/get-presigned-url`,
   get_logo_presigned_url: `${BASE_URL}/get-logo-presigned-url`,
   get_business_documents_presigned_url: `${BASE_URL}/get-business-documents-presigned-url`,
-  get_tenant_avatar_presigned_url: `${BASE_URL}/get-tenant-avatar-presigned-url`,
+  get_user_avatar_presigned_url: `${BASE_URL}/get-user-avatar-presigned-url`,
 };
 
 export const ONBOARDING_URLS = {
@@ -95,4 +98,9 @@ export const BUSINESS_DOCUMENTS_URLS = {
   base: `${BASE_URL}/business-documents`,
   by_org: (org_id: string) =>
     `${BASE_URL}/business-documents/organization/${org_id}`,
+};
+
+export const ACCESS_CONTROL_URLS = {
+  create: `${BASE_URL}/accesscontrol/create`,
+  list: `${BASE_URL}/accesscontrol/list`,
 };

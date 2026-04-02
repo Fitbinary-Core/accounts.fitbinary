@@ -94,9 +94,19 @@ export default function UserDetailPage() {
           {/* Profile Card */}
           <div className="lg:col-span-1 space-y-6">
             <div className="bg-white rounded-sm border border-zinc-200 p-8 shadow-none text-center">
-              <div className="h-24 w-24 rounded-sm bg-zinc-100 flex items-center justify-center text-zinc-900 font-black text-3xl border border-zinc-200 mx-auto mb-6 shadow-none tracking-tighter">
-                {user.first_name[0]}
-                {user.last_name[0]}
+              <div className="h-24 w-24 rounded-sm bg-zinc-100 flex items-center justify-center text-zinc-900 font-black text-3xl border border-zinc-200 mx-auto mb-6 shadow-none tracking-tighter overflow-hidden">
+                {user.avatar ? (
+                  <img
+                    src={user.avatar}
+                    alt={`${user.first_name} ${user.last_name}`}
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  <>
+                    {user.first_name[0]}
+                    {user.last_name[0]}
+                  </>
+                )}
               </div>
               <h2 className="text-xl font-black text-zinc-900 tracking-tight uppercase">
                 {user.first_name} {user.middle_name} {user.last_name}

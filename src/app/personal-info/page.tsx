@@ -16,7 +16,7 @@ import DashboardBreadcrumb from "@/components/common/DashboardBreadcrumb";
 import { DashboardLayout } from "@/components/dashboard/Layout";
 import { useState, useRef } from "react";
 import { apiClient } from "@/lib/apiClient";
-import { COMMON_URLS, TENANT_AUTH_URLS } from "@/lib/urls";
+import { AUTH_URLS, COMMON_URLS, TENANT_AUTH_URLS } from "@/lib/urls";
 
 export default function PersonalPage() {
   const [isUploading, setIsUploading] = useState(false);
@@ -29,7 +29,7 @@ export default function PersonalPage() {
     staleTime: 1000 * 60 * 60 * 4,
   });
 
-  const tenant = data?.tenant;
+  const user = data?.user;
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -45,7 +45,7 @@ export default function PersonalPage() {
       setIsUploading(true);
 
       const presignedRes = await apiClient(
-        `${COMMON_URLS.get_tenant_avatar_presigned_url}?key=${file.name}`,
+        `${COMMON_URLS.get_user_avatar_presigned_url}?key=${file.name}`,
         { method: "POST" },
       );
       const { url, key } = await presignedRes.json();
@@ -60,7 +60,7 @@ export default function PersonalPage() {
 
       const imageUrl = `https://fitbinary.com.s3.eu-north-1.amazonaws.com/${key}`;
 
-      const updateRes = await apiClient(TENANT_AUTH_URLS.profile_update, {
+      const updateRes = await apiClient(AUTH_URLS.avatar, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ avatar: imageUrl }),
@@ -78,9 +78,9 @@ export default function PersonalPage() {
   };
 
   const getInitials = () => {
-    if (!tenant?.first_name) return "U";
-    const first = tenant.first_name.charAt(0).toUpperCase();
-    const last = tenant.last_name?.charAt(0).toUpperCase() || "";
+    if (!user?.first_name) return "U";
+    const first = user.first_name.charAt(0).toUpperCase();
+    const last = user.last_name?.charAt(0).toUpperCase() || "";
     return `${first}${last}`;
   };
 
@@ -118,10 +118,10 @@ export default function PersonalPage() {
           <div className="h-38 bg-zinc-900">
             <div className="p-4">
               <h1 className="text-3xl font-bold text-white tracking-tight">
-                {tenant?.first_name} {tenant?.last_name}
+                {user?.first_name} {user?.last_name}
               </h1>
               <p className="text-zinc-300 flex items-center gap-2 justify-center md:justify-start">
-                {tenant?.email}
+                {user?.email}
                 <CheckCircle2 className="w-4 h-4 text-blue-500" />
               </p>
             </div>
@@ -134,10 +134,10 @@ export default function PersonalPage() {
                 <div className="relative group overflow-hidden rounded-full">
                   <div className="w-32 h-32 rounded-full bg-white p-1 shadow-xl">
                     <div className="w-full h-full rounded-full bg-zinc-100 flex items-center justify-center overflow-hidden relative">
-                      {tenant?.avatar ? (
+                      {user?.avatar ? (
                         <img
-                          src={tenant.avatar}
-                          alt={tenant.first_name}
+                          src={user.avatar}
+                          alt={user.first_name}
                           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                         />
                       ) : (
@@ -180,8 +180,8 @@ export default function PersonalPage() {
               {[
                 {
                   label: "Birthday",
-                  value: tenant?.dob
-                    ? new Date(tenant.dob).toLocaleDateString("en-US", {
+                  value: user?.dob
+                    ? new Date(user.dob).toLocaleDateString("en-US", {
                         month: "long",
                         day: "numeric",
                         year: "numeric",
@@ -189,8 +189,7 @@ export default function PersonalPage() {
                     : "---",
                   icon: Calendar,
                 },
-                { label: "Phone", value: tenant?.phone || "---", icon: Phone },
-                { label: "Role", value: tenant?.role || "OWNER", icon: User },
+                { label: "Phone", value: user?.phone || "---", icon: Phone },
               ].map((item, idx) => (
                 <div
                   key={idx}
@@ -232,7 +231,7 @@ export default function PersonalPage() {
                         Email Address
                       </h4>
                       <p className="text-xs text-zinc-500 font-medium">
-                        {tenant?.email}
+                        {user?.email}
                       </p>
                     </div>
                   </div>
