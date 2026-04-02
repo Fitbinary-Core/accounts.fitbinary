@@ -106,17 +106,17 @@ const AllUsersPage = () => {
   const branchOptions =
     branchesData?.data && Array.isArray(branchesData.data)
       ? branchesData.data.map((b: any) => ({
-          label: b.branch_name,
-          value: b._id,
-        }))
+        label: b.branch_name,
+        value: b._id,
+      }))
       : [];
 
   const orgOptions =
     organizations?.organizations && Array.isArray(organizations.organizations)
       ? organizations.organizations.map((org: any) => ({
-          label: org.business_name,
-          value: org._id,
-        }))
+        label: org.business_name,
+        value: org._id,
+      }))
       : [];
 
   const filterConfigs: FilterConfig[] = [
@@ -163,8 +163,8 @@ const AllUsersPage = () => {
   const deleteMutation = useMutation({
     mutationFn: (id: string) => deleteUserService(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["users"] });
-      toast.success("User deleted successfully");
+      queryClient.invalidateQueries({ queryKey: ["access-control"] });
+      toast.success("Access control record deleted successfully");
       setIsDeleteModalOpen(false);
       setUserToDelete(null);
     },
@@ -426,7 +426,7 @@ const AllUsersPage = () => {
                                 <Edit2 size={14} />
                               </button>
                               <button
-                                onClick={() => handleDelete(user?._id)}
+                                onClick={() => handleDelete(user?.access_control_id)}
                                 disabled={deleteMutation.isPending}
                                 className="p-2 text-zinc-400 hover:text-red-600 hover:bg-red-50 rounded-sm border border-transparent hover:border-red-100 transition-all active:scale-95 cursor-pointer disabled:opacity-50"
                               >

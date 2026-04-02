@@ -43,7 +43,7 @@ export const USERS_URLS = {
   get_all: `${BASE_URL}/users/list`,
   get_one: `${BASE_URL}/users/:id`,
   update: `${BASE_URL}/users/:id`,
-  delete: `${BASE_URL}/users/:id`,
+  delete: `${BASE_URL}/accesscontrol/delete/:id`,
   invite_users_list: `${BASE_URL}/intive/users/list`,
 };
 
