@@ -16,6 +16,10 @@ export interface User {
   last_name: string;
   email: string;
   phone: string;
+  avatar: string | null;
+  is_active: boolean;
+  is_verified: boolean;
+  last_signin: string | null;
   organization: {
     _id: string;
     business_name: string;
