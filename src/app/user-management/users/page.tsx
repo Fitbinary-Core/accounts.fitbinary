@@ -106,17 +106,17 @@ const AllUsersPage = () => {
   const branchOptions =
     branchesData?.data && Array.isArray(branchesData.data)
       ? branchesData.data.map((b: any) => ({
-          label: b.branch_name,
-          value: b._id,
-        }))
+        label: b.branch_name,
+        value: b._id,
+      }))
       : [];
 
   const orgOptions =
     organizations?.organizations && Array.isArray(organizations.organizations)
       ? organizations.organizations.map((org: any) => ({
-          label: org.business_name,
-          value: org._id,
-        }))
+        label: org.business_name,
+        value: org._id,
+      }))
       : [];
 
   const filterConfigs: FilterConfig[] = [
@@ -231,7 +231,7 @@ const AllUsersPage = () => {
               <div className="flex flex-col items-center justify-center py-24 space-y-4">
                 <Loader2 className="size-10 animate-spin text-zinc-900" />
                 <p className="text-zinc-500 font-bold uppercase tracking-widest text-[10px]">
-                  Synchronizing Registry...
+                  Loading Registry...
                 </p>
               </div>
             ) : groupedUsers.length === 0 ? (
@@ -241,11 +241,11 @@ const AllUsersPage = () => {
                 </div>
                 <div className="text-center space-y-2">
                   <p className="text-sm font-black text-zinc-900 uppercase tracking-tight">
-                    Void Environment detected
+                    No users found
                   </p>
                   <p className="text-xs text-zinc-500 max-w-70 mx-auto leading-relaxed">
-                    No member profiles found matching your current filters.
-                    Adjust your search or enroll a new member.
+                    No user profiles found matching your current filters.
+                    Adjust your search or enroll a new user.
                   </p>
                 </div>
                 <Button
