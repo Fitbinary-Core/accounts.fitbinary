@@ -85,7 +85,7 @@ export default function AddBranchPage() {
       <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
         <DashboardBreadcrumb
           title="Branch Configuration"
-          description="Defining a new physical node for an organization."
+          description="Creating a new physical branch for an organization."
           actions={
             <Button
               onClick={() => router.push("/branches")}
@@ -141,7 +141,7 @@ export default function AddBranchPage() {
                 {/* Branch Name */}
                 <div className="space-y-2">
                   <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
-                    Branch Identifier
+                    Branch Name
                   </label>
                   <div className="relative">
                     <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-zinc-400">
@@ -163,7 +163,7 @@ export default function AddBranchPage() {
                 {/* Branch Location */}
                 <div className="space-y-2">
                   <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
-                    Geographic Location
+                    Physical Location
                   </label>
                   <div className="relative">
                     <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-zinc-400">
@@ -186,7 +186,7 @@ export default function AddBranchPage() {
               {/* Branch Type */}
               <div className="space-y-3">
                 <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
-                  Infrastructure Type
+                  Branch Type
                 </label>
                 <Controller
                   name="branch_type"

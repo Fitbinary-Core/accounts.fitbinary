@@ -10,6 +10,7 @@ export interface User {
   role: "Owner" | string;
   onboarding_completed: boolean;
   organization: string | null;
+  gender?: string;
   createdAt: string;
   updatedAt: string;
 }

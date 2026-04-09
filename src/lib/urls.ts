@@ -103,4 +103,7 @@ export const BUSINESS_DOCUMENTS_URLS = {
 export const ACCESS_CONTROL_URLS = {
   create: `${BASE_URL}/accesscontrol/create`,
   list: `${BASE_URL}/accesscontrol/list`,
+  detail: `${BASE_URL}/accesscontrol/detail/:id`,
+  update: `${BASE_URL}/accesscontrol/update/:id`,
+  sync: `${BASE_URL}/accesscontrol/sync`,
 };

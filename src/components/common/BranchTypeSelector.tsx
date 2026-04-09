@@ -66,7 +66,7 @@ const BranchTypeSelector: React.FC<BranchTypeSelectorProps> = ({
           <Search size={14} />
         </span>
         <Input
-          placeholder="Search infrastructure types..."
+          placeholder="Search branch types..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="w-full h-11 pl-9 border-zinc-200 focus:border-zinc-900 focus:ring-0 text-zinc-900 text-sm placeholder:text-zinc-300 rounded-sm shadow-none"
@@ -78,7 +78,7 @@ const BranchTypeSelector: React.FC<BranchTypeSelectorProps> = ({
         {filteredTypes.length === 0 ? (
           <div className="col-span-full py-12 text-center border border-dashed border-zinc-200 rounded-sm bg-zinc-50/50">
             <p className="text-zinc-400 text-[11px] font-bold uppercase tracking-widest italic">
-              No registry matches found.
+              No branch matches found.
             </p>
           </div>
         ) : (
