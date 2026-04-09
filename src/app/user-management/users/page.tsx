@@ -420,7 +420,9 @@ const AllUsersPage = () => {
                                 <Eye size={14} />
                               </button>
                               <button
-                                onClick={() => handleEdit(user?._id)}
+                                onClick={() =>
+                                  handleEdit(user?.access_control_id)
+                                }
                                 className="p-2 text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 rounded-sm border border-transparent hover:border-zinc-200 transition-all active:scale-95 cursor-pointer"
                               >
                                 <Edit2 size={14} />
