@@ -177,7 +177,7 @@ export function ProfileDropdown({ user }: UserProps) {
           </div>
 
           <div className="py-2">
-            <button className="w-full flex items-center gap-3 px-6 py-3 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
+            <button onClick={() => window.location.href = '/personal-info'} className="w-full flex items-center cursor-pointer gap-3 px-6 py-3 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
               <User className="w-5 h-5 text-gray-500" />
               Your Profile
             </button>
@@ -186,7 +186,7 @@ export function ProfileDropdown({ user }: UserProps) {
                 setIsOpen(false);
                 setShowLogoutModal(true);
               }}
-              className="w-full flex items-center gap-3 px-6 py-3 text-sm text-gray-700 hover:bg-gray-100 transition-colors border-t border-gray-100"
+              className="w-full flex cursor-pointer items-center gap-3 px-6 py-3 text-sm text-gray-700 hover:bg-gray-100 transition-colors border-t border-gray-100"
             >
               <LogOut className="w-5 h-5 text-gray-500" />
               Sign out
@@ -243,7 +243,7 @@ export function ProfileDropdown({ user }: UserProps) {
                   <button
                     onClick={handleLogout}
                     disabled={isLoggingOut}
-                    className="flex-1 px-6 py-3 text-sm font-semibold text-white bg-brand-red hover:bg-red-700 rounded-lg transition-all shadow-lg shadow-red-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    className="flex-1 px-6 py-3 cursor-pointer text-sm font-semibold text-white bg-brand-red hover:bg-red-700 rounded-lg transition-all shadow-lg shadow-red-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   >
                     {isLoggingOut ? (
                       <>
