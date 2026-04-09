@@ -177,7 +177,10 @@ export function ProfileDropdown({ user }: UserProps) {
           </div>
 
           <div className="py-2">
-            <button onClick={() => window.location.href = '/personal-info'} className="w-full flex items-center cursor-pointer gap-3 px-6 py-3 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
+            <button
+              onClick={() => (window.location.href = "/personal-info")}
+              className="w-full flex items-center cursor-pointer gap-3 px-6 py-3 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+            >
               <User className="w-5 h-5 text-gray-500" />
               Your Profile
             </button>

@@ -3,7 +3,7 @@
 import { userProfile } from "@/services/auth/auth.service";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
-  User,
+  User as UserIcon,
   Mail,
   Phone,
   Calendar,
@@ -11,12 +11,15 @@ import {
   Camera,
   Shield,
   CheckCircle2,
+  Edit2,
+  Save,
+  X,
 } from "lucide-react";
 import DashboardBreadcrumb from "@/components/common/DashboardBreadcrumb";
 import { DashboardLayout } from "@/components/dashboard/Layout";
 import { useState, useRef } from "react";
 import { apiClient } from "@/lib/apiClient";
-import { AUTH_URLS, COMMON_URLS, TENANT_AUTH_URLS } from "@/lib/urls";
+import { AUTH_URLS, COMMON_URLS, USERS_URLS } from "@/lib/urls";
 
 export default function PersonalPage() {
   const [isUploading, setIsUploading] = useState(false);
@@ -30,6 +33,62 @@ export default function PersonalPage() {
   });
 
   const user = data?.user;
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [formData, setFormData] = useState({
+    first_name: "",
+    middle_name: "",
+    last_name: "",
+    phone: "",
+    dob: "",
+    gender: "",
+  });
+
+  const handleEditToggle = () => {
+    if (!isEditing && user) {
+      setFormData({
+        first_name: user.first_name || "",
+        middle_name: user.middle_name || "",
+        last_name: user.last_name || "",
+        phone: user.phone || "",
+        dob: user.dob ? new Date(user.dob).toISOString().split("T")[0] : "",
+        gender: user.gender || "",
+      });
+    }
+    setIsEditing(!isEditing);
+  };
+
+  const handleUpdateProfile = async () => {
+    try {
+      if (!user?._id) {
+        throw new Error("User session not found. Please refresh.");
+      }
+      setIsUpdating(true);
+      const url = USERS_URLS.update.replace(":id", user._id);
+      const payload = {
+        ...formData,
+        dob: formData.dob ? new Date(formData.dob).toISOString() : undefined,
+      };
+
+      const response = await apiClient(url, {
+        method: "PATCH",
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Failed to update profile");
+      }
+
+      await queryClient.invalidateQueries({ queryKey: ["profile"] });
+      setIsEditing(false);
+    } catch (error: any) {
+      alert(error.message);
+    } finally {
+      setIsUpdating(false);
+    }
+  };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -116,14 +175,30 @@ export default function PersonalPage() {
         {/* Profile Card */}
         <div className="bg-white rounded-lg border border-zinc-200 shadow-sm overflow-hidden transition-all hover:shadow-md">
           <div className="h-38 bg-zinc-900">
-            <div className="p-4">
-              <h1 className="text-3xl font-bold text-white tracking-tight">
-                {user?.first_name} {user?.last_name}
-              </h1>
-              <p className="text-zinc-300 flex items-center gap-2 justify-center md:justify-start">
-                {user?.email}
-                <CheckCircle2 className="w-4 h-4 text-blue-500" />
-              </p>
+            <div className="p-4 flex justify-between items-start">
+              <div>
+                <h1 className="text-3xl font-bold text-white tracking-tight">
+                  {user?.first_name} {user?.middle_name} {user?.last_name}
+                </h1>
+                <p className="text-zinc-300 flex items-center gap-2 justify-center md:justify-start">
+                  {user?.email}
+                  <CheckCircle2 className="w-4 h-4 text-blue-500" />
+                </p>
+              </div>
+              <button
+                onClick={handleEditToggle}
+                className="bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded-md flex items-center gap-2 text-sm font-medium transition-colors z-10"
+              >
+                {isEditing ? (
+                  <>
+                    <X className="w-4 h-4" /> Cancel
+                  </>
+                ) : (
+                  <>
+                    <Edit2 className="w-4 h-4" /> Edit
+                  </>
+                )}
+              </button>
             </div>
           </div>
 
@@ -136,8 +211,8 @@ export default function PersonalPage() {
                     <div className="w-full h-full rounded-full bg-zinc-100 flex items-center justify-center overflow-hidden relative">
                       {user?.avatar ? (
                         <img
-                          src={user.avatar}
-                          alt={user.first_name}
+                          src={user?.avatar}
+                          alt={user?.first_name}
                           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                         />
                       ) : (
@@ -177,37 +252,153 @@ export default function PersonalPage() {
             />
 
             <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {[
-                {
-                  label: "Birthday",
-                  value: user?.dob
-                    ? new Date(user.dob).toLocaleDateString("en-US", {
-                        month: "long",
-                        day: "numeric",
-                        year: "numeric",
-                      })
-                    : "---",
-                  icon: Calendar,
-                },
-                { label: "Phone", value: user?.phone || "---", icon: Phone },
-              ].map((item, idx) => (
-                <div
-                  key={idx}
-                  className="p-5 bg-zinc-50 rounded-lg border border-zinc-100 group transition-all hover:bg-white hover:border-brand-red/20 hover:shadow-sm"
-                >
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="p-2 bg-white rounded-md border border-zinc-100 text-zinc-400 group-hover:text-brand-red transition-colors capitalize">
-                      <item.icon className="w-4 h-4" />
-                    </div>
-                    <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest leading-none">
-                      {item.label}
-                    </span>
+              {isEditing ? (
+                <div className="col-span-full grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <label className="text-xs font-bold text-zinc-500 uppercase">
+                      First Name
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.first_name}
+                      onChange={(e) =>
+                        setFormData({ ...formData, first_name: e.target.value })
+                      }
+                      className="w-full p-2.5 text-sm rounded-md border border-zinc-200 focus:border-brand-red focus:ring-1 focus:ring-brand-red outline-none transition-all"
+                    />
                   </div>
-                  <p className="text-sm font-semibold text-zinc-900 truncate">
-                    {item.value}
-                  </p>
+                  <div className="space-y-1">
+                    <label className="text-xs font-bold text-zinc-500 uppercase">
+                      Middle Name
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.middle_name}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          middle_name: e.target.value,
+                        })
+                      }
+                      className="w-full p-2.5 text-sm rounded-md border border-zinc-200 focus:border-brand-red focus:ring-1 focus:ring-brand-red outline-none transition-all"
+                      placeholder="Optional"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-xs font-bold text-zinc-500 uppercase">
+                      Last Name
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.last_name}
+                      onChange={(e) =>
+                        setFormData({ ...formData, last_name: e.target.value })
+                      }
+                      className="w-full p-2.5 text-sm rounded-md border border-zinc-200 focus:border-brand-red focus:ring-1 focus:ring-brand-red outline-none transition-all"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-xs font-bold text-zinc-500 uppercase">
+                      Phone Number
+                    </label>
+                    <input
+                      type="tel"
+                      value={formData.phone}
+                      onChange={(e) =>
+                        setFormData({ ...formData, phone: e.target.value })
+                      }
+                      className="w-full p-2.5 text-sm rounded-md border border-zinc-200 focus:border-brand-red focus:ring-1 focus:ring-brand-red outline-none transition-all"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-xs font-bold text-zinc-500 uppercase">
+                      Birthday
+                    </label>
+                    <input
+                      type="date"
+                      value={formData.dob}
+                      onChange={(e) =>
+                        setFormData({ ...formData, dob: e.target.value })
+                      }
+                      className="w-full p-2.5 text-sm rounded-md border border-zinc-200 focus:border-brand-red focus:ring-1 focus:ring-brand-red outline-none transition-all"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-xs font-bold text-zinc-500 uppercase">
+                      Gender
+                    </label>
+                    <select
+                      value={formData.gender}
+                      onChange={(e) =>
+                        setFormData({ ...formData, gender: e.target.value })
+                      }
+                      className="w-full p-2.5 text-sm rounded-md border border-zinc-200 focus:border-brand-red focus:ring-1 focus:ring-brand-red outline-none transition-all bg-white"
+                    >
+                      <option value="">Select Gender</option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                  <div className="col-span-full flex justify-end mt-4">
+                    <button
+                      onClick={handleUpdateProfile}
+                      disabled={isUpdating}
+                      className="bg-brand-red text-white px-5 py-2.5 rounded-md font-semibold text-sm flex items-center gap-2 hover:bg-brand-red/90 disabled:opacity-50 transition-all shadow-sm"
+                    >
+                      {isUpdating ? (
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                      ) : (
+                        <Save className="w-4 h-4" />
+                      )}
+                      Save Changes
+                    </button>
+                  </div>
                 </div>
-              ))}
+              ) : (
+                <>
+                  {[
+                    {
+                      label: "Gender",
+                      value: user?.gender || "---",
+                      icon: UserIcon,
+                    },
+                    {
+                      label: "Birthday",
+                      value: user?.dob
+                        ? new Date(user.dob).toLocaleDateString("en-US", {
+                            month: "long",
+                            day: "numeric",
+                            year: "numeric",
+                          })
+                        : "---",
+                      icon: Calendar,
+                    },
+                    {
+                      label: "Phone",
+                      value: user?.phone || "---",
+                      icon: Phone,
+                    },
+                  ].map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="p-5 bg-zinc-50 rounded-lg border border-zinc-100 group transition-all hover:bg-white hover:border-brand-red/20 hover:shadow-sm"
+                    >
+                      <div className="flex items-center gap-3 mb-3">
+                        <div className="p-2 bg-white rounded-md border border-zinc-100 text-zinc-400 group-hover:text-brand-red transition-colors capitalize">
+                          <item.icon className="w-4 h-4" />
+                        </div>
+                        <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest leading-none">
+                          {item.label}
+                        </span>
+                      </div>
+                      <p className="text-sm font-semibold text-zinc-900 truncate">
+                        {item.value}
+                      </p>
+                    </div>
+                  ))}
+                </>
+              )}
             </div>
           </div>
         </div>

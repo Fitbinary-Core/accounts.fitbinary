@@ -106,17 +106,17 @@ const AllUsersPage = () => {
   const branchOptions =
     branchesData?.data && Array.isArray(branchesData.data)
       ? branchesData.data.map((b: any) => ({
-        label: b.branch_name,
-        value: b._id,
-      }))
+          label: b.branch_name,
+          value: b._id,
+        }))
       : [];
 
   const orgOptions =
     organizations?.organizations && Array.isArray(organizations.organizations)
       ? organizations.organizations.map((org: any) => ({
-        label: org.business_name,
-        value: org._id,
-      }))
+          label: org.business_name,
+          value: org._id,
+        }))
       : [];
 
   const filterConfigs: FilterConfig[] = [
@@ -244,8 +244,8 @@ const AllUsersPage = () => {
                     No users found
                   </p>
                   <p className="text-xs text-zinc-500 max-w-70 mx-auto leading-relaxed">
-                    No user profiles found matching your current filters.
-                    Adjust your search or enroll a new user.
+                    No user profiles found matching your current filters. Adjust
+                    your search or enroll a new user.
                   </p>
                 </div>
                 <Button
