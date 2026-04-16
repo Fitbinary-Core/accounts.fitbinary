@@ -2,7 +2,11 @@ import { SigninValues } from "@/components/auth/signin-form";
 import { apiClient } from "@/lib/apiClient";
 import { AUTH_URLS, TENANT_AUTH_URLS } from "@/lib/urls";
 import { SignUpUserProps, UserProfileResponse } from "@/types/auth";
-import { ProfileResponse, SubscriptionDetails } from "./types/auth.types";
+import {
+  LoginResBody,
+  ProfileResponse,
+  SubscriptionDetails,
+} from "./types/auth.types";
 
 export const userProfile = async (): Promise<UserProfileResponse> => {
   try {
@@ -57,7 +61,7 @@ export async function getSubscriptionDetails(): Promise<SubscriptionDetails> {
 
 type LoginPayload = SigninValues & { slug?: string };
 
-export const loginUser = async (data: LoginPayload) => {
+export const loginUser = async (data: LoginPayload): Promise<LoginResBody> => {
   try {
     const url = AUTH_URLS.login;
     const response = await apiClient(url, {
