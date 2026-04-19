@@ -40,10 +40,14 @@ export default function SigninForm() {
   const { mutate: login, isPending } = useMutation({
     mutationFn: loginUser,
     onSuccess: (response) => {
-      toast.success(response.message);
+      const key = response.data.key;
+
+      const redirect_back_url = key
+        ? `${redirectUrl}/${key}`
+        : `${redirectUrl}`;
 
       if (redirectUrl) {
-        window.location.href = redirectUrl;
+        window.location.href = redirect_back_url;
       } else {
         router.push("/");
       }

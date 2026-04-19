@@ -17,8 +17,9 @@ export type LoginFormDataPayload = {
 };
 
 export interface LoginResBodyFields {
+  key?: string | null;
   accessToken: string;
-  redirect_url: string;
+  redirect_url?: string;
   refreshToken: string;
 }
 
