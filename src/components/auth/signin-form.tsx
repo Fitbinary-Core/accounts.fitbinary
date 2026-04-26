@@ -43,7 +43,7 @@ export default function SigninForm() {
       const key = response.data.key;
 
       const redirect_back_url = key
-        ? `${redirectUrl}/${key}`
+        ? `${redirectUrl}/${key}?key=${key}`
         : `${redirectUrl}`;
 
       if (redirectUrl) {

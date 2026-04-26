@@ -1,6 +1,6 @@
 import { SigninValues } from "@/components/auth/signin-form";
 import { apiClient } from "@/lib/apiClient";
-import { AUTH_URLS, TENANT_AUTH_URLS } from "@/lib/urls";
+import { AUTH_URLS } from "@/lib/urls";
 import { SignUpUserProps, UserProfileResponse } from "@/types/auth";
 import {
   LoginResBody,
@@ -44,7 +44,7 @@ export async function getUserProfile(): Promise<ProfileResponse> {
 
 export async function getSubscriptionDetails(): Promise<SubscriptionDetails> {
   try {
-    const url = TENANT_AUTH_URLS.subscription_details;
+    const url = AUTH_URLS.subscription_details;
     const response = await apiClient(url);
     const data = await response.json();
 
@@ -136,7 +136,7 @@ export async function logoutUser() {
 
 export const sendForgetPasswordPin = async (email: string) => {
   try {
-    const url = TENANT_AUTH_URLS.forget_password_pin;
+    const url = AUTH_URLS.forget_password_pin;
     const response = await apiClient(url, {
       method: "POST",
       headers: {
@@ -158,7 +158,7 @@ export const sendForgetPasswordPin = async (email: string) => {
 
 export const verifyForgetPasswordPin = async (email: string, otp: string) => {
   try {
-    const url = `${TENANT_AUTH_URLS.verify_forget_password_pin}?email=${encodeURIComponent(email)}&OTP=${encodeURIComponent(otp)}`;
+    const url = `${AUTH_URLS.verify_forget_password_pin}?email=${encodeURIComponent(email)}&OTP=${encodeURIComponent(otp)}`;
     const response = await apiClient(url, {
       method: "GET",
       headers: {
@@ -183,7 +183,7 @@ export const resetPassword = async (data: {
   newPassword: string;
 }) => {
   try {
-    const url = TENANT_AUTH_URLS.reset_password;
+    const url = AUTH_URLS.reset_password;
     const response = await apiClient(url, {
       method: "PATCH",
       headers: {

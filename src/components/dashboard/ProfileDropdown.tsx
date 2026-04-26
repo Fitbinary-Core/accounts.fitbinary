@@ -6,7 +6,7 @@ import { logoutUser } from "@/services/auth/auth.service";
 import { useRouter } from "next/navigation";
 import { createPortal } from "react-dom";
 import { User as UserType } from "@/types/auth";
-import { AUTH_URLS, COMMON_URLS, TENANT_AUTH_URLS } from "@/lib/urls";
+import { AUTH_URLS, COMMON_URLS } from "@/lib/urls";
 import { apiClient } from "@/lib/apiClient";
 import { useQueryClient } from "@tanstack/react-query";
 

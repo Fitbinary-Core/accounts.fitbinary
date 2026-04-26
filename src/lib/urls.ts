@@ -8,19 +8,10 @@ export const AUTH_URLS = {
   refresh: `${BASE_URL}/auth/refresh`,
   profile: `${BASE_URL}/user/profile`,
   avatar: `${BASE_URL}/user/avatar`,
-};
-
-export const TENANT_AUTH_URLS = {
-  tenant_signup: `${BASE_URL}/auth/tenants/signup`,
-  login: `${BASE_URL}/auth/tenants/login`,
-  logout: `${BASE_URL}/auth/tenants/logout`,
-  refresh: `${BASE_URL}/auth/tenants/refresh`,
-  profile: `${BASE_URL}/auth/tenants/profile`,
-  profile_update: `${BASE_URL}/auth/tenants/profile`,
-  subscription_details: `${BASE_URL}/auth/tenants/subscription/details`,
-  forget_password_pin: `${BASE_URL}/tenants/forget-password-pin`,
-  verify_forget_password_pin: `${BASE_URL}/tenants/verify-forget-password-pin`,
-  reset_password: `${BASE_URL}/tenants/reset-password`,
+  subscription_details: `${BASE_URL}/user/subscription/details`,
+  forget_password_pin: `${BASE_URL}/auth/forget-password-pin`,
+  verify_forget_password_pin: `${BASE_URL}/auth/verify-forget-password-pin`,
+  reset_password: `${BASE_URL}/auth/reset-password`,
 };
 
 export const ACCOUNTS_APPS_URLS = {
@@ -69,11 +60,10 @@ export const ONBOARDING_URLS = {
 
 export const CATEGORIES_URLS = {
   get_all: `${BASE_URL}/categories/list`,
-  get_childrens: `${BASE_URL}/tenant/categories/childrens/:id`,
-  get_detail: `${BASE_URL}/tenant/categories/:id`,
-  update: `${BASE_URL}/tenant/categories/update`,
-
-  organization_categories: `${BASE_URL}/tenant/categories/organization/all`,
+  get_childrens: `${BASE_URL}/user/categories/childrens/:id`,
+  get_detail: `${BASE_URL}/user/categories/:id`,
+  update: `${BASE_URL}/user/categories/update`,
+  organization_categories: `${BASE_URL}/user/categories/organization/all`,
 };
 
 export const PLANS_URLS = {
