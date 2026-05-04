@@ -5,6 +5,8 @@ import { userProfile } from "@/services/auth/auth.service";
 import { Search, Menu, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import { ProfileDropdown } from "./ProfileDropdown";
 import { AppLauncher } from "./AppLauncher";
+import { WorkspaceSelector } from "./WorkspaceSelector";
+import { getMyWorkspaces } from "@/services/accesscontrol/accesscontrol.service";
 
 interface HeaderProps {
   toggleSidebar: () => void;
@@ -21,6 +23,11 @@ export function Header({
     queryKey: ["profile"],
     queryFn: () => userProfile(),
     staleTime: 1000 * 60 * 60 * 1,
+  });
+
+  const { data: workspaces } = useQuery({
+    queryKey: ['workspaces'],
+    queryFn: () => getMyWorkspaces()
   });
 
   return (
@@ -67,6 +74,7 @@ export function Header({
 
       <div className="flex items-center gap-2 sm:gap-4">
         <div className="items-center gap-1 border-r border-zinc-200 pr-4 mr-2 hidden sm:flex">
+          <WorkspaceSelector workspaces={workspaces?.workspaces ?? []} />
           <AppLauncher />
         </div>
         <ProfileDropdown user={data?.user} />

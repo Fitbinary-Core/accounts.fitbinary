@@ -96,4 +96,5 @@ export const ACCESS_CONTROL_URLS = {
   detail: `${BASE_URL}/accesscontrol/detail/:id`,
   update: `${BASE_URL}/accesscontrol/update/:id`,
   sync: `${BASE_URL}/accesscontrol/sync`,
+  my_workspaces: `${BASE_URL}/accesscontrol/my-workspaces`
 };
