@@ -141,7 +141,7 @@ export function WorkspaceSelector({ workspaces }: WorkspaceSelectorProps) {
                       onClick={() => handleSelect(ws)}
                       className="w-full flex items-start gap-3 px-4 py-3 hover:bg-zinc-50 transition-colors group border-b border-zinc-50 last:border-0"
                     >
-                      <div className="size-9 rounded-lg overflow-hidden flex-shrink-0 border border-zinc-200 bg-zinc-100">
+                      <div className="size-9 rounded-lg overflow-hidden shrink-0 border border-zinc-200 bg-zinc-100">
                         {ws.org_id.business_logo ? (
                           <img
                             src={ws.org_id.business_logo}
@@ -160,13 +160,13 @@ export function WorkspaceSelector({ workspaces }: WorkspaceSelectorProps) {
                         </p>
                         <p className="text-[11px] text-zinc-500 truncate">{ws.branch_id.branch_name}</p>
                         <div className="flex items-center gap-1.5 mt-0.5">
-                          <span className={cn("inline-block size-1.5 rounded-full flex-shrink-0", appConfig?.dotColor ?? "bg-zinc-400")} />
+                          <span className={cn("inline-block size-1.5 rounded-full shrink-0", appConfig?.dotColor ?? "bg-zinc-400")} />
                           <span className="text-[10px] text-zinc-400 font-medium">{ws.role_id.role_name}</span>
                           <span className="text-[10px] text-zinc-300">·</span>
                           <span className="text-[10px] text-zinc-400">{ws.branch_id.branch_type}</span>
                         </div>
                       </div>
-                      <ExternalLink className="size-3.5 text-zinc-300 group-hover:text-brand-red transition-colors flex-shrink-0 mt-1" />
+                      <ExternalLink className="size-3.5 text-zinc-300 group-hover:text-brand-red transition-colors shrink-0 mt-1" />
                     </button>
                   ))}
                 </div>
