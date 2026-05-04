@@ -125,3 +125,17 @@ export const syncAccessControlService = async (data: {
     throw error;
   }
 };
+
+export const getMyWorkspaces = async (): Promise<any> => {
+  try {
+    const response = await apiClient(ACCESS_CONTROL_URLS.my_workspaces);
+
+    const result = await response.json();
+    if (!response.ok) {
+      throw new Error(result.message || "Failed to get my workspace lists");
+    }
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
