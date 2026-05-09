@@ -137,15 +137,15 @@ export function WorkspaceSelector({ workspaces }: WorkspaceSelectorProps) {
                   </div>
                   {items.map((ws) => (
                     <button
-                      key={ws._id}
+                      key={ws?._id}
                       onClick={() => handleSelect(ws)}
                       className="w-full flex items-start gap-3 px-4 py-3 hover:bg-zinc-50 transition-colors group border-b border-zinc-50 last:border-0"
                     >
                       <div className="size-9 rounded-lg overflow-hidden shrink-0 border border-zinc-200 bg-zinc-100">
-                        {ws.org_id.business_logo ? (
+                        {ws?.org_id?.business_logo ? (
                           <img
-                            src={ws.org_id.business_logo}
-                            alt={ws.org_id.business_name}
+                            src={ws?.org_id?.business_logo}
+                            alt={ws?.org_id?.business_name}
                             className="size-full object-cover"
                           />
                         ) : (
