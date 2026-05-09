@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,7 +21,6 @@ const signinSchema = z.object({
 export type SigninValues = z.infer<typeof signinSchema>;
 
 export default function SigninForm() {
-  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
 
   const searchParams = useSearchParams();
@@ -49,7 +47,7 @@ export default function SigninForm() {
       if (redirectUrl) {
         window.location.href = redirect_back_url;
       } else {
-        router.push("/");
+        window.location.href = "/";
       }
     },
     onError: (error: any) => {
