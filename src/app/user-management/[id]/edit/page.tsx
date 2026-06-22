@@ -134,10 +134,13 @@ export default function EditUserPage() {
 
       const orgId = accesscontrol.org_id?._id || "";
       const roleId = accesscontrol.role_id?._id || "";
-      const branchIds =
-        userAccessList?.data
-          ?.map((ac: any) => ac.branch_id?._id)
-          .filter(Boolean) || [];
+      const branchIds = Array.from(
+        new Set<string>(
+          userAccessList?.data
+            ?.map((ac: any) => ac.branch_id?._id)
+            .filter(Boolean) || [],
+        ),
+      );
 
       reset({
         role: roleId,
@@ -219,7 +222,7 @@ export default function EditUserPage() {
           actions={
             <Button
               onClick={() => router.push("/user-management/users")}
-              className="flex items-center gap-2 h-10 px-4 border-zinc-200 text-zinc-900 text-[11px] font-bold uppercase tracking-widest rounded-sm hover:bg-zinc-50 hover:border-zinc-900 transition-all shadow-none border"
+              className="flex items-center gap-2 h-10 px-4 border-zinc-200 text-zinc-900 text-[11px] font-bold tracking-widest rounded-sm hover:bg-zinc-50 hover:border-zinc-900 transition-all shadow-none border"
             >
               <ArrowLeft size={14} />
               <span>Back to Registry</span>
@@ -233,7 +236,7 @@ export default function EditUserPage() {
             <div className="mb-8 rounded-sm border border-zinc-200 bg-white overflow-hidden shadow-none w-full mx-auto animate-in fade-in slide-in-from-top-4 duration-500">
               <div className="border-b border-zinc-100 bg-zinc-50/30 px-6 py-4">
                 <div className="flex items-center gap-2">
-                  <h2 className="text-sm font-black text-zinc-900 uppercase tracking-tight">
+                  <h2 className="text-sm font-black text-zinc-900 tracking-tight">
                     User Information (Read Only)
                   </h2>
                 </div>
@@ -274,17 +277,9 @@ export default function EditUserPage() {
           )}
 
           <div className="rounded-sm border border-zinc-200 bg-white overflow-hidden shadow-none w-full mx-auto">
-            <div className="border-b border-zinc-100 bg-zinc-50/30 px-6 py-4">
-              <div className="flex items-center gap-2">
-                <h2 className="text-sm font-black text-zinc-900 uppercase tracking-tight">
-                  Target Context
-                </h2>
-              </div>
-            </div>
-
             <div className="p-6 md:p-8 space-y-8">
               <div className="space-y-3">
-                <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
+                <label className="text-[10px] font-black text-zinc-500 tracking-widest">
                   Organization Environment
                 </label>
                 <Controller
@@ -314,10 +309,10 @@ export default function EditUserPage() {
             <div className="mt-8 rounded-sm border border-zinc-200 bg-white overflow-hidden shadow-none w-full mx-auto animate-in fade-in slide-in-from-top-4 duration-500">
               <div className="border-b border-zinc-100 bg-zinc-50/30 px-6 py-4">
                 <div className="flex items-center gap-2">
-                  <span className="px-2 py-0.5 bg-zinc-900 text-white text-[9px] font-bold uppercase tracking-widest rounded-sm">
+                  <span className="px-2 py-0.5 bg-zinc-900 text-white text-[9px] font-bold tracking-widest rounded-sm">
                     {selectedOrganization?.business_name || "EDIT"}
                   </span>
-                  <h2 className="text-sm font-black text-zinc-900 uppercase tracking-tight">
+                  <h2 className="text-sm font-black text-zinc-900 tracking-tight">
                     Access Privileges
                   </h2>
                 </div>

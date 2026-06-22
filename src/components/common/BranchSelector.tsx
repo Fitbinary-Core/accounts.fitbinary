@@ -50,8 +50,9 @@ const BranchSelector: React.FC<BranchSelectorProps> = (props) => {
 
   const branchesList = useMemo(() => {
     const list = Array.isArray(branches) ? branches : [];
-    if (!searchTerm) return list;
-    return list.filter(
+    const uniqueList = Array.from(new Map(list.map(b => [b._id, b])).values());
+    if (!searchTerm) return uniqueList;
+    return uniqueList.filter(
       (b) =>
         b.branch_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         b.branch_location.toLowerCase().includes(searchTerm.toLowerCase()),
@@ -60,7 +61,8 @@ const BranchSelector: React.FC<BranchSelectorProps> = (props) => {
 
   const selectedBranchIds = useMemo(() => {
     if (props.multi) {
-      return Array.isArray(props.value) ? props.value : [];
+      const vals = Array.isArray(props.value) ? props.value : [];
+      return Array.from(new Set(vals));
     }
     return props.value ? [props.value] : [];
   }, [props.value, props.multi]);

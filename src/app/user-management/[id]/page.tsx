@@ -74,7 +74,7 @@ export default function UserDetailPage() {
             <div className="flex gap-3">
               <Button
                 onClick={() => router.push("/user-management/users")}
-                className="flex items-center gap-2 h-10 px-4 border-zinc-200 text-zinc-900 text-[11px] font-bold uppercase tracking-widest rounded-sm hover:bg-zinc-50 hover:border-zinc-900 transition-all shadow-none border"
+                className="flex items-center gap-2 h-10 px-4 border-zinc-200 text-zinc-900 text-[11px] font-bold tracking-widest rounded-sm hover:bg-zinc-50 hover:border-zinc-900 transition-all shadow-none border"
               >
                 <ArrowLeft size={14} />
                 <span>Back to Registry</span>
