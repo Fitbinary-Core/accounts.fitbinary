@@ -203,7 +203,7 @@ const AllUsersPage = () => {
           actions={
             <Button
               onClick={() => router.push("/user-management/add")}
-              className="group flex items-center gap-2 h-11 px-5 bg-zinc-900 hover:bg-black text-white text-[11px] font-black uppercase tracking-widest rounded-sm transition-all active:scale-[0.98] shadow-sm"
+              className="group flex items-center gap-2 h-10 px-4 bg-zinc-900 hover:bg-black text-white text-sm font-medium rounded-sm transition-all active:scale-[0.98] shadow-sm"
             >
               <UserPlus
                 size={16}
@@ -230,7 +230,7 @@ const AllUsersPage = () => {
             {isLoading ? (
               <div className="flex flex-col items-center justify-center py-24 space-y-4">
                 <Loader2 className="size-10 animate-spin text-zinc-900" />
-                <p className="text-zinc-500 font-bold uppercase tracking-widest text-[10px]">
+                <p className="text-zinc-600 font-medium text-sm">
                   Loading Registry...
                 </p>
               </div>
@@ -240,7 +240,7 @@ const AllUsersPage = () => {
                   <Users className="size-8 text-zinc-300" />
                 </div>
                 <div className="text-center space-y-2">
-                  <p className="text-sm font-black text-zinc-900 uppercase tracking-tight">
+                  <p className="text-lg font-semibold text-zinc-900">
                     No users found
                   </p>
                   <p className="text-xs text-zinc-500 max-w-70 mx-auto leading-relaxed">
@@ -251,7 +251,7 @@ const AllUsersPage = () => {
                 <Button
                   onClick={handleReset}
                   variant="outline"
-                  className="h-10 px-4 border-zinc-200 text-zinc-900 text-[10px] font-bold uppercase tracking-widest rounded-sm hover:bg-zinc-50 hover:border-zinc-900 transition-all shadow-none border"
+                  className="h-10 px-4 border-zinc-200 text-zinc-900 text-sm font-medium rounded-sm hover:bg-zinc-50 hover:border-zinc-900 transition-all shadow-none border"
                 >
                   Clear All Filters
                 </Button>
@@ -263,27 +263,27 @@ const AllUsersPage = () => {
                     <thead className="bg-zinc-50/50 border-b border-zinc-100">
                       <tr>
                         <th className="px-6 py-4 text-left">
-                          <span className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
+                          <span className="text-sm font-semibold text-zinc-600">
                             Member Profile
                           </span>
                         </th>
                         <th className="px-6 py-4 text-left">
-                          <span className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
+                          <span className="text-sm font-semibold text-zinc-600">
                             Organization
                           </span>
                         </th>
                         <th className="px-6 py-4 text-left">
-                          <span className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
+                          <span className="text-sm font-semibold text-zinc-600">
                             Branch
                           </span>
                         </th>
                         <th className="px-6 py-4 text-center">
-                          <span className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
+                          <span className="text-sm font-semibold text-zinc-600">
                             Privilege
                           </span>
                         </th>
                         <th className="px-6 py-4 text-right">
-                          <span className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
+                          <span className="text-sm font-semibold text-zinc-600">
                             Actions
                           </span>
                         </th>
@@ -298,7 +298,7 @@ const AllUsersPage = () => {
                           {/* Member Profile */}
                           <td className="px-6 py-4">
                             <div className="flex items-center gap-4">
-                              <div className="h-10 w-10 shrink-0 rounded-sm bg-zinc-900 border border-zinc-800 flex items-center justify-center text-white text-xs font-black shadow-sm group-hover:bg-black overflow-hidden transition-colors">
+                              <div className="h-10 w-10 shrink-0 rounded-sm bg-zinc-900 border border-zinc-800 flex items-center justify-center text-white text-sm font-semibold shadow-sm group-hover:bg-black overflow-hidden transition-colors">
                                 {user?.avatar ? (
                                   <img
                                     src={user.avatar}
@@ -313,17 +313,17 @@ const AllUsersPage = () => {
                                 )}
                               </div>
                               <div className="flex flex-col min-w-0">
-                                <span className="text-sm font-black text-zinc-900 uppercase tracking-tight truncate">
+                                <span className="text-base font-medium text-zinc-900 truncate">
                                   {user?.first_name} {user?.last_name}
                                 </span>
-                                <div className="flex flex-col mt-0.5">
-                                  <div className="flex items-center gap-1.5 text-[10px] text-zinc-500 font-bold tracking-tight">
-                                    <Mail size={10} className="text-zinc-400" />
+                                <div className="flex flex-col mt-1 space-y-0.5">
+                                  <div className="flex items-center gap-1.5 text-xs text-zinc-600 font-medium">
+                                    <Mail size={12} className="text-zinc-400" />
                                     {user?.email}
                                   </div>
-                                  <div className="flex items-center gap-1.5 text-[10px] text-zinc-500 font-bold tracking-tight">
+                                  <div className="flex items-center gap-1.5 text-xs text-zinc-600 font-medium">
                                     <Phone
-                                      size={10}
+                                      size={12}
                                       className="text-zinc-400"
                                     />
                                     {user?.phone}
@@ -351,7 +351,7 @@ const AllUsersPage = () => {
                                 )}
                               </div>
                               <div className="flex flex-col min-w-0">
-                                <span className="text-[11px] font-black text-zinc-900 uppercase tracking-tight truncate">
+                                <span className="text-sm font-medium text-zinc-800 truncate">
                                   {user?.organization?.business_name || "N/A"}
                                 </span>
                               </div>
@@ -363,9 +363,9 @@ const AllUsersPage = () => {
                             <div className="space-y-1">
                               {user?.branches && user?.branches?.length > 0 ? (
                                 user?.branches?.length === 1 ? (
-                                  <div className="flex items-center gap-1.5 text-[10px] text-zinc-500 font-bold uppercase tracking-tight">
+                                  <div className="flex items-center gap-1.5 text-sm text-zinc-600 font-medium">
                                     <MapPin
-                                      size={10}
+                                      size={14}
                                       className="text-zinc-400"
                                     />
                                     {user?.branches[0]?.branch_name}
@@ -376,14 +376,14 @@ const AllUsersPage = () => {
                                       setSelectedBranchesUser(user);
                                       setIsBranchModalOpen(true);
                                     }}
-                                    className="flex items-center gap-1.5 px-2 py-0.5 rounded-sm bg-zinc-50 text-zinc-600 text-[10px] font-black uppercase tracking-widest border border-zinc-200 hover:bg-zinc-100 hover:border-zinc-300 transition-all cursor-pointer"
+                                    className="flex items-center gap-1.5 px-2 py-1 rounded-sm bg-zinc-50 text-zinc-700 text-xs font-medium border border-zinc-200 hover:bg-zinc-100 hover:border-zinc-300 transition-all cursor-pointer"
                                   >
-                                    <Building2 size={10} />
+                                    <Building2 size={12} />
                                     Multiple ({user.branches.length})
                                   </button>
                                 )
                               ) : (
-                                <div className="text-[10px] text-zinc-400 font-bold uppercase italic tracking-widest">
+                                <div className="text-sm text-zinc-500 font-medium italic">
                                   Unassigned
                                 </div>
                               )}
@@ -397,7 +397,7 @@ const AllUsersPage = () => {
                                 user.roles.map((r: any) => (
                                   <span
                                     key={r._id}
-                                    className="inline-flex items-center px-2 py-0.5 rounded-sm bg-zinc-900 text-white text-[9px] font-black uppercase tracking-widest"
+                                    className="inline-flex items-center px-2 py-1 rounded-sm bg-zinc-900 text-white text-xs font-medium"
                                   >
                                     {r.role_name}
                                   </span>
@@ -450,7 +450,7 @@ const AllUsersPage = () => {
 
                 {data?.meta && (
                   <div className="px-6 py-4 bg-zinc-50/50 border-t border-zinc-100 flex items-center justify-between gap-4">
-                    <p className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest">
+                    <p className="text-sm text-zinc-500 font-medium">
                       Showing{" "}
                       {Math.min(
                         (page - 1) * limit + 1,
@@ -492,11 +492,11 @@ const AllUsersPage = () => {
             }}
             title={
               <div className="flex flex-col">
-                <span className="text-sm font-black tracking-tight text-zinc-900">
+                <span className="text-base font-semibold text-zinc-900">
                   Assigned Branch Registry
                 </span>
                 {selectedBranchesUser && (
-                  <span className="text-[10px] text-zinc-500 font-bold mt-1">
+                  <span className="text-sm text-zinc-600 font-medium mt-1">
                     User: {selectedBranchesUser.first_name}{" "}
                     {selectedBranchesUser.last_name}
                   </span>
@@ -515,10 +515,10 @@ const AllUsersPage = () => {
                     <MapPin size={18} />
                   </div>
                   <div className="space-y-0.5 min-w-0 flex-1">
-                    <p className="text-md font-black text-zinc-900 truncate">
+                    <p className="text-base font-semibold text-zinc-900 truncate">
                       {branch?.branch_name}
                     </p>
-                    <p className="text-[11px] text-zinc-500 font-bold truncate">
+                    <p className="text-sm text-zinc-600 font-medium truncate">
                       {branch?.branch_location}
                     </p>
                   </div>

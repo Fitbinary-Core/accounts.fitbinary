@@ -21,13 +21,13 @@ export default function BranchEditPage() {
               <MoveLeft className="size-5" />
             </Link>
             <div>
-              <h1 className="text-3xl font-black text-zinc-900 tracking-tight">
+              <h1 className="text-3xl font-bold text-zinc-900">
                 Edit Branch
               </h1>
               <p className="text-zinc-500">Updating Branch ID: {id}</p>
             </div>
           </div>
-          <button className="h-10 px-4 bg-red-50 text-red-600 text-[10px] font-bold uppercase tracking-widest rounded-xl hover:bg-red-100 transition-all border border-red-100 flex items-center gap-2">
+          <button className="h-10 px-4 bg-red-50 text-red-600 text-xs font-semibold rounded-xl hover:bg-red-100 transition-all border border-red-100 flex items-center gap-2">
             <Trash2 className="size-3.5" />
             Terminate Branch
           </button>
@@ -36,7 +36,7 @@ export default function BranchEditPage() {
         <div className="bg-white border border-zinc-200 rounded-3xl p-8 shadow-sm space-y-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <label className="text-xs font-bold text-zinc-400 uppercase tracking-widest">
+              <label className="text-sm font-medium text-zinc-600">
                 Branch Name
               </label>
               <input
@@ -46,7 +46,7 @@ export default function BranchEditPage() {
               />
             </div>
             <div className="space-y-2">
-              <label className="text-xs font-bold text-zinc-400 uppercase tracking-widest">
+              <label className="text-sm font-medium text-zinc-600">
                 Location
               </label>
               <div className="relative">
@@ -63,11 +63,11 @@ export default function BranchEditPage() {
           <div className="flex items-center justify-end gap-3 pt-4 border-t border-zinc-50">
             <Link
               href="/branches"
-              className="h-12 px-6 bg-zinc-100 text-zinc-600 text-xs font-bold uppercase tracking-widest rounded-xl hover:bg-zinc-200 transition-all"
+              className="h-12 px-6 bg-zinc-100 text-zinc-600 text-sm font-medium rounded-xl hover:bg-zinc-200 transition-all"
             >
               Cancel
             </Link>
-            <button className="h-12 px-8 bg-zinc-900 text-white text-xs font-bold uppercase tracking-widest rounded-xl hover:bg-zinc-800 transition-all shadow-lg flex items-center gap-2">
+            <button className="h-12 px-8 bg-zinc-900 text-white text-sm font-medium rounded-xl hover:bg-zinc-800 transition-all shadow-lg flex items-center gap-2">
               <Save className="size-4" />
               Update Branch
             </button>

@@ -93,7 +93,7 @@ export default function EditBranchPage() {
       <DashboardLayout>
         <div className="flex h-[60vh] flex-col items-center justify-center gap-4">
           <Loader2 className="h-10 w-10 animate-spin text-zinc-900" />
-          <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest animate-pulse">
+          <p className="text-sm font-medium text-zinc-600 animate-pulse">
             Synchronizing Node Data...
           </p>
         </div>
@@ -110,7 +110,7 @@ export default function EditBranchPage() {
           actions={
             <Button
               onClick={() => router.push("/branches")}
-              className="flex items-center gap-2 h-10 px-4 border-zinc-200 text-zinc-900 text-[11px] font-bold tracking-widest rounded-sm hover:bg-zinc-50 hover:border-zinc-900 transition-all shadow-none"
+              className="flex items-center gap-2 h-10 px-4 border-zinc-200 text-zinc-900 text-sm font-medium rounded-sm hover:bg-zinc-50 hover:border-zinc-900 transition-all shadow-none"
             >
               <ArrowLeft size={14} />
               <span>Back to Registry</span>
@@ -120,27 +120,20 @@ export default function EditBranchPage() {
 
         <div className="w-full">
           <div className="rounded-sm border border-zinc-200 bg-white overflow-hidden shadow-none w-full mx-auto">
-            <div className="border-b border-zinc-100 bg-zinc-50/30 px-6 py-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <h2 className="text-sm font-black text-zinc-900 uppercase tracking-tight">
-                    Edit Specifications
-                  </h2>
-                </div>
-                <div className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest">
-                  Node ID: #{branchId.slice(-6).toUpperCase()}
-                </div>
-              </div>
+            <div className="border-b border-zinc-100 bg-zinc-50/30 px-4 py-4">
+              <h2 className="text-base font-semibold text-zinc-900">
+                Edit Specifications
+              </h2>
             </div>
 
             <form
               onSubmit={handleSubmit(onSubmit, onFormError)}
-              className="p-6 md:p-8 space-y-6"
+              className="p-4"
             >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Branch Name */}
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
+                  <label className="text-sm font-semibold text-zinc-700">
                     Node Identifier
                   </label>
                   <div className="relative">
@@ -154,7 +147,7 @@ export default function EditBranchPage() {
                     />
                   </div>
                   {errors.branch_name && (
-                    <p className="text-red-600 text-[10px] font-bold mt-1">
+                    <p className="text-red-600 text-xs font-medium mt-1">
                       {errors.branch_name.message}
                     </p>
                   )}
@@ -162,7 +155,7 @@ export default function EditBranchPage() {
 
                 {/* Branch Location */}
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
+                  <label className="text-sm font-semibold text-zinc-700">
                     Geographic Location
                   </label>
                   <div className="relative">
@@ -176,7 +169,7 @@ export default function EditBranchPage() {
                     />
                   </div>
                   {errors.branch_location && (
-                    <p className="text-red-600 text-[10px] font-bold mt-1">
+                    <p className="text-red-600 text-xs font-medium mt-1">
                       {errors.branch_location.message}
                     </p>
                   )}
@@ -185,7 +178,7 @@ export default function EditBranchPage() {
 
               {/* Branch Type */}
               <div className="space-y-3">
-                <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
+                <label className="text-sm font-semibold text-zinc-700">
                   Infrastructure Type
                 </label>
                 <Controller
@@ -200,7 +193,7 @@ export default function EditBranchPage() {
                   )}
                 />
                 {errors.branch_type && (
-                  <p className="text-red-600 text-[10px] font-bold mt-1">
+                  <p className="text-red-600 text-xs font-medium mt-1">
                     {errors.branch_type.message}
                   </p>
                 )}
@@ -232,7 +225,7 @@ export default function EditBranchPage() {
                       >
                         {field.value && <Check size={12} strokeWidth={4} />}
                       </div>
-                      <span className="text-[10px] font-black uppercase tracking-widest">
+                      <span className="text-sm font-semibold">
                         Mark as Main Branch
                       </span>
                     </button>
@@ -244,7 +237,7 @@ export default function EditBranchPage() {
                 <Button
                   type="submit"
                   disabled={mutation.isPending || isSubmitting}
-                  className="flex-1 h-12 bg-zinc-900 hover:bg-black text-white text-[11px] font-black uppercase tracking-widest rounded-sm cursor-pointer shadow-sm transition-all active:scale-[0.98] disabled:opacity-50"
+                  className="flex-1 h-12 bg-zinc-900 hover:bg-black text-white text-sm font-medium rounded-sm cursor-pointer shadow-sm transition-all active:scale-[0.98] disabled:opacity-50"
                 >
                   {mutation.isPending || isSubmitting ? (
                     <span className="flex items-center gap-2">

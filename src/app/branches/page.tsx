@@ -131,7 +131,7 @@ export default function BranchesListingPage() {
                             {branch.branch_name}
                           </h3>
                           {branch.is_main && (
-                            <span className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-amber-50 border border-amber-200 rounded text-[10px] font-semibold text-amber-700 shrink-0">
+                            <span className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-amber-50 border border-amber-200 rounded text-xs font-medium text-amber-700 shrink-0">
                               <Star size={9} className="fill-amber-500 text-amber-500" />
                               Main
                             </span>
@@ -173,7 +173,7 @@ export default function BranchesListingPage() {
                       <span className="text-xs truncate">{branch.branch_location}</span>
                     </div>
                     <span
-                      className={`ml-3 shrink-0 px-2 py-0.5 rounded text-[10px] font-semibold border ${branch.branch_type === "Head Office"
+                      className={`ml-3 shrink-0 px-2 py-0.5 rounded text-xs font-medium border ${branch.branch_type === "Head Office"
                           ? "bg-zinc-900 text-white border-zinc-900"
                           : "bg-zinc-50 text-zinc-600 border-zinc-200"
                         }`}
@@ -184,7 +184,7 @@ export default function BranchesListingPage() {
 
                   {/* Footer */}
                   <div className="px-4 pb-4">
-                    <p className="text-[10px] text-zinc-400">
+                    <p className="text-xs text-zinc-500">
                       Added {new Date(branch.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
                     </p>
                   </div>
