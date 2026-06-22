@@ -57,45 +57,22 @@ const AllUsersPage = () => {
       getAccessControlList(page, limit, search, filters, sortValue),
   });
 
-  const groupedUsers = useMemo(() => {
+  const usersToRender = useMemo(() => {
     if (!data?.data || !Array.isArray(data.data)) return [];
 
-    const usersMap = new Map();
-
-    data.data.forEach((ac: any) => {
-      if (!ac.user_id) return;
-      const uId = ac.user_id._id;
-      if (!usersMap.has(uId)) {
-        usersMap.set(uId, {
-          _id: uId,
-          first_name: ac.user_id.first_name,
-          last_name: ac.user_id.last_name,
-          email: ac.user_id.email,
-          phone: ac.user_id.phone,
-          avatar: ac.user_id.avatar,
-          organization: ac.org_id,
-          branches: ac.branch_id ? [ac.branch_id] : [],
-          roles: ac.role_id ? [ac.role_id] : [],
-          access_control_id: ac._id,
-        });
-      } else {
-        const existing = usersMap.get(uId);
-        if (
-          ac.branch_id &&
-          !existing.branches.find((b: any) => b?._id === ac.branch_id._id)
-        ) {
-          existing.branches.push(ac.branch_id);
-        }
-        if (
-          ac.role_id &&
-          !existing.roles.find((r: any) => r?._id === ac.role_id._id)
-        ) {
-          existing.roles.push(ac.role_id);
-        }
-      }
-    });
-
-    return Array.from(usersMap.values());
+    return data.data.map((ac: any) => ({
+      _id: ac._id,
+      user_id: ac.user_id?._id,
+      first_name: ac.user_id?.first_name,
+      last_name: ac.user_id?.last_name,
+      email: ac.user_id?.email,
+      phone: ac.user_id?.phone,
+      avatar: ac.user_id?.avatar,
+      organization: ac.org_id,
+      branches: ac.branch_id ? [ac.branch_id] : [],
+      roles: ac.role_id ? [ac.role_id] : [],
+      access_control_id: ac._id,
+    }));
   }, [data?.data]);
 
   const { data: branchesData } = useQuery({
@@ -234,7 +211,7 @@ const AllUsersPage = () => {
                   Loading Registry...
                 </p>
               </div>
-            ) : groupedUsers.length === 0 ? (
+            ) : usersToRender.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-24 space-y-6">
                 <div className="size-16 rounded-sm bg-zinc-50 flex items-center justify-center border border-zinc-100">
                   <Users className="size-8 text-zinc-300" />
@@ -279,7 +256,7 @@ const AllUsersPage = () => {
                         </th>
                         <th className="px-6 py-4 text-center">
                           <span className="text-sm font-semibold text-zinc-600">
-                            Privilege
+                            Access
                           </span>
                         </th>
                         <th className="px-6 py-4 text-right">
@@ -290,7 +267,7 @@ const AllUsersPage = () => {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-zinc-100 bg-white">
-                      {groupedUsers.map((user) => (
+                      {usersToRender.map((user: any) => (
                         <tr
                           key={user?._id}
                           className="hover:bg-zinc-50/50 transition-colors group"

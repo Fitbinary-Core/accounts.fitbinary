@@ -102,6 +102,8 @@ export default function EditUserPage() {
     enabled: !!selectedOrganizationId,
   });
 
+  console.log("Branches by org: ", branchesByOrg);
+
   const selectedOrganization = useMemo(() => {
     return organizations.find((o) => o._id === selectedOrganizationId);
   }, [organizations, selectedOrganizationId]);
@@ -313,16 +315,16 @@ export default function EditUserPage() {
                     {selectedOrganization?.business_name || "EDIT"}
                   </span>
                   <h2 className="text-sm font-black text-zinc-900 tracking-tight">
-                    Access Privileges
+                    Access list
                   </h2>
                 </div>
               </div>
 
-              <div className="p-6 md:p-8">
+              <div className="p-4">
                 <Form {...form}>
                   <form
                     onSubmit={form.handleSubmit(onSubmit)}
-                    className="space-y-8"
+                    className="space-y-4"
                   >
                     <div className="grid grid-cols-1 gap-6">
                       <FormField
@@ -330,8 +332,8 @@ export default function EditUserPage() {
                         name="role"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
-                              Privilege Level
+                            <FormLabel className="text-[10px] font-black text-zinc-500 tracking-widest">
+                              Role
                             </FormLabel>
                             <FormControl>
                               <Select
@@ -343,7 +345,7 @@ export default function EditUserPage() {
                                 </SelectTrigger>
                                 <SelectContent className="bg-white border-zinc-200 rounded-sm shadow-xl">
                                   <SelectGroup>
-                                    <SelectLabel className="text-[10px] font-black text-zinc-400 uppercase tracking-widest px-2 py-1.5">
+                                    <SelectLabel className="text-[10px] font-black text-zinc-400 tracking-widest px-2 py-1.5">
                                       Available Roles
                                     </SelectLabel>
                                     {roles ? (
@@ -371,45 +373,30 @@ export default function EditUserPage() {
                       />
                     </div>
 
-                    {selectedRoleScope === "BRANCH" && (
-                      <FormField
-                        control={form.control}
-                        name="branches"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
-                              Resource Access Tags (Branches)
-                            </FormLabel>
-                            <FormControl>
-                              <BranchSelector
-                                multi={true}
-                                branches={branchesByOrg?.data || []}
-                                value={field.value || []}
-                                onChange={field.onChange}
-                                disabled={isLoadingBranches}
-                                placeholder="Bind user to active branches"
-                              />
-                            </FormControl>
-                            <FormMessage className="text-[10px] text-zinc-900 font-bold" />
-                          </FormItem>
-                        )}
-                      />
-                    )}
+                    <FormField
+                      control={form.control}
+                      name="branches"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
+                            Resource Access Tags (Branches)
+                          </FormLabel>
+                          <FormControl>
+                            <BranchSelector
+                              multi={true}
+                              branches={branchesByOrg?.data || []}
+                              value={field.value || []}
+                              onChange={field.onChange}
+                              disabled={isLoadingBranches}
+                              placeholder="Bind user to active branches"
+                            />
+                          </FormControl>
+                          <FormMessage className="text-[10px] text-zinc-900 font-bold" />
+                        </FormItem>
+                      )}
+                    />
 
-                    {selectedRoleScope === "ORGANIZATION" && (
-                      <div className="bg-zinc-900 text-white rounded-sm p-4 flex items-center gap-3">
-                        <Lock className="size-5 text-zinc-400" />
-                        <p className="text-[11px] font-medium tracking-tight">
-                          <span className="font-black uppercase tracking-widest mr-2">
-                            Organization Auth:
-                          </span>
-                          This member will be granted administrative access
-                          across all organizational branches.
-                        </p>
-                      </div>
-                    )}
-
-                    <div className="pt-6">
+                    <div>
                       <Button
                         type="submit"
                         disabled={updateMutation.isPending}

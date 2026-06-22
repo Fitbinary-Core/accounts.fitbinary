@@ -32,7 +32,10 @@ interface WorkspaceSelectorProps {
   workspaces: Workspace[];
 }
 
-const APP_CONFIG: Record<string, { label: string; url: string; color: string; dotColor: string }> = {
+const APP_CONFIG: Record<
+  string,
+  { label: string; url: string; color: string; dotColor: string }
+> = {
   fitcloud: {
     label: "FitCloud",
     url: "https://fitcloud.fitbinary.com/",
@@ -57,7 +60,10 @@ export function WorkspaceSelector({ workspaces }: WorkspaceSelectorProps) {
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false);
       }
     }
@@ -77,7 +83,10 @@ export function WorkspaceSelector({ workspaces }: WorkspaceSelectorProps) {
     const storageKey = LOCAL_STORAGE_KEYS[app];
 
     if (storageKey) {
-      localStorage.setItem(storageKey, workspace.role_id.specific_key ?? workspace.role_id.role_key);
+      localStorage.setItem(
+        storageKey,
+        workspace.role_id.specific_key ?? workspace.role_id.role_key,
+      );
     }
 
     const appConfig = APP_CONFIG[app];
@@ -98,16 +107,18 @@ export function WorkspaceSelector({ workspaces }: WorkspaceSelectorProps) {
           "flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-semibold transition-all duration-200",
           isOpen
             ? "bg-zinc-100 text-brand-red scale-95"
-            : "hover:bg-zinc-100 text-zinc-700 hover:scale-105"
+            : "hover:bg-zinc-100 text-zinc-700 hover:scale-105",
         )}
         title="Switch Workspace"
       >
         <Layers className="w-4 h-4" />
-        <span className="hidden sm:inline text-xs font-bold tracking-wide uppercase">Workspaces</span>
+        <span className="hidden sm:inline text-xs font-bold tracking-wide uppercase">
+          Workspaces
+        </span>
         <ChevronDown
           className={cn(
             "w-3.5 h-3.5 transition-transform duration-200",
-            isOpen && "rotate-180"
+            isOpen && "rotate-180",
           )}
         />
       </button>
@@ -119,7 +130,7 @@ export function WorkspaceSelector({ workspaces }: WorkspaceSelectorProps) {
               <div className="size-7 bg-zinc-950 rounded-lg flex items-center justify-center">
                 <Building2 className="size-3.5 text-white" />
               </div>
-              <h3 className="text-xs font-black text-zinc-900 uppercase tracking-widest">
+              <h3 className="text-xs font-black text-zinc-900">
                 Select Workspace
               </h3>
             </div>
@@ -131,7 +142,12 @@ export function WorkspaceSelector({ workspaces }: WorkspaceSelectorProps) {
               return (
                 <div key={app}>
                   <div className="px-4 py-2 bg-zinc-50 border-b border-zinc-100 flex items-center gap-2">
-                    <span className={cn("text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full", appConfig?.color ?? "bg-zinc-800 text-white")}>
+                    <span
+                      className={cn(
+                        "text-[10px] font-black px-2 py-0.5 rounded-full",
+                        appConfig?.color ?? "bg-zinc-800 text-white",
+                      )}
+                    >
                       {appConfig?.label ?? app}
                     </span>
                   </div>
@@ -158,12 +174,23 @@ export function WorkspaceSelector({ workspaces }: WorkspaceSelectorProps) {
                         <p className="text-xs font-bold text-zinc-900 truncate group-hover:text-brand-red transition-colors">
                           {ws.org_id.business_name}
                         </p>
-                        <p className="text-[11px] text-zinc-500 truncate">{ws.branch_id.branch_name}</p>
+                        <p className="text-[11px] text-zinc-500 truncate">
+                          {ws.branch_id.branch_name}
+                        </p>
                         <div className="flex items-center gap-1.5 mt-0.5">
-                          <span className={cn("inline-block size-1.5 rounded-full shrink-0", appConfig?.dotColor ?? "bg-zinc-400")} />
-                          <span className="text-[10px] text-zinc-400 font-medium">{ws.role_id.role_name}</span>
+                          <span
+                            className={cn(
+                              "inline-block size-1.5 rounded-full shrink-0",
+                              appConfig?.dotColor ?? "bg-zinc-400",
+                            )}
+                          />
+                          <span className="text-[10px] text-zinc-400 font-medium">
+                            {ws.role_id.role_name}
+                          </span>
                           <span className="text-[10px] text-zinc-300">·</span>
-                          <span className="text-[10px] text-zinc-400">{ws.branch_id.branch_type}</span>
+                          <span className="text-[10px] text-zinc-400">
+                            {ws.branch_id.branch_type}
+                          </span>
                         </div>
                       </div>
                       <ExternalLink className="size-3.5 text-zinc-300 group-hover:text-brand-red transition-colors shrink-0 mt-1" />
