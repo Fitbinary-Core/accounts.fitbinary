@@ -492,12 +492,12 @@ const AllUsersPage = () => {
             }}
             title={
               <div className="flex flex-col">
-                <span className="text-sm font-black uppercase tracking-tight text-zinc-900">
+                <span className="text-sm font-black tracking-tight text-zinc-900">
                   Assigned Branch Registry
                 </span>
                 {selectedBranchesUser && (
-                  <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mt-1">
-                    Member: {selectedBranchesUser.first_name}{" "}
+                  <span className="text-[10px] text-zinc-500 font-bold mt-1">
+                    User: {selectedBranchesUser.first_name}{" "}
                     {selectedBranchesUser.last_name}
                   </span>
                 )}
@@ -515,10 +515,10 @@ const AllUsersPage = () => {
                     <MapPin size={18} />
                   </div>
                   <div className="space-y-0.5 min-w-0 flex-1">
-                    <p className="text-sm font-black text-zinc-900 uppercase tracking-tight truncate">
+                    <p className="text-md font-black text-zinc-900 truncate">
                       {branch?.branch_name}
                     </p>
-                    <p className="text-[11px] text-zinc-500 font-bold uppercase tracking-widest truncate">
+                    <p className="text-[11px] text-zinc-500 font-bold truncate">
                       {branch?.branch_location}
                     </p>
                   </div>

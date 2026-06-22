@@ -156,9 +156,9 @@ export default function AddUserPage() {
     return (
       <DashboardLayout>
         <div className="flex flex-col items-center justify-center py-32 space-y-4">
-          <Loader2 className="size-10 animate-spin text-zinc-900" />
-          <p className="text-zinc-500 font-bold uppercase tracking-widest text-[10px]">
-            Hydrating Organization Data...
+          <Loader2 className="size-8 animate-spin text-zinc-500" />
+          <p className="text-sm font-medium text-zinc-600">
+            Loading organization data...
           </p>
         </div>
       </DashboardLayout>
@@ -186,11 +186,14 @@ export default function AddUserPage() {
                   ? setValue("organization", "")
                   : router.push("/user-management/users")
               }
-              className="flex items-center gap-2 h-10 px-4 border-zinc-200 text-zinc-900 text-[11px] font-bold uppercase tracking-widest rounded-sm hover:bg-zinc-50 hover:border-zinc-900 transition-all shadow-none border"
+              variant="outline"
+              className="flex items-center gap-2 h-10 px-4 text-sm font-medium"
             >
               <ArrowLeft size={14} />
               <span>
-                {selectedOrganizationId ? "Change Context" : "Back to Registry"}
+                {selectedOrganizationId
+                  ? "Change Organization"
+                  : "Back to Users"}
               </span>
             </Button>
           }
@@ -200,15 +203,15 @@ export default function AddUserPage() {
           <div className="rounded-sm border border-zinc-200 bg-white overflow-hidden shadow-none w-full mx-auto">
             <div className="border-b border-zinc-100 bg-zinc-50/30 px-6 py-4">
               <div className="flex items-center gap-2">
-                <h2 className="text-sm font-black text-zinc-900 uppercase tracking-tight">
-                  Target Context
+                <h2 className="text-lg font-semibold text-zinc-900">
+                  Organization Details
                 </h2>
               </div>
             </div>
 
             <div className="p-6 md:p-8 space-y-8">
               <div className="space-y-3">
-                <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
+                <label className="text-sm font-medium text-zinc-700">
                   Organization Environment
                 </label>
                 <Controller
@@ -226,7 +229,7 @@ export default function AddUserPage() {
                   )}
                 />
                 {errors.organization && (
-                  <p className="text-red-900 text-[10px] font-bold">
+                  <p className="text-red-500 text-sm font-medium mt-1">
                     {errors.organization.message}
                   </p>
                 )}
@@ -237,13 +240,13 @@ export default function AddUserPage() {
           {selectedOrganizationId && (
             <div className="mt-8 rounded-sm border border-zinc-200 bg-white overflow-hidden shadow-none w-full mx-auto animate-in fade-in slide-in-from-top-4 duration-500">
               <div className="border-b border-zinc-100 bg-zinc-50/30 px-6 py-4">
-                <div className="flex items-center gap-2">
-                  <span className="px-2 py-0.5 bg-zinc-900 text-white text-[9px] font-bold uppercase tracking-widest rounded-sm">
+                <div className="flex items-center gap-3">
+                  <h2 className="text-lg font-semibold text-zinc-900">
+                    User Details
+                  </h2>
+                  <span className="px-2.5 py-0.5 bg-zinc-100 text-zinc-700 text-xs font-medium rounded-full border border-zinc-200">
                     {selectedOrganization?.business_name}
                   </span>
-                  <h2 className="text-sm font-black text-zinc-900 uppercase tracking-tight">
-                    User Credentials
-                  </h2>
                 </div>
               </div>
 
@@ -289,7 +292,7 @@ export default function AddUserPage() {
                         name="first_name"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
+                            <FormLabel className="text-sm font-medium text-zinc-700">
                               First Name
                             </FormLabel>
                             <FormControl>
@@ -299,13 +302,13 @@ export default function AddUserPage() {
                                 </span>
                                 <Input
                                   placeholder="John"
-                                  className="w-full h-11 pl-9 border-zinc-200 focus:border-zinc-900 focus:ring-0 text-zinc-900 text-sm placeholder:text-zinc-300 rounded-sm shadow-none"
+                                  className="w-full h-11 pl-9 border-zinc-200 focus:border-zinc-900 focus:ring-0 text-zinc-900 text-sm placeholder:text-zinc-500 rounded-sm shadow-none"
                                   disabled={form.watch("mode") === "invite"}
                                   {...field}
                                 />
                               </div>
                             </FormControl>
-                            <FormMessage className="text-zinc-900 text-[10px] font-bold" />
+                            <FormMessage className="text-red-500 text-xs mt-1" />
                           </FormItem>
                         )}
                       />
@@ -314,18 +317,18 @@ export default function AddUserPage() {
                         name="middle_name"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
+                            <FormLabel className="text-sm font-medium text-zinc-700">
                               Middle Name
                             </FormLabel>
                             <FormControl>
                               <Input
                                 placeholder="Ray"
-                                className="w-full h-11 border-zinc-200 focus:border-zinc-900 focus:ring-0 text-zinc-900 text-sm placeholder:text-zinc-300 rounded-sm shadow-none"
+                                className="w-full h-11 border-zinc-200 focus:border-zinc-900 focus:ring-0 text-zinc-900 text-sm placeholder:text-zinc-500 rounded-sm shadow-none"
                                 disabled={form.watch("mode") === "invite"}
                                 {...field}
                               />
                             </FormControl>
-                            <FormMessage className="text-zinc-900 text-[10px] font-bold" />
+                            <FormMessage className="text-red-500 text-xs mt-1" />
                           </FormItem>
                         )}
                       />
@@ -334,18 +337,18 @@ export default function AddUserPage() {
                         name="last_name"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
+                            <FormLabel className="text-sm font-medium text-zinc-700">
                               Last Name
                             </FormLabel>
                             <FormControl>
                               <Input
                                 placeholder="Doe"
-                                className="w-full h-11 border-zinc-200 focus:border-zinc-900 focus:ring-0 text-zinc-900 text-sm placeholder:text-zinc-300 rounded-sm shadow-none"
+                                className="w-full h-11 border-zinc-200 focus:border-zinc-900 focus:ring-0 text-zinc-900 text-sm placeholder:text-zinc-500 rounded-sm shadow-none"
                                 disabled={form.watch("mode") === "invite"}
                                 {...field}
                               />
                             </FormControl>
-                            <FormMessage className="text-zinc-900 text-[10px] font-bold" />
+                            <FormMessage className="text-red-500 text-xs mt-1" />
                           </FormItem>
                         )}
                       />
@@ -357,7 +360,7 @@ export default function AddUserPage() {
                         name="email"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
+                            <FormLabel className="text-sm font-medium text-zinc-700">
                               Email Address
                             </FormLabel>
                             <FormControl>
@@ -368,13 +371,13 @@ export default function AddUserPage() {
                                 <Input
                                   type="email"
                                   placeholder="member@fitbinary.com"
-                                  className="w-full h-11 pl-9 border-zinc-200 focus:border-zinc-900 focus:ring-0 text-zinc-900 text-sm placeholder:text-zinc-300 rounded-sm shadow-none"
+                                  className="w-full h-11 pl-9 border-zinc-200 focus:border-zinc-900 focus:ring-0 text-zinc-900 text-sm placeholder:text-zinc-500 rounded-sm shadow-none"
                                   disabled={form.watch("mode") === "invite"}
                                   {...field}
                                 />
                               </div>
                             </FormControl>
-                            <FormMessage className="text-zinc-900 text-[10px] font-bold" />
+                            <FormMessage className="text-red-500 text-xs mt-1" />
                           </FormItem>
                         )}
                       />
@@ -383,8 +386,8 @@ export default function AddUserPage() {
                         name="phone"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
-                              Phone Identifier
+                            <FormLabel className="text-sm font-medium text-zinc-700">
+                              Phone Number
                             </FormLabel>
                             <FormControl>
                               <div className="relative">
@@ -393,13 +396,13 @@ export default function AddUserPage() {
                                 </span>
                                 <Input
                                   placeholder="+977"
-                                  className="w-full h-11 pl-9 border-zinc-200 focus:border-zinc-900 focus:ring-0 text-zinc-900 text-sm placeholder:text-zinc-300 rounded-sm shadow-none"
+                                  className="w-full h-11 pl-9 border-zinc-200 focus:border-zinc-900 focus:ring-0 text-zinc-900 text-sm placeholder:text-zinc-500 rounded-sm shadow-none"
                                   disabled={form.watch("mode") === "invite"}
                                   {...field}
                                 />
                               </div>
                             </FormControl>
-                            <FormMessage className="text-zinc-900 text-[10px] font-bold" />
+                            <FormMessage className="text-red-500 text-xs mt-1" />
                           </FormItem>
                         )}
                       />
@@ -411,8 +414,8 @@ export default function AddUserPage() {
                         name="password"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
-                              Access Secret
+                            <FormLabel className="text-sm font-medium text-zinc-700">
+                              Password
                             </FormLabel>
                             <FormControl>
                               <div className="relative">
@@ -422,13 +425,13 @@ export default function AddUserPage() {
                                 <Input
                                   type="password"
                                   placeholder="••••••••"
-                                  className="w-full h-11 pl-9 border-zinc-200 focus:border-zinc-900 focus:ring-0 text-zinc-900 text-sm placeholder:text-zinc-300 rounded-sm shadow-none"
+                                  className="w-full h-11 pl-9 border-zinc-200 focus:border-zinc-900 focus:ring-0 text-zinc-900 text-sm placeholder:text-zinc-500 rounded-sm shadow-none"
                                   disabled={form.watch("mode") === "invite"}
                                   {...field}
                                 />
                               </div>
                             </FormControl>
-                            <FormMessage className="text-zinc-900 text-[10px] font-bold" />
+                            <FormMessage className="text-red-500 text-xs mt-1" />
                           </FormItem>
                         )}
                       />
@@ -437,8 +440,8 @@ export default function AddUserPage() {
                         name="role"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
-                              Privilege Level
+                            <FormLabel className="text-sm font-medium text-zinc-700">
+                              Role
                             </FormLabel>
                             <FormControl>
                               <Select
@@ -446,11 +449,11 @@ export default function AddUserPage() {
                                 defaultValue={field.value}
                               >
                                 <SelectTrigger className="w-full py-5 border-zinc-200 focus:ring-0 focus:border-zinc-900 text-zinc-900 text-sm rounded-sm shadow-none">
-                                  <SelectValue placeholder="Assign privilege role" />
+                                  <SelectValue placeholder="Select a role" />
                                 </SelectTrigger>
                                 <SelectContent className="bg-white border-zinc-200 rounded-sm shadow-xl">
                                   <SelectGroup>
-                                    <SelectLabel className="text-[10px] font-black text-zinc-400 uppercase tracking-widest px-2 py-1.5">
+                                    <SelectLabel className="text-xs font-semibold text-zinc-500 px-2 py-1.5">
                                       Available Roles
                                     </SelectLabel>
                                     {roles ? (
@@ -458,7 +461,7 @@ export default function AddUserPage() {
                                         <SelectItem
                                           key={role._id}
                                           value={role._id}
-                                          className="text-xs font-bold text-zinc-700 focus:bg-zinc-100 focus:text-zinc-900 cursor-pointer rounded-sm"
+                                          className="text-sm font-medium text-zinc-700 focus:bg-zinc-100 focus:text-zinc-900 cursor-pointer rounded-md"
                                         >
                                           {role.role_name}
                                         </SelectItem>
@@ -472,7 +475,7 @@ export default function AddUserPage() {
                                 </SelectContent>
                               </Select>
                             </FormControl>
-                            <FormMessage className="text-zinc-900 text-[10px] font-bold" />
+                            <FormMessage className="text-red-500 text-xs mt-1" />
                           </FormItem>
                         )}
                       />
@@ -484,8 +487,8 @@ export default function AddUserPage() {
                         name="branches"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
-                              Resource Access Tags (Branches)
+                            <FormLabel className="text-sm font-medium text-zinc-700">
+                              Branches
                             </FormLabel>
                             <FormControl>
                               <BranchSelector
@@ -494,10 +497,10 @@ export default function AddUserPage() {
                                 value={field.value}
                                 onChange={field.onChange}
                                 disabled={isLoadingBranches}
-                                placeholder="Bind user to specific branches"
+                                placeholder="Select branches"
                               />
                             </FormControl>
-                            <FormMessage className="text-zinc-900 text-[10px] font-bold" />
+                            <FormMessage className="text-red-500 text-xs mt-1" />
                           </FormItem>
                         )}
                       />
@@ -506,9 +509,9 @@ export default function AddUserPage() {
                     {selectedRoleScope === "ORGANIZATION" && (
                       <div className="bg-zinc-900 text-white rounded-sm p-4 flex items-center gap-3">
                         <Lock className="size-5 text-zinc-400" />
-                        <p className="text-[11px] font-medium tracking-tight">
-                          <span className="font-black uppercase tracking-widest mr-2">
-                            Organization Auth:
+                        <p className="text-sm font-medium">
+                          <span className="font-semibold mr-2">
+                            Organization Access:
                           </span>
                           This member will be granted administrative access
                           across all organizational branches.
@@ -520,7 +523,7 @@ export default function AddUserPage() {
                       <Button
                         type="submit"
                         disabled={loading}
-                        className="w-full h-12 bg-zinc-900 hover:bg-black text-white text-[11px] font-black uppercase tracking-widest rounded-sm cursor-pointer shadow-sm transition-all active:scale-[0.98] disabled:opacity-50"
+                        className="w-full h-12 bg-zinc-900 hover:bg-black text-white text-sm font-medium rounded-md cursor-pointer shadow-sm transition-all active:scale-[0.98] disabled:opacity-50"
                       >
                         {loading ? (
                           <span className="flex items-center gap-2">
