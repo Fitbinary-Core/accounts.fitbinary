@@ -452,10 +452,10 @@ const AllUsersPage = () => {
             isOpen={isDeleteModalOpen}
             onClose={() => setIsDeleteModalOpen(false)}
             onConfirm={confirmDelete}
-            title="Revoke Member Access"
-            description="Are you sure you want to permanently delete this member profile? This will immediately revoke all platform access."
+            title="Remove Member Access"
+            description="Are you sure you want to permanently delete this user profile? This will immediately remomve all platform access."
             confirmText="Delete Profile"
-            cancelText="Retain Member"
+            cancelText="Cancel"
             isLoading={deleteMutation.isPending}
             variant="danger"
             icon={Trash2}
