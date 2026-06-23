@@ -135,7 +135,6 @@ export default function AddUserPage() {
           org_id: data.organization,
           role_id: data.role || "",
           branches: data.branches,
-          app: "fitstock",
         });
         toast.success("User access control granted successfully!");
       } else {
